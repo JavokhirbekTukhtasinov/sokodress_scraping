@@ -1,0 +1,414 @@
+store_id_num,sangga_name,store_name,store_phone,store_address,store_aws_image,accounts,number_of_total_products,accounts_products
+25403,Jeil Pyunghwa,셀라,010-4394-2975,5F 76,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25403.jpg,496,"1,606",1
+22165,Jeil Pyunghwa,olivej j,02-2254-2379,2F 71호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/22165.jpg,319,739,0
+17503,Jeil Pyunghwa,끌로델,02-2232-9568,1F 19호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/17503.jpg,445,"1,335",0
+18479,Jeil Pyunghwa,블루신스,02-2253-2483,1F 83호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/18479.jpg,602,506,0
+16328,Jeil Pyunghwa,리썸,010-9788-8995,5F 118,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/16328.jpg,"2,923","1,462",4
+13499,Jeil Pyunghwa,dk,02-2252-2409,Belpost 1F 64호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/13499.jpg,175,579,1
+13186,Jeil Pyunghwa,KENT,02-2232-1050,3F 95호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/13186.jpg,"3,109","4,471",10
+21866,Jeil Pyunghwa,리리끄,010-4666-6278,3F 160호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21866.jpg,891,127,1
+20549,Jeil Pyunghwa,Ant,010-8798-8111,3F 197호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20549.jpg,"1,920",224,17
+14926,Jeil Pyunghwa,디비제이,010-6336-3277,4F 79,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/14926.jpg,"6,131","13,479",1
+13695,Jeil Pyunghwa,f2nd,010-3355-8299,B1 334호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/13695.jpg,"3,094","6,234",0
+24982,Jeil Pyunghwa,센티먼트 SENTIMENT,010-6847-7599,2F 127호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24982.jpg,"1,155","1,301",3
+24751,Jeil Pyunghwa,LYRIQUE,010-7145-5521,1F 87호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24751.jpg,652,510,0
+25072,Jeil Pyunghwa,TheQueen더퀸,02-2236-5467,1F 56호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25072.jpg,151,481,0
+5633,Jeil Pyunghwa,글로리,010-7656-9944,2F 47호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/5633.jpg,"2,460",248,1
+24633,Jeil Pyunghwa,메이비,02-2231-6645,4F 47,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24633.jpg,"1,671",123,0
+6613,Jeil Pyunghwa,루디아,010-2518-2372,2F 54호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/6613.jpg,"6,725","3,979",2
+17722,Jeil Pyunghwa,OF YOUR OWN,010-7259-6306,3F 108호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/17722.jpg,"1,218",38,0
+12727,Jeil Pyunghwa,미체,02-2237-3164,3F 132호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12727.jpg,"4,246","1,394","1,322"
+21750,Jeil Pyunghwa,DIAFRIMO,02-2235-0880,2F 107호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21750.jpg,617,344,0
+24675,Jeil Pyunghwa,홀리,010-2179-7477,4F 21,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24675.jpg,"1,217",334,1
+21702,Jeil Pyunghwa,소고,02-2237-9877,1F 86호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21702.jpg,252,425,0
+12584,Jeil Pyunghwa,컨슈머,02-2233-7354,2F 113호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12584.jpg,"11,115","20,257",24
+25458,Jeil Pyunghwa,THEANY(더애니),02-2232-2101,APM 1F 19,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25458.jpg,509,"1,260",6
+21204,Jeil Pyunghwa,트윔,010-2900-2170,2F 70호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21204.jpg,653,"1,085",33
+18914,Jeil Pyunghwa,ROOM,02-2256-2331,3F 173호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/18914.jpg,709,333,0
+24508,Jeil Pyunghwa,Laube,02-2235-3741,2F 36호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24508.jpg,500,125,0
+12138,Jeil Pyunghwa,LONE,02-2252-9433,4F 81,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12138.jpg,520,736,0
+7915,Jeil Pyunghwa,edge,02-2236-1599,B1 95호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/7915.jpg,458,848,1
+7759,Jeil Pyunghwa,보아스,010-9463-4005,4F 74,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/7759.jpg,488,83,0
+10439,Jeil Pyunghwa,souL,02-2231-1611,3F 167호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/10439.jpg,"2,915",534,0
+19859,Jeil Pyunghwa,matahari,010-6614-5885,3F 59호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/19859.jpg,"3,084","1,636",8
+15225,Jeil Pyunghwa,더스틴,010-7534-1076,4F 65,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/15225.jpg,"5,876",106,0
+10263,Jeil Pyunghwa,올드레스,02-2252-0789,4F 115,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/10263.jpg,"6,568",36,0
+18780,Jeil Pyunghwa,루비,010-5202-3533,3F 50호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/18780.jpg,"2,151","2,632",1
+6347,Jeil Pyunghwa,line,02-2233-4433,2F 12호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/6347.jpg,"7,390",560,5
+24711,Jeil Pyunghwa,무드하우스,010-7942-4173,5F 97,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24711.jpg,"1,574",86,0
+2271,Jeil Pyunghwa,Mbeige,010-7288-7269,1F 156호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/2271.jpg,"4,083","3,510",13
+12577,Jeil Pyunghwa,아셀,010-8662-6179,4F 11,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12577.jpg,"3,986",969,369
+23603,Jeil Pyunghwa,오닉스,02-2235-7246,2F 91호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23603.jpg,150,234,0
+20009,Jeil Pyunghwa,미즈모아,02-2238-4705,B1 60호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20009.jpg,306,416,0
+25067,Jeil Pyunghwa,지미와이,02-2234-3879,2F 122호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25067.jpg,866,"2,052",0
+26878,Jeil Pyunghwa,Nplo,010-2188-1095,B1 416호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/26878.jpg,48,21,0
+6229,Jeil Pyunghwa,swan,02-2234-4002,4F 148,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/6229.jpg,"8,258",118,0
+25236,Jeil Pyunghwa,벨라,010-7405-7496,5F 133,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25236.jpg,847,145,135
+3370,Jeil Pyunghwa,다온,010-9160-1348,2F 43호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/3370.jpg,948,333,0
+19464,Jeil Pyunghwa,nine,010-5108-3278,2F 58호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/19464.jpg,921,375,0
+17432,Jeil Pyunghwa,Luxury AMI,010-5427-1824,5F 104,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/17432.jpg,"3,846",249,0
+19013,Jeil Pyunghwa,도르가스,02-2233-0025,B1 31호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/19013.jpg,767,178,0
+9404,Jeil Pyunghwa,jennifur,010-7592-5712,5F 149,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/9404.jpg,"2,491",158,0
+20992,Jeil Pyunghwa,워너비,010-4229-5442,3F 182호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20992.jpg,171,41,0
+15849,Jeil Pyunghwa,Lucy,010-9369-4062,3F 125호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/15849.jpg,"5,041","1,067",0
+24478,Jeil Pyunghwa,로위,010-3610-0339,3F 39호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24478.jpg,"1,481","5,228",143
+12801,Jeil Pyunghwa,lala stone,010-4660-0784,B1 318호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12801.jpg,"3,041","11,881",0
+20797,Jeil Pyunghwa,JC,02-2237-6960,B1 100호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20797.jpg,743,"4,004",135
+24447,Jeil Pyunghwa,비오비,010-1234-1234,Team204 3F 310호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24447.jpg,"1,942","7,425",157
+21618,Jeil Pyunghwa,모티브2,02-2233-1204,2F 18호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21618.jpg,559,855,7
+16012,Jeil Pyunghwa,모모바이민,02-2231-1682,3F 13호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/16012.jpg,"6,314","3,880",450
+12063,Jeil Pyunghwa,abba,070-4221-1428,3F 99호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12063.jpg,"1,177","2,354",15
+25117,Jeil Pyunghwa,mayqueen 메이퀸,010-9968-7477,2F 154호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25117.jpg,"3,897",771,0
+12450,Jeil Pyunghwa,Zucca,02-2234-3872,2F 80호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12450.jpg,"1,069",922,305
+13399,Jeil Pyunghwa,mixfit,010-4386-1617,4F 9,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/13399.jpg,"3,986","1,034",1
+20418,Jeil Pyunghwa,lyrique,010-8831-8518,2F 5호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20418.jpg,"2,113",211,0
+12095,Jeil Pyunghwa,BONITA,010-3382-3442,1F 109호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12095.jpg,"3,977","9,252",177
+24338,Jeil Pyunghwa,LUMOS,02-2232-0801,2F 176호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24338.jpg,495,"1,585",0
+3981,Jeil Pyunghwa,조이풀,02-2252-2975,5F 77,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/3981.jpg,"6,733","1,213",3
+18646,Jeil Pyunghwa,스타더스트,010-9008-8919,2F 7호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/18646.jpg,"1,922","2,377",5
+23729,Jeil Pyunghwa,you2 2,02-2232-8893,3F 49호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23729.jpg,857,634,1
+26734,Jeil Pyunghwa,only•L,010-2663-2907,3F 52호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/26734.jpg,747,109,0
+27185,Jeil Pyunghwa,GROW,010-3737-3480,3F 37호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/27185.jpg,58,82,0
+8786,Jeil Pyunghwa,MiJu,02-2233-2317,1F 98호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/8786.jpg,"1,057",582,0
+21023,Jeil Pyunghwa,라라스톤블랙,010-4660-0784,B1 317호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21023.jpg,922,"2,168",0
+25081,Jeil Pyunghwa,SR에스알,010-2869-3379,B1 115호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25081.jpg,0,4,0
+25407,Jeil Pyunghwa,히엘,010-7373-8758,5F 40,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25407.jpg,536,50,0
+24280,Jeil Pyunghwa,vanessaroom,02-2233-3373,1F 115호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24280.jpg,430,"2,086",5
+25909,Jeil Pyunghwa,비글컴퍼니 (beagle company),010-8587-9673,JABA11 1F A-11,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25909.jpg,110,304,0
+14329,Jeil Pyunghwa,파랑,02-2237-5911,3F 68호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/14329.jpg,677,"1,129",13
+21778,Jeil Pyunghwa,H2,02-2232-3036,B1 103호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21778.jpg,114,73,0
+16598,Jeil Pyunghwa,갤럭시상사(포토시),02-2237-9425,1F 32호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/16598.jpg,929,"3,033",0
+24617,Jeil Pyunghwa,Jgrande,02-2232-3941,1F 43호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24617.jpg,410,77,6
+13629,Jeil Pyunghwa,BOBO,010-8830-7076,3F 94호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/13629.jpg,"6,153","1,292",5
+24246,Jeil Pyunghwa,빠숑,010-7240-0148,4F 22,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24246.jpg,"1,612","1,883",1
+23453,Jeil Pyunghwa,연우상사,02-2235-8397,2F 94호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23453.jpg,117,39,3
+2,Jeil Pyunghwa,체리걸,02-1566-6523,THEOT B2 C21,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/2.jpg,77,"2,461","2,391"
+26963,Jeil Pyunghwa,vagle,010-6578-8625,5F 88,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/26963.jpg,295,418,0
+19701,Jeil Pyunghwa,NICOLE FARI,02-2231-7826,B1 15호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/19701.jpg,113,715,2
+2013,Jeil Pyunghwa,cocos,02-2233-4326,B1 410호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/2013.jpg,570,534,14
+23557,Jeil Pyunghwa,lilium,010-2280-1855,2F 184호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23557.jpg,192,402,0
+23722,Jeil Pyunghwa,오벨리아,02-2235-8893,ChungPyungHwa B1 나17호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23722.jpg,915,347,49
+26061,Jeil Pyunghwa,toolap,010-5769-8663,4F 139,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/26061.jpg,"1,022","2,078",0
+21738,Jeil Pyunghwa,비비안,02-2233-9707,2F 166호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21738.jpg,"1,088",303,0
+23266,Jeil Pyunghwa,club sedado,010-5923-6507,Maxtyle B1 280,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23266.jpg,441,"2,119",1
+21620,Jeil Pyunghwa,보석,02-2232-3033,1F 138호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21620.jpg,357,551,0
+18224,Jeil Pyunghwa,샾제이,02-2231-3353,3F 192호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/18224.jpg,849,879,106
+20961,Jeil Pyunghwa,커뮤니티제평1F,010-4175-5415,1F 94호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20961.jpg,"1,295",166,0
+8154,Jeil Pyunghwa,LONDON,02-2237-3768,2F 62호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/8154.jpg,"3,638","3,480",0
+17029,Jeil Pyunghwa,퍼센트,02-2235-5565,3F 8호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/17029.jpg,330,69,0
+20649,Jeil Pyunghwa,NDND,010-9593-2150,2F 15호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20649.jpg,611,"2,416",2
+10598,Jeil Pyunghwa,no thx,02-2235-8749,2F 102호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/10598.jpg,"2,173","1,689",2
+20702,Jeil Pyunghwa,애비뉴엘,02-2235-1645,4F 59,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20702.jpg,845,551,9
+23749,Jeil Pyunghwa,able,02-2252-1687,2F 37호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23749.jpg,264,425,0
+26236,Jeil Pyunghwa,feelthesky,010-4492-0819,4F 113,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/26236.jpg,468,565,0
+6196,Jeil Pyunghwa,idem,02-2231-0406,2F 143호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/6196.jpg,702,272,1
+12882,Jeil Pyunghwa,Über,02-2237-3133,2F 61호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12882.jpg,"1,653","1,166",51
+16020,Jeil Pyunghwa,miel 미엘,010-2107-2281,1F 29호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/16020.jpg,"4,915","2,155",24
+19886,Jeil Pyunghwa,MARIE STUDIOS,010-4941-8388,1F 77호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/19886.jpg,"1,017",924,1
+9557,Jeil Pyunghwa,BABARA,010-8775-3642,2F 4호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/9557.jpg,"3,353","2,230",22
+20718,Jeil Pyunghwa,JNT,02-2234-3028,1F 82호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20718.jpg,463,851,3
+12964,Jeil Pyunghwa,크리스타,02-2238-2088,B1 229호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12964.jpg,562,255,0
+17325,Jeil Pyunghwa,ReaIIy,010-7302-7389,3F 104호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/17325.jpg,576,15,0
+22101,Jeil Pyunghwa,aurora,010-8028-1813,2F 103호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/22101.jpg,"3,884",751,0
+7837,Jeil Pyunghwa,A Shop,02-2238-1298,3F 60호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/7837.jpg,"3,794","4,227",5
+16352,Jeil Pyunghwa,나비,02-2232-1240,B1 22호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/16352.jpg,172,194,2
+7565,Jeil Pyunghwa,okioki,010-2037-3179,4F 36,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/7565.jpg,"13,405",950,885
+2026,Jeil Pyunghwa,페이퍼돌,02-2254-0809,1F 7호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/2026.jpg,440,168,0
+12688,Jeil Pyunghwa,POV,010-5771-4177,3F 32호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12688.jpg,"1,159","2,360",0
+21153,Jeil Pyunghwa,플럼,010-3242-1686,2F 171호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21153.jpg,"1,069","4,209",22
+7127,Jeil Pyunghwa,램스모드,02-2236-3025,1F 100호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/7127.jpg,522,34,0
+26994,Jeil Pyunghwa,wonpisu,010-9416-2080,5F 37,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/26994.jpg,38,66,0
+9967,Jeil Pyunghwa,아이리스,010-2591-3699,4F 86,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/9967.jpg,"2,449",331,0
+7732,Jeil Pyunghwa,rookiebud,010-3561-0484,B1 366호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/7732.jpg,"4,731","5,280",0
+14878,Jeil Pyunghwa,J VOOM,010-2708-2005,2F 150호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/14878.jpg,"4,595","4,666",3
+9886,Jeil Pyunghwa,에이원,02-2252-8199,1F 25호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/9886.jpg,580,743,0
+23468,Jeil Pyunghwa,Ami,010-3634-1448,3F 11호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23468.jpg,"1,582",399,0
+19435,Jeil Pyunghwa,Calia,010-5880-1567,4F 110,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/19435.jpg,"1,457",922,2
+21508,Jeil Pyunghwa,thehistory,010-9511-8977,1F 128호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21508.jpg,772,"2,119",0
+20309,Jeil Pyunghwa,indimint,010-3099-5933,3F 169호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20309.jpg,114,108,1
+11594,Jeil Pyunghwa,마리,02-2235-1470,1F 147호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/11594.jpg,231,122,0
+22538,Jeil Pyunghwa,유레카,010-7788-6385,4F 43,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/22538.jpg,"2,158",5,0
+20547,Jeil Pyunghwa,againmac,02-2235-5434,1F 50호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20547.jpg,"2,748","7,698","1,894"
+14840,Jeil Pyunghwa,clasika,02-2237-8953,2F 158호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/14840.jpg,"1,189","3,821",53
+24629,Jeil Pyunghwa,onlyone,010-8309-4477,4F 159,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24629.jpg,750,4,0
+21602,Jeil Pyunghwa,핑크플라밍고,02-2231-7771,1F 105호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21602.jpg,804,199,1
+27425,Jeil Pyunghwa,stella,010-2529-5943,B1 384호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/27425.jpg,1,10,0
+19362,Jeil Pyunghwa,오빌아리조나,010-8245-2150,3F 38호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/19362.jpg,"1,675",102,0
+8389,Jeil Pyunghwa,루이스,02-2233-8451,B1 105호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/8389.jpg,692,355,1
+12154,Jeil Pyunghwa,이노,02-2234-6545,1F 18호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12154.jpg,824,468,0
+20748,Jeil Pyunghwa,clubmacho,010-3111-5107,Maxtyle B1 230,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20748.jpg,681,"2,846",0
+4115,Jeil Pyunghwa,블루라벨,02-2281-4547,3F 47호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/4115.jpg,"3,071","1,019",26
+3337,Jeil Pyunghwa,SOL,02-2252-9587,2F 52호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/3337.jpg,905,741,12
+23627,Jeil Pyunghwa,보니타앤씨앤,010-9362-3442,4F 122,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23627.jpg,"2,161","12,680",45
+12029,Jeil Pyunghwa,yoosou,010-8459-4006,3F 155호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12029.jpg,"3,451","4,115",0
+21536,Jeil Pyunghwa,woodwood,010-3300-2347,1F 3호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21536.jpg,"1,030","1,006",0
+20592,Jeil Pyunghwa,Merild,02-2234-2230,3F 6호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20592.jpg,"3,099",147,3
+11063,Jeil Pyunghwa,Blue Velvet,010-7119-3288,3F 106호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/11063.jpg,497,427,15
+5222,Jeil Pyunghwa,RICH,02-2234-8622,1F 4호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/5222.jpg,"2,411","1,429",1
+9800,Jeil Pyunghwa,JCOCO,02-2235-3112,1F 14호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/9800.jpg,"1,488",718,2
+10548,Jeil Pyunghwa,ALMA,010-4556-6924,B1 37호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/10548.jpg,545,507,9
+18766,Jeil Pyunghwa,CN,02-2236-3442,4F 137,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/18766.jpg,"4,736","16,642",30
+19594,Jeil Pyunghwa,mellow,010-9846-6020,1F 125호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/19594.jpg,"1,140",457,0
+24922,Jeil Pyunghwa,Ruakorea 루아코리아,010-5161-5446,4F 83,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24922.jpg,115,699,0
+20909,Jeil Pyunghwa,어썸,02-2235-5969,2F 180호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20909.jpg,"1,728","3,908",7
+15068,Jeil Pyunghwa,niche,010-7791-0184,3F 184호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/15068.jpg,"6,796",30,0
+27315,Jeil Pyunghwa,karej,010-3525-0452,3F 177호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/27315.jpg,60,122,0
+11695,Jeil Pyunghwa,캔디,02-2253-0854,3F 87호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/11695.jpg,215,329,20
+27281,Jeil Pyunghwa,ehfpal,010-6775-6189,5F 44,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/27281.jpg,195,141,0
+14563,Jeil Pyunghwa,베니베니,010-2054-1446,2F 88호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/14563.jpg,910,"2,999",388
+7617,Jeil Pyunghwa,꼴레르,010-9625-2012,1F 172호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/7617.jpg,580,274,0
+24206,Jeil Pyunghwa,노아,010-2426-5771,1F 85호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24206.jpg,291,900,0
+15681,Jeil Pyunghwa,jimmywhy,02-2253-3222,Belpost 2F 53호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/15681.jpg,"1,347","2,929",44
+16838,Jeil Pyunghwa,슈앤도로시,010-2888-6082,B1 208호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/16838.jpg,786,542,2
+20770,Jeil Pyunghwa,On,010-2787-0261,1F 72호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20770.jpg,723,130,1
+11775,Jeil Pyunghwa,july7,010-7189-4474,3F 57호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/11775.jpg,"4,970","1,181",12
+8033,Jeil Pyunghwa,덴버,02-2234-3656,3F 162호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/8033.jpg,633,251,3
+7878,Jeil Pyunghwa,메리골드,02-2232-5434,2F 120호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/7878.jpg,"2,626","5,886",31
+27202,Jeil Pyunghwa,Remauve,010-3877-2792,1F 188호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/27202.jpg,137,84,0
+23747,Jeil Pyunghwa,hongsy,02-2253-5150,2F 185호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23747.jpg,330,333,0
+14108,Jeil Pyunghwa,코지,02-2238-1378,2F 75호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/14108.jpg,"1,172",144,0
+20871,Jeil Pyunghwa,CALLA,010-9081-2252,3F 128호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20871.jpg,"1,559","7,036",0
+19615,Jeil Pyunghwa,모나마리,010-5817-7600,1F 79호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/19615.jpg,"1,000",346,0
+20703,Jeil Pyunghwa,blooming,010-9247-9170,1F 12호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20703.jpg,"1,810","1,820",47
+7879,Jeil Pyunghwa,더맥,02-2233-5434,2F 121호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/7879.jpg,"2,837","6,818",31
+21848,Jeil Pyunghwa,ellen,02-2233-1701,2F 175호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21848.jpg,368,155,0
+25820,Jeil Pyunghwa,거북이,010-3935-9199,5F 85,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25820.jpg,846,56,0
+13456,Jeil Pyunghwa,JADERIVER,010-3762-0616,1F 96호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/13456.jpg,"1,399",84,0
+13081,Jeil Pyunghwa,Any,02-2231-1372,1F 101호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/13081.jpg,"4,164","1,064",23
+13546,Jeil Pyunghwa,Rnsway,02-2234-8073,2F 77호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/13546.jpg,"1,064",487,56
+27277,Jeil Pyunghwa,MAROO,010-5350-8646,1F 28호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/27277.jpg,158,80,0
+22247,Jeil Pyunghwa,얀,02-2238-1388,1F 166호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/22247.jpg,561,540,1
+12566,Jeil Pyunghwa,nelcia,02-2252-0640,B1 331호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12566.jpg,"2,475","6,948",0
+24670,Jeil Pyunghwa,soop,02-2236-6812,1F 75호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24670.jpg,154,309,0
+11604,Jeil Pyunghwa,ZOOL,02-2252-1134,DDP(U:US) 1F 30,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/11604.jpg,"1,227","2,673",45
+8485,Jeil Pyunghwa,pennyblue,02-2235-1161,2F 140호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/8485.jpg,"3,417","2,375",0
+21119,Jeil Pyunghwa,엘비라운지,02-2233-9181,3F 19호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21119.jpg,"1,672",647,0
+27251,Jeil Pyunghwa,salemall,010-5084-3442,4F 104,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/27251.jpg,33,121,0
+5659,Jeil Pyunghwa,단,02-2231-3117,2F 169호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/5659.jpg,"2,840",414,24
+26416,Jeil Pyunghwa,DaALL,010-6344-8898,2F 76호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/26416.jpg,548,611,51
+25353,Jeil Pyunghwa,셀리안,010-5319-3273,2F 60호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25353.jpg,210,279,1
+8332,Jeil Pyunghwa,노아,010-2597-5771,1F 135호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/8332.jpg,"1,316","3,287",0
+24810,Jeil Pyunghwa,클로이,010-2528-2845,3F 153호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24810.jpg,"1,329","5,806",1
+23796,Jeil Pyunghwa,루니,02-2253-1185,1F 35호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23796.jpg,254,"1,382",0
+12895,Jeil Pyunghwa,쉬크 드 스칼렛,02-3298-6780,2F 188호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12895.jpg,"1,003",991,5
+12965,Jeil Pyunghwa,The J,010-5025-0279,3F 127호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12965.jpg,"7,875","18,740",24
+27153,Jeil Pyunghwa,JK,010-2131-1018,4F 12,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/27153.jpg,56,143,0
+6073,Jeil Pyunghwa,CPR,010-2733-3895,Shoes Market C B1 14호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/6073.jpg,"3,185","4,089",9
+26204,Jeil Pyunghwa,ena,010-2920-6044,2F 111호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/26204.jpg,341,190,0
+27266,Jeil Pyunghwa,Rael,010-5614-0489,5F 151,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/27266.jpg,346,53,10
+27184,Jeil Pyunghwa,parks King corp,010-8818-2216,1F 146호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/27184.jpg,34,21,0
+12462,Jeil Pyunghwa,보그,02-2237-4184,4F 37,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12462.jpg,"2,756","4,371",89
+2215,Jeil Pyunghwa,bankroll,010-9040-9289,3F 109호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/2215.jpg,"7,889",303,2
+14607,Jeil Pyunghwa,MAIN 메인,010-2275-0409,3F 114호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/14607.jpg,"2,439",315,0
+26097,Jeil Pyunghwa,by eun,02-2236-2099,2F 99호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/26097.jpg,603,21,1
+21165,Jeil Pyunghwa,CONCISE,010-3016-3028,3F 28호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21165.jpg,530,51,0
+5142,Jeil Pyunghwa,Orange,02-2235-2140,3F 61호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/5142.jpg,"1,703",910,1
+21580,Jeil Pyunghwa,YJ,010-9730-1930,2F 145호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21580.jpg,"1,204","4,829",42
+27227,Jeil Pyunghwa,vavidico,02-2233-1148,1F 148호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/27227.jpg,76,20,0
+25367,Jeil Pyunghwa,발렌티나엘,010-9892-3181,2F 181호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25367.jpg,"1,547","1,596",0
+9552,Jeil Pyunghwa,Donne alla moda,02-3298-6979,3F 44호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/9552.jpg,"7,289","9,481",7
+6502,Jeil Pyunghwa,플러트,010-3622-0425,3F 53호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/6502.jpg,"2,441",115,0
+27067,Jeil Pyunghwa,w,02-2231-6812,2F 144호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/27067.jpg,26,57,0
+23020,Jeil Pyunghwa,meoo,010-7764-7490,5F 144,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23020.jpg,"4,510","1,369",2
+24074,Jeil Pyunghwa,데이즈,02-2235-8479,B1 355호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24074.jpg,542,147,0
+27029,Jeil Pyunghwa,openrun,010-9379-2188,3F 185호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/27029.jpg,107,106,0
+25988,Jeil Pyunghwa,ThyAnn다이앤,010-5754-3992,1F 121호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25988.jpg,"1,411","1,687",3
+10603,Jeil Pyunghwa,엔샵,02-2237-0667,2F 115호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/10603.jpg,"3,433",367,0
+10555,Jeil Pyunghwa,GEMELLI,02-2232-8923,2F 97호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/10555.jpg,546,"1,048",1
+24811,Jeil Pyunghwa,MeiMei,010-8299-6490,4F 52,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24811.jpg,"2,499",312,0
+14507,Jeil Pyunghwa,Moneta,010-4032-2769,1F 11호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/14507.jpg,"2,567","1,147",394
+24519,Jeil Pyunghwa,제이그로우,010-5755-6119,4F 64,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24519.jpg,423,115,4
+21303,Jeil Pyunghwa,신스,02-2253-6829,2F 46호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21303.jpg,761,"1,069",0
+23700,Jeil Pyunghwa,다올,02-2238-4431,1F 104호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23700.jpg,60,48,0
+23427,Jeil Pyunghwa,baku,02-2233-1901,1F 73호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23427.jpg,"1,079",577,1
+17825,Jeil Pyunghwa,팅,010-2345-2109,3F 139호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/17825.jpg,"8,427",535,3
+17523,Jeil Pyunghwa,르마레,02-2235-7787,1F 106호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/17523.jpg,532,179,0
+21838,Jeil Pyunghwa,동동,010-6431-3968,5F 89,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21838.jpg,"3,125",50,0
+11085,Jeil Pyunghwa,GAVIN,02-2231-2103,1F 136호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/11085.jpg,"1,278",753,0
+13917,Jeil Pyunghwa,러브하트,010-6334-6179,4F 19,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/13917.jpg,"3,182","4,641",278
+21060,Jeil Pyunghwa,TOYOU,02-974-9797,B1 336호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21060.jpg,82,45,0
+23243,Jeil Pyunghwa,ADD,02-2234-7393,B1 69호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23243.jpg,144,69,0
+24806,Jeil Pyunghwa,모리걸,02-2254-1969,3F 196호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24806.jpg,607,"1,200",1
+9499,Jeil Pyunghwa,유리유리,010-5715-4194,Namdaemun)Serona Kids 3F 5,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/9499.jpg,"6,653","2,080",0
+20126,Jeil Pyunghwa,제이지,010-6522-3343,4F 34,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20126.jpg,"2,373","1,467",0
+8830,Jeil Pyunghwa,로렌조,010-5790-5166,1F 33호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/8830.jpg,"3,177","2,011",10
+16829,Jeil Pyunghwa,hermoso,010-6665-9909,3F 80호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/16829.jpg,"4,540",182,0
+22714,Jeil Pyunghwa,블루리본,02-2233-2463,3F 129호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/22714.jpg,184,118,0
+21417,Jeil Pyunghwa,PAGO,02-2232-2260,2F 26호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21417.jpg,"3,209",350,0
+20672,Jeil Pyunghwa,모나마리,010-4718-0047,B1 341호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20672.jpg,521,940,0
+13559,Jeil Pyunghwa,miragirl,02-2231-6907,4F 99,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/13559.jpg,"4,125","1,593",9
+16090,Jeil Pyunghwa,빅토리샵,010-4388-3343,4F 33,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/16090.jpg,"3,727","4,426",4
+26919,Jeil Pyunghwa,e modun,010-6277-6255,1F 111호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/26919.jpg,100,231,0
+19860,Jeil Pyunghwa,lacashmere,02-2232-0023,1F 76호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/19860.jpg,757,"1,392",37
+4916,Jeil Pyunghwa,리오다,02-2231-4190,1F 40호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/4916.jpg,923,"1,566",7
+10964,Jeil Pyunghwa,2F109Mbeige,010-5836-3200,2F 109호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/10964.jpg,"4,345","2,612",316
+1670,Jeil Pyunghwa,aimee,010-9444-7149,B1 363호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/1670.jpg,"2,590","1,135",0
+25293,Jeil Pyunghwa,아모브,02-2231-2793,B1 35호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25293.jpg,603,678,5
+17301,Jeil Pyunghwa,인스타,02-2233-7336,4F 76,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/17301.jpg,"1,912","3,560",2
+14064,Jeil Pyunghwa,douBle B,010-9510-3135,3F 46호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/14064.jpg,"1,176",123,1
+10505,Jeil Pyunghwa,Cactus,010-8784-8886,Queen's Square 2F 161호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/10505.jpg,"1,525","2,510",0
+8911,Jeil Pyunghwa,엔제이,02-2235-3330,B1 81호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/8911.jpg,"4,692",555,13
+24858,Jeil Pyunghwa,2Nd,010-7144-8008,3F 137호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24858.jpg,50,58,11
+6359,Jeil Pyunghwa,FeminineB,02-2230-7003,Studio W 2F 73호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/6359.jpg,"2,170","4,624",1
+21484,Jeil Pyunghwa,에스더,02-2233-6134,B1 385호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21484.jpg,95,339,0
+23704,Jeil Pyunghwa,Chambre de S,010-8522-6157,2F 124호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23704.jpg,718,"1,941",2
+25232,Jeil Pyunghwa,BUNKER 벙커,02-6970-7350,Queen's Square 3F 50호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25232.jpg,"1,238","1,388",0
+20634,Jeil Pyunghwa,Duri,02-2252-3439,B1 225호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20634.jpg,305,686,16
+10778,Jeil Pyunghwa,picapi,010-3138-5063,B1 323호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/10778.jpg,"1,494",636,7
+16335,Jeil Pyunghwa,Arles,02-2232-5223,3F 86호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/16335.jpg,"8,490","1,054",3
+21085,Jeil Pyunghwa,제이플러스,010-4333-7012,B1 11호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21085.jpg,329,963,1
+8353,Jeil Pyunghwa,MERCATO 83,02-2231-6158,2F 83호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/8353.jpg,"4,345","1,183",83
+26540,Jeil Pyunghwa,hello,010-7409-7012,5F 117,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/26540.jpg,156,205,0
+25475,Jeil Pyunghwa,kkorajistreet 꼬라지스트릿,010-4211-0424,5F 158,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25475.jpg,571,54,0
+21470,Jeil Pyunghwa,썸,02-2252-1033,2F 100호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21470.jpg,194,487,43
+21826,Jeil Pyunghwa,T드레스,02-2237-3334,3F 119호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21826.jpg,598,852,135
+21039,Jeil Pyunghwa,르뮤,02-2231-0528,1F 17호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21039.jpg,"1,320","5,505",7
+26113,Jeil Pyunghwa,loro,010-4001-4158,4F 158,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/26113.jpg,998,756,0
+19454,Jeil Pyunghwa,몽싸롱,010-7396-0751,4F 93,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/19454.jpg,"3,826","1,043",2
+6918,Jeil Pyunghwa,Tyche,02-2234-8267,4F 116,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/6918.jpg,"5,078","1,088",2
+5157,Jeil Pyunghwa,Nuno,02-2252-2234,B1 373호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/5157.jpg,487,232,0
+16931,Jeil Pyunghwa,Petit France,02-2233-9305,B1 380호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/16931.jpg,463,821,0
+617,Jeil Pyunghwa,CF,02-2233-3707,2F 2호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/617.jpg,"3,515","16,305",5
+25794,Jeil Pyunghwa,MAGO-9마고나인,010-8354-3438,1F 95호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25794.jpg,"1,023",186,0
+25546,Jeil Pyunghwa,아이즈미,010-3587-4372,5F 70,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25546.jpg,924,268,0
+19149,Jeil Pyunghwa,경원어패럴,02-2231-0762,1F 169호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/19149.jpg,662,475,52
+23406,Jeil Pyunghwa,VIVIJU,010-9880-0710,2F 193호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23406.jpg,"1,315","6,054",4
+20989,Jeil Pyunghwa,LORENZO,010-3892-1448,2F 131호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20989.jpg,"1,746",462,1
+7696,Jeil Pyunghwa,hessed,02-2235-7007,3F 90호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/7696.jpg,"2,549",76,0
+24956,Jeil Pyunghwa,Anthem엔썸,010-3270-5687,5F 82,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24956.jpg,714,139,0
+6381,Jeil Pyunghwa,socks storage,010-6369-9835,1F 27호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/6381.jpg,"3,453",831,0
+26830,Jeil Pyunghwa,J.coco,010-8288-9647,B1 5호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/26830.jpg,280,144,1
+9461,Jeil Pyunghwa,셀리나,010-5324-2292,3F 45호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/9461.jpg,"5,782","5,755",1
+16102,Jeil Pyunghwa,바이올렛,02-2234-1618,B1 335호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/16102.jpg,"1,859",149,0
+21797,Jeil Pyunghwa,에블리블름,02-3298-5051,B1 220호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21797.jpg,397,581,2
+13276,Jeil Pyunghwa,줄라이,02-2233-3513,2F 1호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/13276.jpg,"1,996","3,531",1
+27041,Jeil Pyunghwa,THC,010-6482-3142,Dong Pyunghwa 1F 특1호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/27041.jpg,103,90,0
+20596,Jeil Pyunghwa,TINIA,02-2235-4620,B1 10호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20596.jpg,146,67,0
+1218,Jeil Pyunghwa,YS.jemma,010-4890-6415,2F 56-1,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/1218.jpg,"4,495",593,2
+26378,Jeil Pyunghwa,CONCEPT,010-4234-0898,B1 358호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/26378.jpg,216,432,0
+10936,Jeil Pyunghwa,Erica,02-2235-2651,2F 82호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/10936.jpg,"4,505","4,923",1
+20810,Jeil Pyunghwa,허브,02-2236-6669,1F 131호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20810.jpg,107,63,0
+25433,Jeil Pyunghwa,Breeze 브리즈,02-2233-8515,1F 141호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25433.jpg,921,"1,233",0
+19858,Jeil Pyunghwa,ILU,010-4932-8992,2F 23호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/19858.jpg,735,316,20
+23113,Jeil Pyunghwa,breezeOn,010-3396-0104,1F 114호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23113.jpg,538,"3,201",1
+25999,Jeil Pyunghwa,casprini,010-9112-1720,2F 152호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25999.jpg,120,315,0
+16521,Jeil Pyunghwa,143,010-4418-0150,3F 143호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/16521.jpg,"1,381",204,7
+573,Jeil Pyunghwa,BLING,010-5538-2738,Shoes Market C B1 12호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/573.jpg,"5,712","3,214",0
+26272,Jeil Pyunghwa,topqul,010-2727-8758,Busan Renecite (Rene) 2F 2457호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/26272.jpg,259,26,0
+21776,Jeil Pyunghwa,흑백,02-2238-0815,1F 70호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21776.jpg,290,26,0
+12119,Jeil Pyunghwa,silkfeel,02-2233-1724,B1 419호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12119.jpg,525,78,0
+9960,Jeil Pyunghwa,도로시,010-8791-1000,3F 55호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/9960.jpg,"5,342","2,749",327
+23964,Jeil Pyunghwa,sooyounlim,010-8319-0580,ChungPyungHwa 1F 라12호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23964.jpg,30,47,0
+26965,Jeil Pyunghwa,baku,02-2233-0443,2F 85호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/26965.jpg,271,90,0
+19073,Jeil Pyunghwa,yeotten,02-2235-5908,2F 178호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/19073.jpg,435,921,2
+19255,Jeil Pyunghwa,JUST,010-4131-1396,3F 48호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/19255.jpg,"1,527","1,638",2
+22071,Jeil Pyunghwa,모아나,010-4224-3957,B1 85호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/22071.jpg,995,"2,095",3
+15870,Jeil Pyunghwa,지니,02-2253-8061,2F 173호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/15870.jpg,584,849,0
+24048,Jeil Pyunghwa,MAREBLUE,010-4847-0618,2F 125호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24048.jpg,66,26,9
+13787,Jeil Pyunghwa,사라,02-2236-6155,1F 134호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/13787.jpg,616,"1,302",0
+22919,Jeil Pyunghwa,오리엔탈,02-2253-5251,2F 45호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/22919.jpg,299,543,1
+15171,Jeil Pyunghwa,Mento,010-2932-5244,1F 155호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/15171.jpg,"3,393",620,0
+14221,Jeil Pyunghwa,담go,02-2238-3778,3F 98호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/14221.jpg,"1,145","1,695",7
+7297,Jeil Pyunghwa,아인101,010-4043-8101,4F 50,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/7297.jpg,"9,485",519,1
+25633,Jeil Pyunghwa,beginning_b 비기닝 비,010-3915-5444,4F 45,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25633.jpg,"1,198",55,0
+17545,Jeil Pyunghwa,PINZ,02-2236-1034,B1 6호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/17545.jpg,175,315,1
+12618,Jeil Pyunghwa,2by1,010-4741-2491,2F 30호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12618.jpg,414,265,1
+12787,Jeil Pyunghwa,YAHOMOM,010-2294-7352,3F 152호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12787.jpg,874,299,1
+13951,Jeil Pyunghwa,jRuby,010-4569-2873,1F 81호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/13951.jpg,880,851,1
+6299,Jeil Pyunghwa,JOSEPH G,010-2212-6860,2F 168호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/6299.jpg,919,905,1
+9594,Jeil Pyunghwa,SARAH,010-5564-7490,4F 72,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/9594.jpg,"8,825",920,5
+5629,Jeil Pyunghwa,l'emage,010-2122-2265,2F 55호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/5629.jpg,"2,486","2,001",69
+27157,Jeil Pyunghwa,JEIL SALONG,010-8640-8806,3F 179호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/27157.jpg,289,126,0
+24235,Jeil Pyunghwa,클립드,010-5486-5494,1F 183호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24235.jpg,541,303,0
+24650,Jeil Pyunghwa,더하루,010-9292-1270,DDP(U:US) 1F 70,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24650.jpg,231,"1,231",3
+13780,Jeil Pyunghwa,JCOCO,02-6970-7559,Queen's Square 5F 560호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/13780.jpg,"2,353","2,664",35
+20556,Jeil Pyunghwa,wea,010-3243-2277,3F 27호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20556.jpg,"1,519",256,1
+12001,Jeil Pyunghwa,Marie hall Ets,02-2234-1468,3F 148호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12001.jpg,711,100,0
+14696,Jeil Pyunghwa,로웰,02-2232-3314,3F 14호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/14696.jpg,608,557,27
+12941,Jeil Pyunghwa,DF,02-2235-0886,3F 140호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12941.jpg,930,873,7
+2887,Jeil Pyunghwa,delumine,010-8737-4885,2F 138호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/2887.jpg,"1,358","1,529",2
+11056,Jeil Pyunghwa,IL MARE,02-2236-0328,1F 38호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/11056.jpg,889,399,57
+26478,Jeil Pyunghwa,petitefrance,010-3355-6737,B1 377호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/26478.jpg,216,277,0
+9989,Jeil Pyunghwa,윤지,02-2238-9766,2F 84호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/9989.jpg,"5,842","1,722",21
+21527,Jeil Pyunghwa,아미띠에,02-2233-5278,3F 163호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21527.jpg,515,753,3
+20195,Jeil Pyunghwa,ROYH,010-6707-3701,4F 60,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20195.jpg,"5,774",221,0
+21032,Jeil Pyunghwa,M2,010-2866-6356,4F 92,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21032.jpg,"2,513",668,0
+13728,Jeil Pyunghwa,kate,02-2238-0451,3F 131호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/13728.jpg,"2,790","3,125",10
+24222,Jeil Pyunghwa,FEEL,02-2231-1006,1F 6호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24222.jpg,191,307,0
+20823,Jeil Pyunghwa,bellamood,010-5653-6432,3F 40호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20823.jpg,"3,792",657,2
+25749,Jeil Pyunghwa,닉스,010-7748-3895,5F 150,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25749.jpg,599,79,0
+8002,Jeil Pyunghwa,바,02-2235-9583,B1 33호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/8002.jpg,347,411,3
+25922,Jeil Pyunghwa,코네코,02-2231-4778,3F 81호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25922.jpg,370,275,6
+12870,Jeil Pyunghwa,saint,010-3631-7918,3F 145호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12870.jpg,"2,382",936,4
+952,Jeil Pyunghwa,May - b,010-5083-2083,1F 58호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/952.jpg,416,156,4
+25413,Jeil Pyunghwa,goodgob,010-4840-7556,5F 38,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25413.jpg,597,134,0
+20840,Jeil Pyunghwa,JILLIUN,010-7931-7490,5F 147,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20840.jpg,"5,639","1,560",1
+16318,Jeil Pyunghwa,MANSION,010-6324-6700,B1 38호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/16318.jpg,"1,342",164,0
+19993,Jeil Pyunghwa,자운영,02-2232-1471,B1 319호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/19993.jpg,358,465,0
+14318,Jeil Pyunghwa,모티브,010-2933-3268,1F 118호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/14318.jpg,"2,559","1,408",5
+23869,Jeil Pyunghwa,지니디오,02-2253-9837,B1 201호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23869.jpg,228,501,114
+6979,Jeil Pyunghwa,eclair,010-3922-2067,3F 107호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/6979.jpg,"5,076","3,195",3
+13120,Jeil Pyunghwa,핫바이,010-9328-2265,3F 190호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/13120.jpg,"2,227",99,1
+27137,Jeil Pyunghwa,verratti,010-5075-8775,5F 90,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/27137.jpg,581,11,0
+7736,Jeil Pyunghwa,스텐바이123,02-000-0000,B1 236호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/7736.jpg,"1,002",271,0
+6481,Jeil Pyunghwa,BBJ,010-9970-4411,3F 118호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/6481.jpg,"7,229","2,951",1
+20881,Jeil Pyunghwa,Lakosmo,02-2237-8958,3F 150호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20881.jpg,"3,234",434,0
+18488,Jeil Pyunghwa,byT,02-2237-5501,Designer Club 1F 55호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/18488.jpg,530,"1,216",1
+27000,Jeil Pyunghwa,gypsy,02-2237-6628,1F 154호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/27000.jpg,76,110,0
+9778,Jeil Pyunghwa,짜루,02-2254-1118,1F 88호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/9778.jpg,195,84,0
+25555,Jeil Pyunghwa,CHOI SHIN CO.LTD,010-5282-1854,THEOT 5F H-13호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25555.jpg,597,"2,945",29
+3150,Jeil Pyunghwa,join,02-2254-3202,1F 90호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/3150.jpg,228,"1,048",0
+27223,Jeil Pyunghwa,Matilda,010-4509-3151,3F 133호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/27223.jpg,11,18,3
+20201,Jeil Pyunghwa,하주,02-2233-0953,B1 333호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20201.jpg,171,758,0
+17298,Jeil Pyunghwa,블루아,010-2303-3180,4F 32,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/17298.jpg,744,"1,215",4
+24903,Jeil Pyunghwa,Pont,010-2247-6590,2F 11호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24903.jpg,278,695,5
+3887,Jeil Pyunghwa,won,02-2254-0320,3F 33호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/3887.jpg,"6,185",98,0
+15228,Jeil Pyunghwa,MazingaD,010-5819-1891,3F 198호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/15228.jpg,"3,368",419,0
+2068,Jeil Pyunghwa,빠레,02-2253-0803,1F 59호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/2068.jpg,392,"1,693",4
+5262,Jeil Pyunghwa,sophia,02-2233-2611,2F 1-1,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/5262.jpg,"1,942",207,135
+26654,Jeil Pyunghwa,lamei2nd,010-7376-3734,4F 118,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/26654.jpg,114,109,1
+7791,Jeil Pyunghwa,헤라,02-2254-2174,1F 89호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/7791.jpg,"1,085","2,253",2
+15935,Jeil Pyunghwa,Theme,02-2231-3131,B1 399호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/15935.jpg,102,11,0
+15523,Jeil Pyunghwa,community,02-2256-7202,2F 95호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/15523.jpg,942,"1,126",17
+26151,Jeil Pyunghwa,C.holic,02-2232-7610,B1 27호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/26151.jpg,84,414,0
+15040,Jeil Pyunghwa,miho,02-2237-6967,2F 137호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/15040.jpg,776,"2,152",50
+22553,Jeil Pyunghwa,yrmine,010-4733-2532,1F 182호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/22553.jpg,"3,990",159,0
+10043,Jeil Pyunghwa,yj,010-4902-3562,1F 80호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/10043.jpg,"1,000","3,629",2
+24638,Jeil Pyunghwa,freezia,010-7696-4120,4F 120,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/24638.jpg,"1,117","1,233",4
+15627,Jeil Pyunghwa,로브,010-5850-3135,4F 151,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/15627.jpg,"2,598",69,9
+13323,Jeil Pyunghwa,글로우,010-3540-4502,3F 51호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/13323.jpg,"8,179","33,184",17
+23938,Jeil Pyunghwa,j-one,010-2933-9109,3F 89호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23938.jpg,"3,264","1,503",0
+25120,Jeil Pyunghwa,마리백,010-6863-1098,B1 308호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25120.jpg,129,98,0
+19002,Jeil Pyunghwa,타오,02-2254-3799,B1 25호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/19002.jpg,222,415,212
+8010,Jeil Pyunghwa,muttjjang,010-6296-8646,JABA11 1F B-11,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/8010.jpg,"1,030","3,149",3
+25765,Jeil Pyunghwa,roughluxe,010-5859-3040,4F 40,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/25765.jpg,745,364,0
+11371,Jeil Pyunghwa,티파니앤,02-2231-4812,2F 65호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/11371.jpg,"3,295",287,5
+14731,Jeil Pyunghwa,HeLENA,02-2232-5363,2F 79호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/14731.jpg,"1,809",791,0
+10053,Jeil Pyunghwa,이오,02-2232-8424,1F 120호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/10053.jpg,391,707,2
+11235,Jeil Pyunghwa,아이니,02-2252-9638,B1 231호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/11235.jpg,397,216,26
+23538,Jeil Pyunghwa,MAREE,02-2252-7778,1F 158호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23538.jpg,324,580,135
+5194,Jeil Pyunghwa,richrich,02-6270-1097,DDP(U:US) 1F 34,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/5194.jpg,"3,602","3,840",5
+22898,Jeil Pyunghwa,햅번,02-2231-2942,1F 22호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/22898.jpg,944,946,2
+17162,Jeil Pyunghwa,VIGEO,02-2231-7097,2F 92호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/17162.jpg,601,597,1
+23009,Jeil Pyunghwa,laclasse,02-2256-6873,2F 147호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/23009.jpg,"4,166","2,257",0
+10345,Jeil Pyunghwa,광슈,010-9041-7302,Shoes Market C B1 18호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/10345.jpg,"3,193","9,561",4
+20958,Jeil Pyunghwa,BLAZE,02-2232-5250,B1 55호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20958.jpg,565,"1,097",0
+5195,Jeil Pyunghwa,richtree,02-2231-2212,ChungPyungHwa B1 가21호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/5195.jpg,"4,492",172,18
+1835,Jeil Pyunghwa,SAKS,02-2237-6972,3F 189호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/1835.jpg,916,596,11
+21878,Jeil Pyunghwa,byyeon,02-2231-9537,3F 85호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21878.jpg,"2,716","4,322",494
+10636,Jeil Pyunghwa,TJ,010-2525-8679,3F 166호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/10636.jpg,"1,518",677,0
+17498,Jeil Pyunghwa,Odrie,02-2253-9092,1F 92호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/17498.jpg,567,"1,638",62
+13294,Jeil Pyunghwa,더기,02-2236-3628,2F 16호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/13294.jpg,465,964,1
+20942,Jeil Pyunghwa,u,02-2236-7988,2F 108호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20942.jpg,199,738,0
+19418,Jeil Pyunghwa,DENOVA,02-2231-3572,2F 93호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/19418.jpg,893,"1,568",12
+12774,Jeil Pyunghwa,Costume,010-8700-5763,1F 137호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12774.jpg,"2,541","4,058",0
+12641,Jeil Pyunghwa,promise,02-2232-8798,4F 70,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/12641.jpg,"4,750","1,797",11
+19431,Jeil Pyunghwa,SHINE,02-3789-7575,3F 12호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/19431.jpg,308,120,0
+10457,Jeil Pyunghwa,밀라니,010-2976-3464,B1 9호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/10457.jpg,"1,638",882,12
+7883,Jeil Pyunghwa,KELLY,02-2232-4764,2F 42호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/7883.jpg,487,425,104
+13711,Jeil Pyunghwa,mamaspapa,010-4036-8844,2F 200호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/13711.jpg,"7,483","3,325",6
+19885,Jeil Pyunghwa,주호,02-2252-7745,1F 117호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/19885.jpg,972,68,0
+21154,Jeil Pyunghwa,dudu,010-5112-4142,3F 3호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/21154.jpg,"1,715",173,0
+8776,Jeil Pyunghwa,이니스,02-2256-5441,4F 24,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/8776.jpg,"4,617","3,768",16
+20330,Jeil Pyunghwa,Sonia,010-4267-4999,4F 144,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/20330.jpg,"2,574",196,0
+17524,Jeil Pyunghwa,메르헨,02-2254-0309,2F 57호,https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/17524.jpg,"1,038",807,15
