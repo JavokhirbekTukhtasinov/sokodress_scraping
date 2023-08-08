@@ -19,11 +19,24 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
-# from flask_cors import CORS, cross_origin
-# from flask import Flask, request, jsonify, Response
-# from flask_restful import reqparse, abort, Api, Resource
 import json
 from fastapi import APIRouter
+from pydantic import BaseModel
+from typing import Union
+from fastapi import HTTPException, status
+import requests
+import shutil
+
+
+class RequestBody(BaseModel):
+    store_id: Union[int, None] = 25232
+    days_ago: Union[int, None] = 3
+    id: Union[str, None] = 'bong2692'
+    password: Union[str, None] = 'sinsang4811!'
+    # url: Union[str, None] = 'https://sinsangmarket.kr/store/25232?sort=DATE&isPublic=true&cgIdx=1&ciIdx=1&cdIdx=0'
+    # category1: Union[int, None] = 1
+    # category2: Union[int, None] = 1
+    
 
 router = APIRouter( tags=['sinsang'], responses={404: {"description": "Not found"}})
 
@@ -47,18 +60,21 @@ create_folder('./Products')
 # @app.route('/call', methods=['GET','POST'])
 # @cross_origin()
 
-@router.get('/{store_id}/{days_ago}')
-def predict_code(store_id: int, days_ago:int):   
+@router.post('/')
+def predict_code(body: RequestBody):   
 	# store_id = (request.args.get('store_id'))
 	# days_ago = int(request.args.get('days_ago'))
     # print(f'{store_id}')
+        store_id = body.store_id
+        days_ago = body.days_ago
+        id = body.id
+        password = body.password
+        # url = body.url
+        return model_predict(store_id, days_ago, id, password,)
 
-	return (model_predict(store_id, days_ago))
+def model_predict(store_id, days_ago, id, password ):
 
-def model_predict(store_id, days_ago):
-    
-    global driver
-    driver = webdriver.Chrome(service=Service(), options=options)
+
     # driver  = webdriver.Chrome(options=options)
     
     s3 = boto3.client(
@@ -78,25 +94,38 @@ def model_predict(store_id, days_ago):
 
     cur = conn.cursor()
     sql_shops = "SELECT * FROM Shops"
-    cur.execute(sql_shops)
-    rows_shops = cur.fetchall()
+    # cur.execute(sql_shops)
+    # rows_shops = cur.fetchall()
+    sql_shops = """SELECT * FROM Shops WHERE shop_id ='%s' """
+    cur.execute(sql_shops, store_id)
+    row_shop = cur.fetchone()
 
+    if row_shop is None:
+        return HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f'Shop with id {store_id} does not exist in our db',
+        )
+    # print(rows_shops)
+    # return
     # print(type(store_id), type(days_ago))
-    for row_shop in rows_shops:
-        if row_shop[14] == int(store_id): # sinsang_store_id
-            shop_id = row_shop[0]
-            print(shop_id)
-            
+    # for row_shop in rows_shops:
+    #     if row_shop[14] == int(store_id): # sinsang_store_id
+    #         shop_id = row_shop[0]
+    #         print(shop_id)
+    print(f'shop id --->>>> {store_id}')
     sql_products = "SELECT * FROM Products"
     cur.execute(sql_products)
     rows_products = cur.fetchall()
+    last_prod_create_at = rows_products[-1][9] # last updated product time
+
+    
     product_id = rows_products[-1][0] + 1
 
     sql_categoryofproduct = "SELECT * FROM CategoryOfProduct"
     cur.execute(sql_categoryofproduct)
     rows_categoryofproduct = cur.fetchall()
     category_of_product_id = rows_categoryofproduct[-1][0] + 1
-
+    
     sql_fabricinfos = "SELECT * FROM FabricInfos"
     cur.execute(sql_fabricinfos)
     rows_fabricinfos = cur.fetchall()
@@ -127,12 +156,15 @@ def model_predict(store_id, days_ago):
     rows_productimages = cur.fetchall()
     image_id = rows_productimages[-1][0] + 1
 
+
+    global driver
+    driver = webdriver.Chrome(service=Service(), options=options)
+
     driver.get("https://sinsangmarket.kr/login")
     time.sleep(1)
     driver.save_screenshot('screenie.png')
     
     # 로그인
-    
     #새로운 계정 
     ID = 'bong2692'
     PASSWORD = 'sinsang4811!'
@@ -147,7 +179,6 @@ def model_predict(store_id, days_ago):
     login_button = driver.find_element(By.XPATH, '//*[@id="app"]/div/div/div[2]/div[2]/div[2]/div[3]/div[2]/div/button')
     login_button.click()
     time.sleep(1)
-
     # 언어 선택(English)
     driver.execute_script('arguments[0].click();', driver.find_element(By.CLASS_NAME, 'select-area__arrow'))
     driver.execute_script('arguments[0].click();', driver.find_element(By.CLASS_NAME, 'flag-icon.flag-icon--en'))
@@ -156,11 +187,12 @@ def model_predict(store_id, days_ago):
     wait = WebDriverWait(driver, 5)
     actions = ActionChains(driver)
 
+    # driver.get(f'https://sinsangmarket.kr/store/{store_id}')
     driver.get(f'https://sinsangmarket.kr/store/{store_id}')
     
     # delay time till 3 seconds
-    time.sleep(3)
-    # time.sleep(1.5)
+    # time.sleep(3)
+    time.sleep(1.5)
 
     now = datetime.datetime.now()
     standard_date_ago = now - datetime.timedelta(days=days_ago)
@@ -512,62 +544,107 @@ def model_predict(store_id, days_ago):
         return is_unit
 
     category_list = [1, 2, 11] # 여성 의류, 남성 의류, 유아 의류
-
+     
     for c in category_list:
-        element = wait.until(EC.presence_of_element_located((By.XPATH, f'//*[@id="{store_id}"]/div/div[3]/div/div[1]/aside/div[3]/div[2]/ul[{c}]/li')))
+        # element = wait.until(driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[3]/div/div[1]/aside/div[3]/div[2]/ul[{c}]/li'))
         # CLASS_NAME : category-list__name
-        category = driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[3]/div/div[1]/aside/div[3]/div[2]/ul[{c}]/li') 
-        goods_category = driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[3]/div/div[1]/aside/div[3]/div[2]/ul[{c}]/li').text
+        # category = driver.find_element(By.XPATH, f'//*[@id="app"]/div[1]/div[1]/div[2]/div[1]/div[2]/div/div[2]/div[{c}]/div[1]/span') 
+        
+        # //*[@id="25232"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[1]/ul/div[4]/button/div
+        category = driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[{c}]/div[1]/button/div/span') 
+
+        driver.execute_script('arguments[0].click();', category)     
+        
+        time.sleep(1)
+        # //*[@id="25232"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[3]/div/button
+        # goods_category = driver.find_element(By.XPATH, f'//*[@id="app"]/div[1]/div[1]/div[2]/div[1]/div[2]/div/div[2]/div[{c}]/div[1]/span').text
         # print(f"1. [goods_category] : {goods_category}")
-        driver.execute_script('arguments[0].click();', category)
         
-        clothes_list = driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[3]/div/div[1]/aside/div[3]/div[2]/ul[{c}]').\
-                            find_element(By.TAG_NAME, 'div').find_elements(By.TAG_NAME, 'li')
+        # //*[@id="app"]/div[1]/div[2]/div/div/aside/div[2]/ul
+        # clothes_list = driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[3]/div/div[1]/aside/div[3]/div[2]/ul[{c}]').\
+        #                     find_element(By.TAG_NAME, 'div').find_elements(By.TAG_NAME, 'li')
         
+
+
+        # select category list
+        category_parent = driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[{c}]/ul')
+        clothes_list = category_parent.find_elements(By.TAG_NAME, 'div')
+        # //*[@id="25232"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[1]/ul/div[2]/button
+        
+        # //*[@id="25232"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[2]/ul/div[1]/button
+        # clothes_list = [1,2,3,4,5,6]
+        # clothes_list = driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[3]/div/div[1]/aside/div[2]/ul[{c}]').\
+        #                     find_element(By.TAG_NAME, 'div').find_elements(By.TAG_NAME, 'li')
+        
+        # print(f'clothes list {clothes_list}')
+        
+
         for clo in range(1, len(clothes_list)):
+            print(f'category id {clo}')
+            if clo == 1: 
+                continue
             if c == 11:
                 if clo >= 11 and clo <= 16 or clo == 18 or clo == 19:
                     continue
             
-            element = wait.until(EC.presence_of_element_located((By.XPATH, f'//*[@id="{store_id}"]/div/div[3]/div/div[1]/aside/div[3]/div[2]/ul[{c}]/div/li[{clo+1}]')))
-            clothes = driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[3]/div/div[1]/aside/div[3]/div[2]/ul[{c}]/div/li[{clo+1}]')
-            goods_clothes = driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[3]/div/div[1]/aside/div[3]/div[2]/ul[{c}]/div/li[{clo+1}]').text
-            # print(f'2. [goods_clothes] : {goods_clothes}')
+            # element = wait.until(EC.presence_of_element_located((By.XPATH, f'//*[@id="{store_id}"]/div/div[3]/div/div[1]/aside/div[3]/div[2]/ul[{c}]/div/li[{clo+1}]')))
+            # clothes = driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[3]/div/div[1]/aside/div[3]/div[2]/ul[{c}]/div/li[{clo+1}]')
+            # goods_clothes = driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[3]/div/div[1]/aside/div[3]/div[2]/ul[{c}]/div/li[{clo+1}]').text
+            
+            
+            # //*[@id="25232"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[1]/ul/div[1]/button/div/span
+            # //*[@id="25232"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[1]/ul/div[2]/button/div/span
+            clothes = driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[{c}]/ul/div[{clo}]/button/div/span')
+            goods_clothes = driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[{c}]/ul/div[{clo}]/button/div/span').text
 
+            print(f'2. [goods_clothes] : {goods_clothes}')
+
+            time.sleep(2)
             driver.execute_script('arguments[0].click();', clothes)
             
             if clo == 1:
                 driver.execute_script('arguments[0].click();', category)      
-            
-            actions.move_to_element(driver.find_element(By.CLASS_NAME, 'color-title.title')).perform()
-            
+
+            # actions.move_to_element(driver.find_element(By.CLASS_NAME, 'color-title.title')).perform()
+            # actions.move_to_element(driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[{c}]/ul/div[{clo}]/button/div/').find_element(By.CLASS_NAME, 'text-pink-60'))            
             # 스타일
             try:
-                driver.execute_script('arguments[0].click();', driver.find_element(By.CSS_SELECTOR, 'button.list-more'))
-                time.sleep(0.2)
+                driver.execute_script('arguments[0].click();', driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[4]/button/div'))
+                time.sleep(1)
             except Exception as e:
+                print(f'error {e}')
                 pass    
                 
             # style_list = driver.find_element(By.CSS_SELECTOR, 'ul.style__filter-list').find_elements(By.CSS_SELECTOR, 'span.block.flex.items-center')
-            style_list = driver.find_element(By.CLASS_NAME, 'style__filter-list').find_elements(By.TAG_NAME, 'button')
+            
+            # style_list = driver.find_element(By.CLASS_NAME, 'style__filter-list').find_elements(By.TAG_NAME, 'button')
+            style_list = driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[{clo}]/ul').find_elements(By.TAG_NAME, 'div')
 
             for sty in range(1, len(style_list)):
-                style_element = driver.find_element(By.CLASS_NAME, 'style__filter-list').find_elements(By.TAG_NAME, 'button')[sty]
+                
+                if sty == 1: 
+                    continue
+
+                style_element = driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[4]/ul/li[{sty}]')
+                # style_element = driver.find_element(By.CLASS_NAME, 'style__filter-list').find_elements(By.TAG_NAME, 'button')[sty]
                 style = style_element.text
+                print(f'style name ->>> {style}')
                 #style
-                style = style_dict[style]
+                style = style_dict[style] 
                 # style_id
                 style_id = style_id_dict[style]
-                
+                print(f'style id ->>> {style_id}')
                 driver.execute_script('arguments[0].click();', style_element)                                  
-                # print(f">>> {style}")
                 
                 for _ in range(2):
                     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                     time.sleep(0.1)
                 
                 goods_list = driver.find_elements(By.XPATH, '//div[@data-group="goods-list"]')
+                # print(f'goods list ->>> {goods_list}')
                 driver.execute_script("window.scrollTo(0, 1000)")                     
+                
+                print(f"product length {len(goods_list)}")
                 
                 if len(goods_list) == 0:
                     continue
@@ -580,10 +657,11 @@ def model_predict(store_id, days_ago):
                     try:
                         element = wait.until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), 'Updated at')]/following-sibling::div")))
                         create_at = driver.find_element(By.XPATH, "//div[contains(text(), 'Updated at')]/following-sibling::div").text
+                        print(f'create at ->>> {create_at}')
                     except Exception as e:
                         create_at = ''
                         print("[LOG] 등록일 X!")
-                    
+                    print(f'standard date ago --->>>>{standard_date_ago}')
                     # 날짜가 days_ago보다 더 크면 break
                     if 'Boosted' in create_at:
                         if 'hours' in create_at or 'minutes' in create_at:
@@ -611,17 +689,19 @@ def model_predict(store_id, days_ago):
                     # 위의 날짜 계산이 끝나면 입력할 create_at로 변환
                     if create_at != '':
                             create_at = create_at.split(' ')[0].replace('.', '-')
-                    
+
                     # prod_link
                     try:
                         prod_id = driver.find_elements(By.XPATH, '//div[@data-group="goods-list"]')[goo].get_attribute('data-gid')
                         prod_link = f'https://sinsangmarket.kr/goods/{prod_id}'
+                        print(f'prod link ->>> {prod_link}')
                     except Exception as e:
                         prod_link = ''
                     
                     # prod_name
                     try:
                         prod_name = driver.find_element(By.XPATH, '//div[@class="goods-detail-right__row"]').find_element(By.CSS_SELECTOR, 'p.title').text
+                        print(f'prod name ->>> {prod_name}')
                     except Exception as e:
                         prod_name = ''
                     
@@ -631,12 +711,14 @@ def model_predict(store_id, days_ago):
                         goods_price = driver.find_element(By.CLASS_NAME, 'price.flex.items-center').find_element(By.CLASS_NAME, 'ml-\[2px\]').text
                         goods_price = re.sub(r'[^0-9]', '', goods_price)
                         real_price = price = team_price = goods_price
+                        print(f'goods price : {goods_price} real price : {real_price}')
                     except Exception as e:
                         goods_price = ''
                     
                     # star
                     try:
                         star = driver.find_element(By.XPATH, '//*[@id="goods-detail"]').find_element(By.CSS_SELECTOR, 'p.zzim-button__count').text
+                        print(f'start ->>> {star}')
                     except Exception as e:
                         star = '0'
                     
@@ -644,6 +726,7 @@ def model_predict(store_id, days_ago):
                     try:
                         add_to_cart_button = driver.find_element(By.CLASS_NAME, 'flex-grow').find_element(By.CLASS_NAME, 'ssm-button').\
                                                     find_element(By.TAG_NAME, 'button').get_attribute('class')
+                        print(f'add to cart button ->>> {add_to_cart_button}')
                         if 'disabled' in add_to_cart_button:
                             is_sold_out = '1'
                         else:
@@ -652,18 +735,24 @@ def model_predict(store_id, days_ago):
                         is_sonld_out = '0'
                     
                     # ProductImages
+                    images_list = driver.find_elements(By.XPATH, '//img[@alt="thumbnail-image"]')
+                    # images_list = driver.find_element(By.XPATH, f'//*[@id="goods-detail"]/div/div[2]/div[1]/div[1]/div/div[1]/div[3]/div')
+                    # //*[@id="goods-detail"]/div/div[2]/div[1]/div[1]/div/div[1]/div[3]/div/div
                     try:
-                        for i in range(len(driver.find_elements(By.XPATH, '//img[@alt="thumbnail-image"]'))):
+                        for i in range(len(images_list)):
+                            print(f'image loop ->> {i}')
                             goods_src = driver.find_elements(By.XPATH, '//img[@alt="thumbnail-image"]')[i].get_attribute('src')
+                            print(f'goods src {goods_src}')
                             urlretrieve(goods_src, f'./Products/{product_id}_{i}.jpg')
-                                
-                            s3.upload_file(
-                                f'./Products/{product_id}_{i}.jpg',
-                                'sokodress',
-                                f'Products/{product_id}_{i}.jpg',
-                                ExtraArgs={'ACL':'public-read'}
-                            )
-                        
+                            
+                            # TODO : uncomment later
+                            # s3.upload_file(
+                            #     f'./Products/{product_id}_{i}.jpg',
+                            #     'sokodress',
+                            #     f'Products/{product_id}_{i}.jpg',
+                            #     ExtraArgs={'ACL':'public-read'}
+                            # )
+
                             image_url = f'https://sokodress.s3.ap-northeast-2.amazonaws.com/Products/{product_id}_{i}.jpg'
                             # https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/img_test1.png
                             table_ProductImages = (
@@ -672,15 +761,17 @@ def model_predict(store_id, days_ago):
                                 f'{str(product_id)}_{str(i)}', # image_name(not null), 
                                 image_url
                             )
-                            
+                            print(f'table images ->>> {table_ProductImages}')
                             total_table_ProductImages.append(table_ProductImages)
                             image_id += 1
                     except Exception as e:
-                        print("[LOG] S3 Upload Error")
+                        print("[LOG] S3 Upload Error {e}")
 
                     # category1
                     try:
                         category1 = driver.find_elements(By.XPATH, "//div[contains(text(), 'Categories')]/following-sibling::div/div")[0].text
+                        
+                        print(f'category 1 ->>> {category1}')
                         
                     except Exception as e:
                         category1 = ''
@@ -688,6 +779,7 @@ def model_predict(store_id, days_ago):
                     # category2
                     try:
                         category2 = driver.find_elements(By.XPATH, "//div[contains(text(), 'Categories')]/following-sibling::div/div")[1].text
+                        print(f'category 2 ->>> {category2}')
                         
                     except Exception as e:
                         category2 = ''
@@ -695,6 +787,8 @@ def model_predict(store_id, days_ago):
                     # color
                     try:
                         color = driver.find_element(By.XPATH, "//div[contains(text(), 'Colors')]/following-sibling::div").text
+                        print(f'color ->>> {color}')
+
                     except Exception as e:
                         color = ''
 
@@ -707,6 +801,8 @@ def model_predict(store_id, days_ago):
                     # maxrate
                     try:
                         maxrate = driver.find_element(By.XPATH, "//div[contains(text(), 'Proposition')]/following-sibling::div").text
+                        print(f'maxrate ->>> {maxrate}')
+
                     except Exception as e:
                         maxrate = ''
                     
@@ -714,12 +810,14 @@ def model_predict(store_id, days_ago):
                     try:
                         nation = driver.find_element(By.XPATH, "//div[contains(text(), 'Origin')]/following-sibling::div").text
                         nation = nation_dict[nation]
+                        print(f'nation ->>> {nation}')
                     except Exception as e:
                         nation = ''
                     
                     # is_unit
                     try:
                         contents_text = driver.find_element(By.CLASS_NAME, 'mb-\[80px\]').find_element(By.CLASS_NAME, 'row__content').text
+                        print(f'contents text ->>> {contents_text}')
                         if contents_text == 'No details.':
                             is_unit = 'T'
                         else:
@@ -730,6 +828,7 @@ def model_predict(store_id, days_ago):
                     # goods_laundry
                     try:
                         laundry_elements = driver.find_elements(By.CSS_SELECTOR, 'div.laundry-item__name')
+                        print(f'laundry elements ->>> {laundry_elements}')
                         for i in laundry_elements:
                             goods_laundry = i.text
                             goods_laundry = wash_dict[goods_laundry]
@@ -769,24 +868,25 @@ def model_predict(store_id, days_ago):
                     # goods_fabric_lining
                     try:
                         goods_fabric_lining = [x for x in driver.find_elements(By.XPATH, "//div[contains(text(), 'Lining')]/following-sibling::div/div/div") if x.get_attribute('class')=='min-w-[42px] text-gray-100'][0].text
+                        print(f'goods fabric_linking ->>> {goods_fabric_lining}')
                         goods_fabric_lining = fabric_dict[goods_fabric_lining]
                     except Exception as e:
                         goods_fabric_lining = ''
                     
                     # category_id
                     category_id = calculate_category_id(prod_name, category1, category2)
-                    
+                    print(f'category id  --->>>> {category_id}')
                     category1 = category1_dict[category1]
-                    
+                    print(f'category 1 -->>> {category1}')
                     for key, value in category2_dict.items():
                         if c == 10 and category2 == 'Suit':
                             category2 = '정장세트'
                         elif key == category2:
                             category2 = value
-
+                    print(f'category 2 ->>> {category2}')
                     table_Products = (
                         str(product_id), # autoincrement
-                        str(shop_id), # 일단 임의로
+                        str(store_id), # 일단 임의로
                         prod_name,
                         real_price,
                         price,
@@ -803,6 +903,8 @@ def model_predict(store_id, days_ago):
                         category2,
                         star
                     )
+                    
+                    print(f'category products ->>> {table_Products}')
                     
                     table_CategoryOfProduct = (
                         str(category_of_product_id), # autoincrement
@@ -851,10 +953,17 @@ def model_predict(store_id, days_ago):
                     element = wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'close-button')))
                     # driver.find_element(By.CLASS_NAME, 'close-button').click()
                     driver.execute_script('arguments[0].click();', driver.find_element(By.CLASS_NAME, 'close-button'))
-                    # time.sleep(0.5)
+                    time.sleep(0.5)
+                    break
                     
             # print("========")    
 
+
+    # print(f'product: {table_Products}')     
+    # print(f'images: {table_ProductImages}')     
+    # print(f'category: {table_CategoryOfProduct}')     
+    # print(f'option: {table_ProductOptions}')     
+    # return
     sql_products = """INSERT IGNORE INTO Products (product_id, shop_id, prod_name, real_price, price, team_price, nation, is_unit,
                                                 contents, create_at, maxrate, is_sold_out, style, category1, prod_link, category2, star)
                                         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
@@ -913,3 +1022,21 @@ def model_predict(store_id, days_ago):
 # 	app.run(host='0.0.0.0', debug=True, port=5002)
  
  
+ 
+@router.get('/')
+def test():
+    try:
+        url = 'https://image-v4.sinsang.market/?f=https://image-cache.sinsang.market/images/25232/92546129/168156113000394851_480988071.png&w=375&h=500'
+        # url= 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fseoul&psig=AOvVaw0qT0GcWj8b-aoihRhGo9Au&ust=1691570795925000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCLiT0rTWzIADFQAAAAAdAAAAABAE'
+        # urlretrieve(url, './Products/test.png')
+        image_response = requests.get(url, stream=True)
+        with open('./Products/test.jpg', 'wb') as out_file:
+            shutil.copyfileobj(image_response.raw, out_file)
+        del image_response
+        return HTTPException(
+            status_code=status.HTTP_200_OK
+        )
+    except Exception as err: 
+        return HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail=f'{err}')
