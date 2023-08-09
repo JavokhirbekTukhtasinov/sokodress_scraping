@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-router = APIRouter()
 import math
 import os
 import time
@@ -27,11 +26,14 @@ from fastapi import HTTPException, status
 from urllib.request import urlretrieve
 import shutil
 from datetime import datetime
+from lib import downloadImage
+
+router = APIRouter(tags=['sinsang'])
 # class ShopRequestBody(BaseModel):
 #     shop_id: 
 
 @router.post('/{shop_id}/{id}/{password}')
-def shop(shop_id: int, id: str, password: str):
+def shop(shop_id: int, id: str , password: str):
     """
     Scraping shop 
     """
@@ -108,7 +110,6 @@ def scrap_shop(shop_id:int, id, password):
              driver.execute_script("window.scrollTo(0, document.body.scrollHeight-50);")  
              time.sleep(SCROLL_PAUSE_SEC)    
 
-            # 스크롤 다운 후 스크롤 높이 다시 가져옴
              new_height = driver.execute_script("return document.body.scrollHeight")
 
              if new_height == last_height:
@@ -122,10 +123,21 @@ def scrap_shop(shop_id:int, id, password):
     time.sleep(0.2)
     shop_src = driver.find_element(By.XPATH, f'//img[@alt="store-image"]').get_attribute('src')
     # urlretrieve(shop_src, f'../Shops/{shop_id}.jpg')
-    print(shop_src)
-    download_image(shop_src, './Shops/{shop_id}.jpg')
-    
-    
+    global image_url
+    try: 
+       downloadImage(shop_src, f'./Shops/shop_{shop_id}.png')                         
+        # TODO : uncomment later
+       s3.upload_file(
+                f'./Shops/shop_{shop_id}.png',
+                'sokodress',
+                f"ShopProfiles/shop_{shop_id}.png",
+                ExtraArgs={"ACL": "public-read"},
+                )
+       image_url = f'https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/shop_{shop_id}.png'
+    except Exception as err: 
+        print(f'{err}')
+
+    print(f'image url {image_url}')
     shop_name = driver.find_element(By.XPATH, f'//*[@id="{shop_id}"]/div/div[1]/div/div/div[2]/div[1]/div[1]/span').text
 
     shop_address = driver.find_element(By.XPATH, f'//*[@id="{shop_id}"]/div/div[1]/div/div/div[2]/div[1]/div[2]/div[2]/div[2]').text
@@ -140,7 +152,7 @@ def scrap_shop(shop_id:int, id, password):
     shop_table = (
         shop_id,
         shop_name,
-        shop_src,
+        image_url,
         shop_phone,
         shop_address,
         'Approved',
@@ -155,10 +167,13 @@ def scrap_shop(shop_id:int, id, password):
     try: 
         cur.execute(sql_insert_shop, shop_table)
         conn.commit()
+        cur.close()
+        conn.close()
         return HTTPException(
         status_code=status.HTTP_201_CREATED,
         detail=f'Shop with id {shop_id} is successfully saved'
         )
+        
     except Exception as err: 
         print(f'Error {err}')
         return HTTPException(
@@ -166,9 +181,6 @@ def scrap_shop(shop_id:int, id, password):
             detail=f'{err}'
         )
 
-    conn.commit()
-    cur.close()
-    conn.close()
     
     time.sleep(500)
     def scroll_down_lock(whileSeconds):

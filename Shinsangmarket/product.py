@@ -22,17 +22,23 @@ from selenium.common.exceptions import NoSuchElementException, StaleElementRefer
 import json
 from fastapi import APIRouter
 from pydantic import BaseModel
-from typing import Union
+from typing import Union, List, Set
 from fastapi import HTTPException, status
-import requests
-import shutil
+from lib import downloadImage
+import random
 
 
+class Accounts(BaseModel):
+    id: Union[str, None] = 'bong2692'
+    password: Union[str, None] = 'sinsang4811!'
+    
 class RequestBody(BaseModel):
     store_id: Union[int, None] = 25232
     days_ago: Union[int, None] = 3
-    id: Union[str, None] = 'bong2692'
-    password: Union[str, None] = 'sinsang4811!'
+    # id: Union[str, None] = 'bong2692'
+    # password: Union[str, None] = 'sinsang4811!'
+    accounts: Union[List[Accounts], None] = None
+    
     # url: Union[str, None] = 'https://sinsangmarket.kr/store/25232?sort=DATE&isPublic=true&cgIdx=1&ciIdx=1&cdIdx=0'
     # category1: Union[int, None] = 1
     # category2: Union[int, None] = 1
@@ -65,18 +71,44 @@ def predict_code(body: RequestBody):
 	# store_id = (request.args.get('store_id'))
 	# days_ago = int(request.args.get('days_ago'))
     # print(f'{store_id}')
+    if datetime.datetime.today().weekday() < 5:
         store_id = body.store_id
         days_ago = body.days_ago
-        id = body.id
-        password = body.password
-        # url = body.url
-        return model_predict(store_id, days_ago, id, password,)
+        accounts = body.accounts
+        for account in accounts:
+            # if account.id == '' or account.password == '': 
 
-def model_predict(store_id, days_ago, id, password ):
+            print(f'{account.password}')
+            model_predict(store_id, days_ago, account.id , account.password)
+
+            items = [1,2,3,4,5]
+            # for i in range(len(items)):
+            #     print(f'account {account.id}, item {i}')
+            #      # Generate a random duration between 8 and 12 minutes
+            #     loop_duration = random.randint(8, 12)
+            #     print(f"Looping for {loop_duration} seconds...")
+            #     # time.sleep(loop_duration * 60)  # Convert minutes to seconds
+            #     time.sleep(loop_duration * 1)
+            #     if loop_duration >= 4:
+            #         break
+            #     # if random.random() < 0.5:  # Adjust the probability as needed
+            #     pause_duration = random.randint(3, 5)
+            #     print(f"Pausing for {pause_duration} seconds...")
+            #     time.sleep(pause_duration * 1)
+                    
+                    # time.sleep(pause_duration * 60)
+                
+            # model_predict(store_id, days_ago, account.id , account.password)
+            # time.sleep(60 * 60)
+            time.sleep(4)
+    else :
+        return HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='You can do scraping only on weekdays') 
+
+
+def model_predict(store_id, days_ago,id, password):
 
 
     # driver  = webdriver.Chrome(options=options)
-    
     s3 = boto3.client(
         's3',
         aws_access_key_id = 'AKIAXHNKF4YFB6E7I7OI',
@@ -166,14 +198,14 @@ def model_predict(store_id, days_ago, id, password ):
     
     # 로그인
     #새로운 계정 
-    ID = 'bong2692'
-    PASSWORD = 'sinsang4811!'
+    # ID = 'bong2692'
+    # PASSWORD = 'sinsang4811!'
     # ID = 'rayout2022'
     # PASSWORD = 'elesther2022!'
     # driver.find_element(By.XPATH,'//*[@id="app"]/div[1]/div/header/div/div[2]/div[3]').click()
     driver.execute_script('arguments[0].click();', driver.find_element(By.XPATH,'//*[@id="app"]/div[1]/div/header/div/div[2]/div[3]'))
-    driver.find_elements(By.CLASS_NAME,'text-input')[0].send_keys(ID)
-    driver.find_elements(By.CLASS_NAME,'text-input')[1].send_keys(PASSWORD)
+    driver.find_elements(By.CLASS_NAME,'text-input')[0].send_keys(id)
+    driver.find_elements(By.CLASS_NAME,'text-input')[1].send_keys(password)
     # driver.find_element(By.CLASS_NAME, 'px-\[6px\].leading-none.mb-\[12px\].font-bold.contained').click()
     # driver.execute_script('arguments[0].click();', driver.find_element(By.CLASS_NAME, 'px-\[6px\].leading-none.mb-\[12px\].font-bold.contained'))
     login_button = driver.find_element(By.XPATH, '//*[@id="app"]/div/div/div[2]/div[2]/div[2]/div[3]/div[2]/div/button')
@@ -544,8 +576,25 @@ def model_predict(store_id, days_ago, id, password ):
         return is_unit
 
     category_list = [1, 2, 11] # 여성 의류, 남성 의류, 유아 의류
-     
+    start_time = time.time()
+    max_runtime = 3
+    scraped_item = 0
+    print(f'item outside : {scraped_item}')
+    
+    def check_duplicate_product(name:str) -> bool:
+        print(f"new product name {name}")
+        is_duplicate = False
+        for prod in rows_products:
+            if prod[2] == name:
+                print(f'exist product name {name}')
+                is_duplicate = True
+                break
+            else :
+                is_duplicate = False
+        return is_duplicate
+    
     for c in category_list:
+        print(f'item count -->> {scraped_item}')
         # element = wait.until(driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[3]/div/div[1]/aside/div[3]/div[2]/ul[{c}]/li'))
         # CLASS_NAME : category-list__name
         # category = driver.find_element(By.XPATH, f'//*[@id="app"]/div[1]/div[1]/div[2]/div[1]/div[2]/div/div[2]/div[{c}]/div[1]/span') 
@@ -578,7 +627,6 @@ def model_predict(store_id, days_ago, id, password ):
         
         # print(f'clothes list {clothes_list}')
         
-
         for clo in range(1, len(clothes_list)):
             print(f'category id {clo}')
             if clo == 1: 
@@ -596,9 +644,9 @@ def model_predict(store_id, days_ago, id, password ):
             # //*[@id="25232"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[1]/ul/div[2]/button/div/span
             clothes = driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[{c}]/ul/div[{clo}]/button/div/span')
             goods_clothes = driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[{c}]/ul/div[{clo}]/button/div/span').text
-
+            
             print(f'2. [goods_clothes] : {goods_clothes}')
-
+            
             time.sleep(2)
             driver.execute_script('arguments[0].click();', clothes)
             
@@ -607,6 +655,7 @@ def model_predict(store_id, days_ago, id, password ):
 
             # actions.move_to_element(driver.find_element(By.CLASS_NAME, 'color-title.title')).perform()
             # actions.move_to_element(driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[{c}]/ul/div[{clo}]/button/div/').find_element(By.CLASS_NAME, 'text-pink-60'))            
+
             # 스타일
             try:
                 driver.execute_script('arguments[0].click();', driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[4]/button/div'))
@@ -649,10 +698,23 @@ def model_predict(store_id, days_ago, id, password ):
                 if len(goods_list) == 0:
                     continue
                 
-                for goo in range(len(goods_list)):
+                
+                
+                for goo in range(1 , len(goods_list)):
                     driver.execute_script("window.scrollTo(0, 1000)")                     
                     driver.execute_script('arguments[0].click();', driver.find_elements(By.XPATH, '//div[@data-group="goods-list"]')[goo])
+                    try:
+                        prod_name = driver.find_element(By.XPATH, '//div[@class="goods-detail-right__row"]').find_element(By.CSS_SELECTOR, 'p.title').text
+                        print(f'prod name ->>> {prod_name}')
+                    except Exception as e:
+                        prod_name = ''
+                    print(f'product number {goo}')
                     
+                    if check_duplicate_product(prod_name) is True:
+                        driver.execute_script('arguments[0].click();', driver.find_element(By.CLASS_NAME, 'close-button'))
+                        break
+                    else: 
+                        pass
                     # create_at
                     try:
                         element = wait.until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), 'Updated at')]/following-sibling::div")))
@@ -662,6 +724,7 @@ def model_predict(store_id, days_ago, id, password ):
                         create_at = ''
                         print("[LOG] 등록일 X!")
                     print(f'standard date ago --->>>>{standard_date_ago}')
+                    
                     # 날짜가 days_ago보다 더 크면 break
                     if 'Boosted' in create_at:
                         if 'hours' in create_at or 'minutes' in create_at:
@@ -699,11 +762,7 @@ def model_predict(store_id, days_ago, id, password ):
                         prod_link = ''
                     
                     # prod_name
-                    try:
-                        prod_name = driver.find_element(By.XPATH, '//div[@class="goods-detail-right__row"]').find_element(By.CSS_SELECTOR, 'p.title').text
-                        print(f'prod name ->>> {prod_name}')
-                    except Exception as e:
-                        prod_name = ''
+                 
                     
                     # real_price, price, team_price
                     try:
@@ -740,11 +799,13 @@ def model_predict(store_id, days_ago, id, password ):
                     # //*[@id="goods-detail"]/div/div[2]/div[1]/div[1]/div/div[1]/div[3]/div/div
                     try:
                         for i in range(len(images_list)):
+                            time.sleep(2)
                             print(f'image loop ->> {i}')
                             goods_src = driver.find_elements(By.XPATH, '//img[@alt="thumbnail-image"]')[i].get_attribute('src')
                             print(f'goods src {goods_src}')
-                            urlretrieve(goods_src, f'./Products/{product_id}_{i}.jpg')
-                            
+                            image_path = f'./Products/{product_id}_{i}.jpg'
+                            downloadImage(goods_src, image_path )
+                        
                             # TODO : uncomment later
                             # s3.upload_file(
                             #     f'./Products/{product_id}_{i}.jpg',
@@ -763,6 +824,7 @@ def model_predict(store_id, days_ago, id, password ):
                             )
                             print(f'table images ->>> {table_ProductImages}')
                             total_table_ProductImages.append(table_ProductImages)
+                            os.remove(image_path)
                             image_id += 1
                     except Exception as e:
                         print("[LOG] S3 Upload Error {e}")
@@ -903,15 +965,15 @@ def model_predict(store_id, days_ago, id, password ):
                         category2,
                         star
                     )
-                    
+
                     print(f'category products ->>> {table_Products}')
                     
                     table_CategoryOfProduct = (
-                        str(category_of_product_id), # autoincrement
+                        # str(category_of_product_id), # autoincrement
                         category_id,
                         str(product_id)
                     )
-                    
+
                     table_FabricInfos = (
                         str(fabric_id), # autoincrement
                         str(product_id),
@@ -953,7 +1015,48 @@ def model_predict(store_id, days_ago, id, password ):
                     element = wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'close-button')))
                     # driver.find_element(By.CLASS_NAME, 'close-button').click()
                     driver.execute_script('arguments[0].click();', driver.find_element(By.CLASS_NAME, 'close-button'))
-                    time.sleep(0.5)
+
+                    # sql_products = """INSERT IGNORE INTO Products (product_id, shop_id, prod_name, real_price, price, team_price, nation, is_unit,
+                    #                             contents, create_at, maxrate, is_sold_out, style, category1, prod_link, category2, star)
+                    #                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+                    # cur.executemany(sql_products, total_table_Products)
+                    # conn.commit()
+
+                    # sql_categoryofproducts = """INSERT INTO CategoryOfProduct (category_id, product_id)
+                    #                                                 VALUES (%s, %s)"""
+                    # cur.executemany(sql_categoryofproducts, total_table_CategoryOfProduct)
+                    # conn.commit()
+                
+                    # sql_fabricinfos = """INSERT INTO FabricInfos (fabric_id, product_id, 핏정보, 두께감, 신축성, 비침, 안감, 광택, 촉감, 밴딩)
+                    #                                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+                    # cur.executemany(sql_fabricinfos, total_table_FabricInfos)
+                    # conn.commit()
+                
+                    # sql_productoptions = """INSERT INTO ProductOptions (product_option_id, product_id, size, color)
+                    #                                             VALUES (%s, %s, %s, %s)"""
+                    # cur.executemany(sql_productoptions, total_table_ProductOptions)
+                    # conn.commit()
+                
+                    # sql_washinfos = """INSERT INTO WashInfos (wash_info_id, product_id, category)
+                    #                                 VALUES (%s, %s, %s)"""
+                    # cur.executemany(sql_washinfos, total_table_WashInfos)
+                    # conn.commit()
+                
+                    # sql_productstyles = """INSERT INTO ProductStyles (product_style_id, product_id, style_id)
+                    #                                         VALUES (%s, %s, %s)"""
+                    # cur.executemany(sql_productstyles, total_table_ProductStyles)
+                    # conn.commit()
+                
+                    # sql_productimages = """INSERT INTO ProductImages (image_id, product_id, image_name, image_url)
+                    #                                         VALUES (%s, %s, %s, %s)"""
+                    # cur.executemany(sql_productimages, total_table_ProductImages)
+                    # conn.commit()
+                    
+                    scraped_item +=1
+                    print(f'product count {scraped_item}')
+                    if scraped_item >= 2:
+                        driver.quit()
+                    time.sleep(2)
                     break
                     
             # print("========")    
@@ -964,45 +1067,45 @@ def model_predict(store_id, days_ago, id, password ):
     # print(f'category: {table_CategoryOfProduct}')     
     # print(f'option: {table_ProductOptions}')     
     # return
-    sql_products = """INSERT IGNORE INTO Products (product_id, shop_id, prod_name, real_price, price, team_price, nation, is_unit,
-                                                contents, create_at, maxrate, is_sold_out, style, category1, prod_link, category2, star)
-                                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-    cur.executemany(sql_products, total_table_Products)
-    conn.commit()
+    # sql_products = """INSERT IGNORE INTO Products (product_id, shop_id, prod_name, real_price, price, team_price, nation, is_unit,
+    #                                             contents, create_at, maxrate, is_sold_out, style, category1, prod_link, category2, star)
+    #                                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+    # cur.executemany(sql_products, total_table_Products)
+    # conn.commit()
 
-    sql_categoryofproducts = """INSERT INTO CategoryOfProduct (category_of_product_id, category_id, product_id)
-                                                    VALUES (%s, %s, %s)"""
-    cur.executemany(sql_categoryofproducts, total_table_CategoryOfProduct)
-    conn.commit()
+    # sql_categoryofproducts = """INSERT INTO CategoryOfProduct (category_of_product_id, category_id, product_id)
+    #                                                 VALUES (%s, %s, %s)"""
+    # cur.executemany(sql_categoryofproducts, total_table_CategoryOfProduct)
+    # conn.commit()
 
-    sql_fabricinfos = """INSERT INTO FabricInfos (fabric_id, product_id, 핏정보, 두께감, 신축성, 비침, 안감, 광택, 촉감, 밴딩)
-                                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-    cur.executemany(sql_fabricinfos, total_table_FabricInfos)
-    conn.commit()
+    # sql_fabricinfos = """INSERT INTO FabricInfos (fabric_id, product_id, 핏정보, 두께감, 신축성, 비침, 안감, 광택, 촉감, 밴딩)
+    #                                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+    # cur.executemany(sql_fabricinfos, total_table_FabricInfos)
+    # conn.commit()
 
-    sql_productoptions = """INSERT INTO ProductOptions (product_option_id, product_id, size, color)
-                                                VALUES (%s, %s, %s, %s)"""
-    cur.executemany(sql_productoptions, total_table_ProductOptions)
-    conn.commit()
+    # sql_productoptions = """INSERT INTO ProductOptions (product_option_id, product_id, size, color)
+    #                                             VALUES (%s, %s, %s, %s)"""
+    # cur.executemany(sql_productoptions, total_table_ProductOptions)
+    # conn.commit()
 
-    sql_washinfos = """INSERT INTO WashInfos (wash_info_id, product_id, category)
-                                    VALUES (%s, %s, %s)"""
-    cur.executemany(sql_washinfos, total_table_WashInfos)
-    conn.commit()
+    # sql_washinfos = """INSERT INTO WashInfos (wash_info_id, product_id, category)
+    #                                 VALUES (%s, %s, %s)"""
+    # cur.executemany(sql_washinfos, total_table_WashInfos)
+    # conn.commit()
 
-    sql_productstyles = """INSERT INTO ProductStyles (product_style_id, product_id, style_id)
-                                            VALUES (%s, %s, %s)"""
-    cur.executemany(sql_productstyles, total_table_ProductStyles)
-    conn.commit()
+    # sql_productstyles = """INSERT INTO ProductStyles (product_style_id, product_id, style_id)
+    #                                         VALUES (%s, %s, %s)"""
+    # cur.executemany(sql_productstyles, total_table_ProductStyles)
+    # conn.commit()
 
-    sql_productimages = """INSERT INTO ProductImages (image_id, product_id, image_name, image_url)
-                                            VALUES (%s, %s, %s, %s)"""
-    cur.executemany(sql_productimages, total_table_ProductImages)
-    conn.commit()
+    # sql_productimages = """INSERT INTO ProductImages (image_id, product_id, image_name, image_url)
+    #                                         VALUES (%s, %s, %s, %s)"""
+    # cur.executemany(sql_productimages, total_table_ProductImages)
+    # conn.commit()
 
-    driver.quit()
+    # driver.quit()
 
-    log_message = {'Message':'Success insert db(goods)'}
+    log_message = {'Message':'Success inserted to db(goods)'}
     return log_message
     # resp = Response(json.dumps(log_message, ensure_ascii=False).encode('utf8'), status=200, mimetype='application/json')
 
@@ -1025,18 +1128,40 @@ def model_predict(store_id, days_ago, id, password ):
  
 @router.get('/')
 def test():
-    try:
-        url = 'https://image-v4.sinsang.market/?f=https://image-cache.sinsang.market/images/25232/92546129/168156113000394851_480988071.png&w=375&h=500'
-        # url= 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fseoul&psig=AOvVaw0qT0GcWj8b-aoihRhGo9Au&ust=1691570795925000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCLiT0rTWzIADFQAAAAAdAAAAABAE'
-        # urlretrieve(url, './Products/test.png')
-        image_response = requests.get(url, stream=True)
-        with open('./Products/test.jpg', 'wb') as out_file:
-            shutil.copyfileobj(image_response.raw, out_file)
-        del image_response
-        return HTTPException(
-            status_code=status.HTTP_200_OK
-        )
-    except Exception as err: 
-        return HTTPException(
-        status_code=status.HTTP_400_BAD_REQUEST,
-        detail=f'{err}')
+    downloadImage(f'https://image-v4.sinsang.market/?f=https://image-cache.sinsang.market/images/25232/92046071/167922118000577415_547936075.png&w=375&h=500', './Products/test3.png')
+    # try:
+
+    #     url = 'https://image-v4.sinsang.market/?f=https://image-cache.sinsang.market/images/25232/92085305/167655035100655297_1462791657.jpg&w=1500&h=2000'
+    #     # url = 'https://www.searchenginejournal.com/wp-content/uploads/2022/06/image-search-1600-x-840-px-62c6dc4ff1eee-sej-1280x720.png'
+
+    #     headers = {
+    #             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'  # A common user agent
+    #             }
+
+    #     response = requests.get(url=url, headers=headers)
+    #     if response.status_code == 200:
+    #         with open('./Products/test2.png', 'wb') as f:
+    #             f.write(response.content)
+    #         print("Image downloaded successfully.")
+    #     else:
+    #         print("Failed to download image. Status code:", response.status_code)
+
+    #     # urlretrieve(url, './Products/test.png')
+
+    #     # image_response = requests.get(url, stream=True)
+    #     # with open('./Products/test.jpg', 'wb') as out_file:
+    #     #     shutil.copyfileobj(image_response.raw, out_file)
+    #     # del image_response
+    #     # print(image_response.status_code)
+    #     # if image_response.status_code == 200: 
+    #     #     with  open('./Products/test2.jpg', 'wb') as out_file:
+    #     #         out_file.write(image_response.content)
+    #     #     return HTTPException( 
+    #     #      status_code=status.HTTP_200_OK
+    #     #     )
+
+    # except Exception as err: 
+    #     print(f'Error {err}')
+    #     return HTTPException(
+    #     status_code=status.HTTP_400_BAD_REQUEST,
+    #     detail=f'{err}')
