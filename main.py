@@ -5,6 +5,7 @@ from Shinsangmarket.product import router as ShinsangRouter
 from Shinsangmarket.shop import router as ShinsangShopRouter 
 import time
 import math
+from lib import style_dict
 app = FastAPI(title='Sokodress scraping')
 
 @app.get('/')
@@ -31,15 +32,17 @@ for i in range(100000000):
                 print("Maximum runtime exceeded. Exiting loop.")
             break
         
-create_at = '2023.04.24 registered'
-last_registered = datetime.datetime.strptime(create_at.split(' ')[0],'%Y.%m.%d')
-# print(f"{}")2023.04.24 registered
-current_time = datetime.datetime.now()
+# create_at = '2023.04.24 registered'
+# last_registered = datetime.datetime.strptime(create_at.split(' ')[0],'%Y.%m.%d')
+# # print(f"{}")2023.04.24 registered
+# current_time = datetime.datetime.now()
 
-if last_registered > current_time: 
-    print('larger')
-else: 
-    print('smaller')
+# if last_registered > current_time: 
+#     print('larger')
+# else: 
+#     print('smaller')
+
+
 # print(f"{datetime.datetime.now()}")
 # 2023-04-24 00:00:00
 # print(f'day {days}')
