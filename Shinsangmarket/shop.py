@@ -28,7 +28,7 @@ import shutil
 from datetime import datetime
 from lib import downloadImage
 
-router = APIRouter(tags=['sinsang'])
+router = APIRouter(tags=['Sinsang'])
 # class ShopRequestBody(BaseModel):
 #     shop_id: 
 
@@ -47,7 +47,8 @@ def scrap_shop(shop_id:int, id, password):
     # db 
     
     conn = pymysql.connect(
-        host='52.79.173.93',
+        # host='52.79.173.93',
+        host='moyvle.cz561frejrez.us-west-1.rds.amazonaws.com',
         port=3306,
         user='user',
         passwd='seodh1234',
@@ -120,7 +121,8 @@ def scrap_shop(shop_id:int, id, password):
     driver.get(f'https://sinsangmarket.kr/store/{shop_id}')
 
     create_folder('./Shops')
-    time.sleep(0.2)
+    time.sleep(1.2)
+    # //*[@id="25232"]/div/div[1]/div/div/div[1]/div/div/div[1]/img
     shop_src = driver.find_element(By.XPATH, f'//img[@alt="store-image"]').get_attribute('src')
     # urlretrieve(shop_src, f'../Shops/{shop_id}.jpg')
     global image_url

@@ -25,8 +25,23 @@ from flask import Flask, request, jsonify, Response
 from flask_restful import reqparse, abort, Api, Resource
 import json
 import numpy as np
-import schedule
+# import schedule
+from fastapi import HTTPException, status, BackgroundTasks, APIRouter
 
+
+router = APIRouter(tags=['Linkshop'])
+
+
+@router.get('/product')
+async def product():
+    """
+    Purpose: 
+    """
+    job()
+    return {"message": "successfully sent!"}
+    # job()
+    
+# end def
 
 def create_folder(directory):
     try:
@@ -143,10 +158,9 @@ def category_classification(product_category):
 
 
 def job():
-
     # chrome option - 토르 테스트 중
     chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument("--proxy-server=socks5://127.0.0.1:9150")
+    # chrome_options.add_argument("--proxy-server=socks5://127.0.0.1:9150")
     chrome_options.add_argument('--mute-audio')
     chrome_options.add_argument('disable-gpu')
     chrome_options.add_argument('lang=ko')
@@ -166,7 +180,7 @@ def job():
     create_folder(folder_products_image)
     create_folder(folder_shops)
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    driver = webdriver.Chrome(service=Service(), options=chrome_options)
     # driver.get('https://www.linkshops.com/')
 
     # 회원 정보 입력 창 접속
@@ -175,20 +189,23 @@ def job():
     time.sleep(2)
 
     # 로그인
-    driver.find_element(By.CLASS_NAME, 'input-wrapper').find_element(By.NAME, 'email').send_keys('waldoyun2@gmail.com')
-    driver.find_element(By.CLASS_NAME, 'input-wrapper').find_element(By.NAME, 'password').send_keys('Linkshops9138')
+    ID = 'waldoyun2@gmail.com'
+    pwd = 'Linkshops9138'
+    driver.find_element(By.CLASS_NAME, 'input-wrapper').find_element(By.NAME, 'email').send_keys(ID)
+    driver.find_element(By.CLASS_NAME, 'input-wrapper').find_element(By.NAME, 'password').send_keys(pwd)
     event_click(driver, driver.find_element(By.CLASS_NAME, 'login-modal-content-wrapper').find_element(By.ID, 'btn'))
-    driver.implicitly_wait(10)
-    time.sleep(2)
+    # driver.implicitly_wait(10)
+    time.sleep(15)
 
     # 매장(티엔씨) 접속
-    shop_link = 'https://www.linkshops.com/tnc_theot'
+    store_name = 'designbyjs'
+    shop_link = f'https://www.linkshops.com/{store_name}'
     driver.get(shop_link)
     driver.implicitly_wait(10)
-    time.sleep(2)
+    time.sleep(14)
 
     df_product = pd.DataFrame()
-
+    
     #
     shop_name = driver.find_element(By.CLASS_NAME, 'title-container-title').find_element(By.CLASS_NAME, 'name').text
 
@@ -514,10 +531,9 @@ def job():
     )
 
 
-schedule.every().day.at("08:00").do(job) # day 날마다
+# job()
+# schedule.every().day.at("08:00").do(job) # day 날마다
 
-while True:
-    schedule.run_pending()
-    time.sleep(10) # 3
-
-job()
+# while True:
+#     schedule.run_pending()
+#     time.sleep(10) # 3
