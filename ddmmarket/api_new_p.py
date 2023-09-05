@@ -360,8 +360,7 @@ def job():
         'NZB1207434', # 시엘
         'C2KA350516', # 제이엠
         'DB2D300037', # 페이퍼
-        'C5LA525237', # 폴링제이
-        
+        'C5LA525237', # 폴링제이   
     ]
 
     folder_products_image = 'products_image1'
@@ -400,7 +399,7 @@ def job():
             #     time.sleep(10)# 5
             # except:
             #     print("[인식 불가] 모든 상품 수")
-
+            
             try:
                 element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'totalItem2')))
                 product_cate_case = int(driver.find_element(By.ID, 'totalItem2').text)
@@ -414,9 +413,7 @@ def job():
             driver.get(f"{basic_domain}{c_link}")
             driver.implicitly_wait(10)
             time.sleep(10) # 5
-                
-            # element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'info_check')))
-            # category_len = len(driver.find_element(By.CLASS_NAME, 'info_check').find_elements(By.TAG_NAME, 'li'))
+            
             category_len = 10
             
             PRODUCT_SWITCH_1 = False
@@ -466,6 +463,7 @@ def job():
 
                         if PRODUCT_SWITCH_1:
                             pass
+
                         else:
                             try:
                                 element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'pro_name')))
@@ -568,12 +566,14 @@ def job():
                         element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, 'div')))
                         thumbnail_ele = driver.find_element(By.ID, 'gd_listimg').find_elements(By.TAG_NAME, 'div')            
 
-                        for th_ele in thumbnail_ele:                
+                        for th_ele in thumbnail_ele:  
+
+                            print(f'product ele {th_ele}')             
+
                             if th_ele.get_attribute('style') == 'text-align: center; padding-top: 55px;':
                                 element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, 'img')))
                                 product_src = th_ele.find_element(By.TAG_NAME, 'img').get_attribute('src')
                                 urlretrieve(product_src, f'./{folder_products_image}/{product_unique_id}_{cnt}.jpg')
-
                                 s3.upload_file(
                                     f'./{folder_products_image}/{product_unique_id}_{cnt}.jpg', # 로컬
                                     'sokodress', # AWS S3

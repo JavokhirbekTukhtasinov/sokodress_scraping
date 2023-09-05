@@ -40,7 +40,6 @@ s3 = boto3.client(
 
 white_list = ['125.141.73.82', '124.56.158.191']
 
-
 # ■■■■■■■■■■■■■■■■ ■■■■■■■■■■■■■■■■
 app = Flask(__name__)
 cors = CORS(app)

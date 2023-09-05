@@ -24,12 +24,15 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException, UnexpectedAlertPresentException
-from flask_cors import CORS, cross_origin
-from flask import Flask, request, jsonify, Response
-from flask_restful import reqparse, abort, Api, Resource
+
+# from flask_cors import CORS, cross_origin
+# from flask import Flask, request, jsonify, Response
+# from flask_restful import reqparse, abort, Api, Resource
 import json
 import numpy as np
+from fastapi import APIRouter , HTTPException, status
 
+router  = APIRouter(tags=['ddmmarket'])
 
 # 전체 흐름
 # 1. API call
@@ -48,6 +51,7 @@ class NumpyEncoder(json.JSONEncoder):
             return obj.tolist()
         return super(NumpyEncoder, self).default(obj)
         
+
 # 폴더 생성
 def create_folder(directory):
     try:
@@ -226,31 +230,36 @@ def df_db_convert_name(df):
 driver = None
 white_list = ['125.141.73.82', '124.56.158.191']
 
-app = Flask(__name__)
-cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
+# app = Flask(__name__)
+# cors = CORS(app)
+# app.config['CORS_HEADERS'] = 'Content-Type'
 
 # IP check(white list)
-@app.before_request
-def limit_remote_addr():
-    if request.remote_addr in white_list:
-        pass
-    else:
-        abort(403)
+# @app.before_request
+# def limit_remote_addr():
+#     if request.remote_addr in white_list:
+#         pass
+#     else:
+#         abort(403)
 
 # call(http://ip:port/call?store_id=매장고유링크값)
 # e.g. http://34.200.179.185:5002/call?store_id=CB1NA24367
-@app.route('/call', methods=['GET','POST'])
-@cross_origin()
-def predict_code():   
-	store_id = (request.args.get('store_id'))
+# @app.route('/call', methods=['GET','POST'])
+# @cross_origin()
+@router.get('/product/{store_id}')
+def predict_code(store_id:str):   
+    # print(f'[CALL] store_id : {store_id}')
+	 # store_id = (request.args.get('store_id')) 
+    try:
+        return model_predict(store_id)
+    except Exception as e:
+        print(e)
+        return HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
-	return (model_predict(store_id))
-
-def model_predict(store_id):
+def model_predict(store_id = 'CB1NA24367'):
     print("■■■■■■■■■■■■■■■■ START ■■■■■■■■■■■■■■■■")
     print(f"[CALL] store_id : {store_id}")
-    print(f"[CALL] IP : {request.remote_addr}")
+    # print(f"[CALL] IP : {request.remote_addr}")
 
     # 폴더 생성
     create_folder('./Test')
@@ -260,23 +269,23 @@ def model_predict(store_id):
     create_folder('./backup/shop')
     create_folder('./backup/shop_total')
     create_folder('./json_shop')
-   
     # AWS S3 server connect
     s3 = boto3.client(
         's3',
-        aws_access_key_id = 'AKIAXHNKF4YFB6E7I7OI',
-        aws_secret_access_key = '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',
+        aws_access_key_id = os.getenv('aws_access_key_id'),
+        aws_secret_access_key = os.getenv('aws_secret_access_key')
     )
 
     # DB connect
     conn = pymysql.connect(
-        host='52.79.173.93',
-        port=3306,
-        user='user',
-        passwd='seodh1234',
-        db='sokodress',
+        host= os.getenv('host'),
+        port= int(str(os.getenv('port'))),
+        user=os.getenv('user'),
+        passwd= os.getenv('passwd'),
+        db=os.getenv('db'),
         charset='utf8'
     )
+
 
     cur = conn.cursor()
 
@@ -296,24 +305,34 @@ def model_predict(store_id):
     chrome_options.add_argument('--start-maximized')
     chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    driver = webdriver.Chrome(service=Service(), options=chrome_options)
 
     # 로그인
-    driver.get('https://www.ddmmarket.co.kr/Login')
+    
+    driver.get('https://www.ddmmarket.co.kr')
     driver.implicitly_wait(10)
-    time.sleep(2)
-    driver.find_element(By.ID, 'login_frame1').find_element(By.ID, 'user_id').send_keys('sokodress')
-    driver.find_element(By.ID, 'login_frame1').find_element(By.ID, 'user_pwd').send_keys('ddmmarket9138')
-    driver.execute_script('arguments[0].click();', driver.find_element(By.CLASS_NAME, 'login_btn'))
-    driver.implicitly_wait(10)
-    time.sleep(2)
+    # time.sleep(2)
+    
+    id = 'sokodress'
+    password = 'ddmmarket9138'
+    
+    # driver.find_element(By.ID, 'login_frame1').find_element(By.ID, 'user_id').send_keys(id)
+    # driver.find_element(By.ID, 'login_frame1').find_element(By.ID, 'user_pwd').send_keys(password)
 
+    # //*[@id="app"]/div[2]/div[6]/div/div/header/div[1]/div/button[3]/span
+    driver.execute_script('arguments[0].click();', driver.find_element(By.XPATH, '//*[@id="app"]/div[2]/div[6]/div/div/header/div[1]/div/button[3]/span'))
+    #prev 
+    # driver.execute_script('arguments[0].click();', driver.find_element(By.CLASS_NAME, 'login_btn'))
+    # driver.implicitly_wait(10)
+    time.sleep(2)
+    
     # 크롤링 사이트 목록
     basic_domain = f'http://www.ddmmarket.co.kr/Prod?m=S&c='
     crawling_link_list = [
         f'{basic_domain}{store_id}'
     ]
-
+    
     target_folder = 'Test'
     s3_domain = 'https://sokodress.s3.ap-northeast-2.amazonaws.com'
     now_date = datetime.today().strftime('%Y%m%d_%H%M')
@@ -335,7 +354,7 @@ def model_predict(store_id):
             time.sleep(5)
         except:
             print("모든 상품 수 미인식")
-
+            
         try:
             element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'totalItem2')))
             product_cate_case = int(driver.find_element(By.ID, 'totalItem2').text)
@@ -440,17 +459,20 @@ def model_predict(store_id):
                     element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'pro_name')))
                     product_info = driver.find_element(By.ID, 'pro_name').text        
                     product_unique_id = str(re.sub(r'[^0-9]', '', (product_info.split('\n')[0].split(']')[0] + ']').strip()))
-
+                    print(f'product_unique_id: {product_unique_id}')
                     sql_products = "SELECT * FROM Products"
                     cur.execute(sql_products)
                     rows_products = cur.fetchall()
                 
                     DUPLICATE_PRODUCT_SWITCH = False
                     # 이미 DB에 있는 상품은 스킵
+                    
                     for rp in rows_products:
+                        print(f'product_unique_id: {product_unique_id}' )
                         if product_unique_id == rp:
                             DUPLICATE_PRODUCT_SWITCH = True
                             break
+                        
                     if DUPLICATE_PRODUCT_SWITCH:
                         continue
 
@@ -512,7 +534,10 @@ def model_predict(store_id):
                     element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, 'div')))
                     thumbnail_ele = driver.find_element(By.ID, 'gd_listimg').find_elements(By.TAG_NAME, 'div')            
 
-                    for th_ele in thumbnail_ele:                
+                    for th_ele in thumbnail_ele:  
+                        print(f'th_element {th_ele}')   
+                        continue
+                               
                         if th_ele.get_attribute('style') == 'text-align: center; padding-top: 55px;':
                             element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, 'img')))
                             product_src = th_ele.find_element(By.TAG_NAME, 'img').get_attribute('src')
@@ -946,18 +971,19 @@ def model_predict(store_id):
     with open(f'./json_shop/{shop_name}.json', 'w') as fw:
         json.dumps(json_data_list, fw, ensure_ascii=False, cls=NumpyEncoder, indent=4)
 
-    resp = Response(json.dumps(json_data_list, ensure_ascii=False, cls=NumpyEncoder, indent=4).encode('utf8'), status=200, mimetype='application/json')
+    # resp = Response(json.dumps(json_data_list, ensure_ascii=False, cls=NumpyEncoder, indent=4).encode('utf8'), status=200, mimetype='application/json')
 
-    return resp
+    # return resp
+    return {'msg': 'Success'}
 
-@app.errorhandler(Exception)
-@cross_origin(origin="*", headers=['Content-Type', 'Authorization'])
-def exception_handler(error):
-    if driver != None:
-        driver.quit()
-    print(error)
-    log_message = {f"'Message':'Fail Insert DB & Call IP : {request.remote_addr}'"}
-    return log_message
+# @app.errorhandler(Exception)
+# @cross_origin(origin="*", headers=['Content-Type', 'Authorization'])
+# def exception_handler(error):
+#     if driver != None:
+#         driver.quit()
+#     print(error)
+#     log_message = {f"'Message':'Fail Insert DB & Call IP : {request.remote_addr}'"}
+#     return log_message
 
-if __name__ == '__main__': 
-	app.run(host='0.0.0.0', debug=True, port=5002)
+# if __name__ == '__main__': 
+# 	app.run(host='0.0.0.0', debug=True, port=5002)
