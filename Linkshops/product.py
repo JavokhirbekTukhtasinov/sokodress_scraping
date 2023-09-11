@@ -736,6 +736,7 @@ def job():
                             f'{str(product_id)}_{str(image_id)}',
                             image_url
                         )
+                        
                         total_table_ProductImages.append(table_product_images)
                         os.remove(image_path)
                         image_id += 1
@@ -870,6 +871,8 @@ def job():
                                                         VALUES ( %s, %s, %s)"""
                     cursor.executemany(sql_productimages, total_table_ProductImages)
                     conn.commit()
+                    
+                    total_table_ProductImages = []
                     
                     sql_categoryofproducts = """INSERT INTO CategoryOfProduct (
                                             category_id,
@@ -1023,7 +1026,9 @@ def job():
     # )
 
 # job()
+
 # schedule.every().day.at("15:27").do(job) # day 날마다
+
 
 # while True:
 #     schedule.run_pending()
