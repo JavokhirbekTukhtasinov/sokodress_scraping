@@ -32,7 +32,9 @@ from selenium.common.exceptions import NoSuchElementException, StaleElementRefer
 import json
 import numpy as np
 import schedule
+from dotenv import load_dotenv
 
+load_dotenv()
 
 
 # ■■■■■■■■■■■■■■■■ define external function ■■■■■■■■■■■■■■■■
@@ -670,7 +672,7 @@ def job():
     print(f"code running time: {result_time}")
 
 
-schedule.every(3).days.at("15:00").do(job)
+# schedule.every(3).days.at("15:00").do(job)
 
 # schedule.every().day.at("08:37").do(job) # day 날마다
 
@@ -679,8 +681,8 @@ schedule.every(3).days.at("15:00").do(job)
 # schedule.every(2).days.at("08:36").do(job)
 
 
-while True:
-    schedule.run_pending()
-    time.sleep(10) # 3
+# while True:
+#     schedule.run_pending()
+#     time.sleep(10) # 3
 
 job()

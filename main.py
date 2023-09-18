@@ -7,13 +7,20 @@ from Linkshops.product import router as LinkshopRouter
 from Linkshops.product import job as LinkshopJob 
 # from Linkshops.product_new import router as LinkshopRouter
 from fastapi.middleware.cors import CORSMiddleware
-from ddmmarket.product import router as DDDMRouter
+# from ddmmarket.product import router as DDDMRouter
+from ddmmarket.product_new import router as DDDMRouter
 from dotenv import load_dotenv
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
+import re
+
 
 
 app = FastAPI(title='Sokodress scraping')
+
+
+
+
 
 
 @app.get('/')
@@ -47,14 +54,13 @@ app.include_router(prefix='/shinsang/shopp', router=ShinsangShopRouter)
 
 
 
-
 @app.on_event('startup')
 def init():
     scheduler = BackgroundScheduler()
     scheduler.add_job(LinkshopJob, minutes=1, max_instances=3,trigger=CronTrigger(minute=0, hour=0))
     scheduler.start()
-load_dotenv()
 
+load_dotenv()
 
 app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_credentials=True, allow_methods=['*'], allow_headers=['*'])
 

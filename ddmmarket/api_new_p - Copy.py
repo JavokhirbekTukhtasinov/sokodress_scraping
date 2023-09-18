@@ -277,7 +277,7 @@ def job():
     chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
 
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-
+    
     # 로그인
     driver.get('https://www.ddmmarket.co.kr/Login')
     driver.implicitly_wait(10)

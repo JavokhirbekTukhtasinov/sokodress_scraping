@@ -35,6 +35,7 @@ class Accounts(BaseModel):
     max_count: Union[int, None] = 50
     selected_categories: Union[List[int], None] = None
 
+
 class RequestBody(BaseModel):
     store_id: Union[int, None] = 25232
     days_ago: Union[int, None] = 3
@@ -44,6 +45,7 @@ class RequestBody(BaseModel):
 
     # url: Union[str, None] = 'https://sinsangmarket.kr/store/25232?sort=DATE&isPublic=true&cgIdx=1&ciIdx=1&cdIdx=0'
 
+
 router = APIRouter(tags=['Sinsang'], responses={
                    404: {"description": "Not found"}})
 
@@ -51,44 +53,47 @@ options = webdriver.ChromeOptions()
 options.add_experimental_option('excludeSwitches', ['enable-logging'])
 options.add_argument('--start-maximized')
 
+
 @router.post('/product')
 def predict_code(background_tasks: BackgroundTasks, body: RequestBody):
     create_folder('./Products')
-    
+
     # change weekdays to 5 in order to defer scraping on weekends
     weekdays = 7
 
     if datetime.datetime.today().weekday() < weekdays:
-             # production database
+        # production database
         conn = pymysql.connect(
-                host='moyvle.cz561frejrez.us-west-1.rds.amazonaws.com',
-                port=3306,
-                user='user',
-                passwd='seodh1234',
-                db='sokodress',
-                charset='utf8'
-                )
-        
+            host='moyvle.cz561frejrez.us-west-1.rds.amazonaws.com',
+            port=3306,
+            user='user',
+            passwd='seodh1234',
+            db='sokodress',
+            charset='utf8'
+        )
+
         cur = conn.cursor()
         sql_scraping = """INSERT INTO Scraping (shop_id) VALUES (%s) """
         cur.execute(sql_scraping, (body.store_id))
         # Retrieve the last inserted row's ID
         cur.execute("SELECT LAST_INSERT_ID()")
-        inference_id =  cur.fetchone()[0]
+        inference_id = cur.fetchone()[0]
         conn.commit()
         store_id = body.store_id
         days_ago = body.days_ago
         accounts = body.accounts
         print(f'max count {body.accounts}')
+
         def initiate_task(body):
             for account in accounts:
                 if account.max_count == 0:
                     continue
-                model_predict(store_id, days_ago, account.id, account.password, account.max_count, inference_id, account.selected_categories)
-                 # time.sleep(60 * 60)
-                time.sleep(4)     
+                model_predict(store_id, days_ago, account.id, account.password,
+                              account.max_count, inference_id, account.selected_categories)
+                # time.sleep(60 * 60)
+                time.sleep(4)
         background_tasks.add_task(initiate_task, body)
-        return {'inference_id': inference_id}          
+        return {'inference_id': inference_id}
     else:
         return HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='You can do scraping only on weekdays')
 
@@ -104,13 +109,13 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, cat
 
 # production database
     conn = pymysql.connect(
-            host='moyvle.cz561frejrez.us-west-1.rds.amazonaws.com',
-            port=3306,
-            user='user',
-            passwd='seodh1234',
-            db='sokodress',
-            charset='utf8'
-            )
+        host='moyvle.cz561frejrez.us-west-1.rds.amazonaws.com',
+        port=3306,
+        user='user',
+        passwd='seodh1234',
+        db='sokodress',
+        charset='utf8'
+    )
 
     cur = conn.cursor()
     sql_shops = "SELECT * FROM Shops"
@@ -125,7 +130,7 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, cat
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f'Shop with id {store_id} does not exist in our db',
         )
-        
+
     # print(rows_shops)
     # return
     # print(type(store_id), type(days_ago))
@@ -133,39 +138,44 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, cat
     #     if row_shop[14] == int(store_id): # sinsang_store_id
     #         shop_id = row_shop[0]
     #         print(shop_id)
-    
+
     print(f'shop id --->>>> {store_id}')
     sql_products = "SELECT * FROM Products"
     cur.execute(sql_products)
     rows_products = cur.fetchall()
     # last_prod_create_at = rows_products[-1][9]  # last updated product time
-    print(rows_products)
-    product_id = rows_products[-1][0] + 1 if len(list(rows_products)) > 0 else 1
+    product_id = rows_products[-1][0] + \
+        1 if len(list(rows_products)) > 0 else 1
 
     sql_categoryofproduct = "SELECT * FROM CategoryOfProduct"
     cur.execute(sql_categoryofproduct)
     rows_categoryofproduct = cur.fetchall()
-    category_of_product_id = rows_categoryofproduct[-1][0] + 1 if len(list(rows_categoryofproduct)) > 0 else 1
-    
+    category_of_product_id = rows_categoryofproduct[-1][0] + 1 if len(
+        list(rows_categoryofproduct)) > 0 else 1
+
     sql_fabricinfos = "SELECT * FROM FabricInfos"
     cur.execute(sql_fabricinfos)
     rows_fabricinfos = cur.fetchall()
-    fabric_id = rows_fabricinfos[-1][0] + 1 if len(list(rows_fabricinfos)) > 0 else 1
+    fabric_id = rows_fabricinfos[-1][0] + \
+        1 if len(list(rows_fabricinfos)) > 0 else 1
 
     sql_productoptions = "SELECT * FROM ProductOptions"
     cur.execute(sql_productoptions)
     rows_productoptions = cur.fetchall()
-    product_option_id = rows_productoptions[-1][0] + 1 if len(list(rows_productoptions)) > 0 else 1
+    product_option_id = rows_productoptions[-1][0] + \
+        1 if len(list(rows_productoptions)) > 0 else 1
 
     sql_washinfos = "SELECT * FROM WashInfos"
     cur.execute(sql_washinfos)
     rows_washinfos = cur.fetchall()
-    wash_info_id = rows_washinfos[-1][0] + 1 if len(list(rows_washinfos)) > 0 else 1
+    wash_info_id = rows_washinfos[-1][0] + \
+        1 if len(list(rows_washinfos)) > 0 else 1
 
     sql_productstyles = "SELECT * FROM ProductStyles"
     cur.execute(sql_productstyles)
     rows_productstyles = cur.fetchall()
-    product_style_id = rows_productstyles[-1][0] + 1 if len(list(rows_productstyles)) > 0 else 1
+    product_style_id = rows_productstyles[-1][0] + \
+        1 if len(list(rows_productstyles)) > 0 else 1
 
     sql_styles = "SELECT * FROM Styles"
     cur.execute(sql_styles)
@@ -175,7 +185,8 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, cat
     sql_productimages = "SELECT * FROM ProductImages"
     cur.execute(sql_productimages)
     rows_productimages = cur.fetchall()
-    image_id = rows_productimages[-1][0] + 1 if len(list(rows_productimages)) > 0 else 1
+    image_id = rows_productimages[-1][0] + \
+        1 if len(list(rows_productimages)) > 0 else 1
 
     global driver
     driver = webdriver.Chrome(service=Service(), options=options)
@@ -221,7 +232,6 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, cat
     now = datetime.datetime.now()
     standard_date_ago = now - datetime.timedelta(days=days_ago)
 
- 
     # category_list = [1, 2, 11]  # 여성 의류, 남성 의류, 유아 의류
 
     scraped_item = 0
@@ -238,17 +248,18 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, cat
             continue
         time.sleep(1.5)
         # //*[@id="25232"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[2]/div/button/div/span
-        driver.execute_script('arguments[0].click();', driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[{c}]/div/button/div/span'))
+        driver.execute_script('arguments[0].click();', driver.find_element(
+            By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[{c}]/div/button/div/span'))
 
         time.sleep(1)
-        
+
         # select category list
         category_parent = driver.find_element(
             By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[{c}]/ul')
         clothes_list = category_parent.find_elements(By.TAG_NAME, 'div')
         for clo in range(1, len(clothes_list), 1):
             print(f'category 2 id {clo}')
-            if stop_looping: 
+            if stop_looping:
                 break
             if clo == 1 or clo == 15:
                 continue
@@ -260,7 +271,7 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, cat
                     continue
                 elif clo == 10:
                     break
-                
+
             try:
                 clothes = driver.find_element(
                     By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[{c}]/ul/div[{clo}]/button/div/span')
@@ -269,7 +280,7 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, cat
                 break
             # goods_clothes = driver.find_element(
             #     By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[3]/ul/li[{c}]/ul/div[{clo}]/button/div/span').text
-            
+
             time.sleep(2)
             driver.execute_script('arguments[0].click();', clothes)
 
@@ -283,7 +294,7 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, cat
                 pass
 
             try:
-                style_list =  driver.find_element(
+                style_list = driver.find_element(
                     By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[4]/ul').find_elements(By.TAG_NAME, 'li')
             except Exception as e:
                 print(f'error {e}')
@@ -292,45 +303,49 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, cat
 
             for sty in range(1, len(style_list)):
                 print(f'style id =>>> {sty}')
-                if stop_looping: 
+                if stop_looping:
                     break
-                if sty == 1:
+                if sty == 1 or sty == 0:
                     continue
 
-                style_element =  driver.find_element(
+                style_element = driver.find_element(
                     By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[4]/ul/li[{sty}]/div/button/div/span')
 
                 style = style_element.text
 
                 # style
-                style = style_dict[list(style_dict.keys())[-1]] if style is None or style == '' else style_dict[style]
+                style = style_dict[list(
+                    style_dict.keys())[-1]] if style is None or style == '' else style_dict[style]
                 # style_id
                 style_id = style_id_dict[style]
 
                 driver.execute_script('arguments[0].click();', style_element)
 
-                for _ in range(2):
-                    driver.execute_script(
-                        "window.scrollTo(0, document.body.scrollHeight);")
+                # for _ in range(2):
+                #     driver.execute_script(
+                #         "window.scrollTo(0, document.body.scrollHeight);")
                 total_product_count = 0
-                time.sleep(0.8)
+                time.sleep(1)
+                
                 try:
-                    total_product_count = driver.find_element(By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[1]/p/span').text.strip()
+                    total_product_count = driver.find_element(
+                        By.XPATH, f'//*[@id="{store_id}"]/div/div[2]/div[2]/div/aside/div[1]/p/span').text.strip()
                     print("Element exists:", total_product_count)
+                    
                 except NoSuchElementException:
                     total_product_count = 0
                     print("Element does not exist")
                     continue
 
-                driver.execute_script("window.scrollTo(0, 1000)")
-                time.sleep(0.5)
-                
+                time.sleep(1)
+
                 if total_product_count.isdigit():
                     total_product_count = int(total_product_count)
                 else:
                     print(f'total product error=>>> {total_product_count}')
                     total_product_count = 0
-                    
+                    continue
+
                 if total_product_count == 0 or total_product_count is None:
                     continue
 
@@ -342,11 +357,11 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, cat
                 print(f'scraped_item count ==> {scraped_item}')
 
                 try:
-                    scrap_prodcut_only(driver,total_product_count,rows_products,standard_date_ago, wait , s3, store_id, style, c, style_id , cur, conn, MAX_COUNT, inference_id, scraped_item, image_id, product_id, days_ago)
+                    scrap_prodcut_only(driver, total_product_count, rows_products, standard_date_ago, wait, s3, store_id,
+                                       style, c, style_id, cur, conn, MAX_COUNT, inference_id, scraped_item, image_id, product_id, days_ago)
                 except Exception as e:
                     print(f'error product scraping {e}')
                     continue
-
 
     log_message = {'Message': 'Success inserted to db(goods)'}
     return log_message
@@ -384,19 +399,18 @@ def test():
     #     #     return HTTPException(
     #     #      status_code=status.HTTP_200_OK
     #     #     )
-    
 
     # except Exception as err:
     #     print(f'Error {err}')
     #     return HTTPException(
     #     status_code=status.HTTP_400_BAD_REQUEST,
     #     detail=f'{err}')
-    
-    
+
+
 @router.get('/progress/{reference_id}')
-def progress(reference_id:int):
+def progress(reference_id: int):
     try:
-        
+
         conn = pymysql.connect(
             host='moyvle.cz561frejrez.us-west-1.rds.amazonaws.com',
             port=3306,
@@ -418,18 +432,19 @@ def progress(reference_id:int):
         cur.close()
         conn.close()
 
+
 @router.get('/products/all')
 def get_products():
     print(f'test')
     try:
         conn = pymysql.connect(
-           host='moyvle.cz561frejrez.us-west-1.rds.amazonaws.com',
-            port=3306,  
+            host='moyvle.cz561frejrez.us-west-1.rds.amazonaws.com',
+            port=3306,
             user='user',
             passwd='seodh1234',
             db='sokodress',
             charset='utf8'
-            )
+        )
         cur = conn.cursor()
         sql = 'SELECT * FROM Products'
         cur.execute(sql)
@@ -443,4 +458,3 @@ def get_products():
     finally:
         cur.close()
         conn.close()
-
