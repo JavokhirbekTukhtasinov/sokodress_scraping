@@ -8,7 +8,8 @@ from selenium.webdriver.support import expected_conditions as EC
 import re
 import datetime
 from dateutil.relativedelta import relativedelta
-
+from dotenv import load_dotenv
+load_dotenv()
 ips = []
 
 
@@ -33,8 +34,6 @@ def check_product_register_date(text_date:str, days_ago) -> bool:
 
     # Calculate a timedelta for two months (approximately 60 days)
     two_months = datetime.timedelta(days=days_ago)
-
-    print('two_months', two_months)
     # Compare the date difference with two months
     if date_difference < two_months:
         result = True
@@ -395,11 +394,12 @@ def calculate_category_id(prod_name, c_big, c_small):
 
 
 def upload_image(s3, product_id, i):
+    bucket_name = os.getenv('bucket_name')
     s3.upload_file(
         f'./Products/{product_id}_{i}.jpg',
-        'sokodress',
+        bucket_name,
         f'Products/{product_id}_{i}.jpg',
-        ExtraArgs={'ACL': 'public-read'}
+        # ExtraArgs={'ACL': 'public-read'}
     )
     image_url = f'https://sokodress.s3.ap-northeast-2.amazonaws.com/Products/{product_id}_{i}.jpg'
     return image_url
@@ -424,6 +424,7 @@ def papago_translate(text: str):
 
 
 def parse_datetime(datetime_str):
+    print(f'datetime_str : {datetime_str}')
     datetime_patern = r'\d{4}\.\d{2}\.\d{2}'
     matches = re.findall(datetime_patern, datetime_str)
     if matches:
@@ -537,48 +538,53 @@ wash_dict = {
 
 
 def check_create_date_ago(driver, create_at):
+    print(f'create_at {create_at}')
+    date_text = create_at.split(' ')
+    original_create_at = parse_datetime(date_text[0])
+    print(f"original_create_at {original_create_at}")
     
     if 'Boosted' in create_at:
-        print(f'boosted at {create_at}')
-        uplift_at = parse_relative_time(create_at)
-        print(f"uplift_at {uplift_at}")
 
-            #     if 'hours' in create_at or 'minutes' in create_at:
-            #         pass
-            #     elif 'year' in create_at:
-            #         driver.execute_script('arguments[0].click();', driver.find_element(
-            #             By.CLASS_NAME, 'close-button'))
-            #         continue
-            #     elif 'days' in create_at:
-            #         if int(re.sub(r'[^0-9]', '', create_at.split('\n')[1])) < days_ago:
-            #             pass
-            #         else:
-            #             driver.execute_script('arguments[0].click();', driver.find_element(
-            #                 By.CLASS_NAME, 'close-button'))
-            #             continue
-            #     else:
-            #         print(f"[LOG] 등록일: {create_at}")
-            # elif datetime.datetime.strptime(create_at.split(' ')[0], '%Y.%m.%d') < standard_date_ago:
+        lines = create_at.split('\n')
+        print(f'lines :::::: {lines}')
+        # Iterate through the lines to find the one containing "Boosted"
 
-            #     # driver.find_element(By.CLASS_NAME, 'close-button').click()
-            #     driver.execute_script('arguments[0].click();', driver.find_element(
-            #         By.CLASS_NAME, 'close-button'))
-            #     continue
+        # Extract the time after "Boosted"
+        boosted_parts = lines.split("Boosted")
+        print(f'boosted_parts::::: {boosted_parts}')
 
-    else:
-            original_create_at = parse_datetime(create_at)
-            print(f"original_create_at {original_create_at}")
-            pass
+        if len(boosted_parts) > 1:
+            boosted_time = boosted_parts[1].strip()
+            print("Boosted time:", boosted_time)
+        else:
+            print("No 'Boosted' line found")
+        # pattern = r'Registered[\s\S]*?Boosted (\d+ [a-z]+ ago)'
+        # print(f'pattern {pattern}')
+        # # Use re.search to find the match
+        # match = re.search(pattern, create_at)
+
+        # Check if a match was found
+        # if match:
+        #     # Extract the matched time
+        #     boosted_time = match.group(1)
+        #     print(f'boosted_time {boosted_time}')
+        #     uplift_at = parse_relative_time(boosted_time)
+        #     print("Boosted time:", boosted_time)
+        #     print(f"uplift_at {uplift_at}")
+        # else:
+        #     print("No match found")
+        
+
 
 
 def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date_ago, wait, s3, store_id, style, c, style_id, cur, conn, MAX_COUNT, inference_id, scraped_item, image_id, product_id, days_ago):
     total_table_ProductImages = []
-    total_table_Products = []
-    total_table_CategoryOfProduct = []
-    total_table_FabricInfos = []
-    total_table_ProductOptions = []
+    # total_table_Products = []
+    # total_table_CategoryOfProduct = []
+    # total_table_FabricInfos = []
+    # total_table_ProductOptions = []
     total_table_WashInfos = []
-    total_table_ProductStyles = []
+    # total_table_ProductStyles = []
 
     print(f'total_product_count: {total_product_count}')
 
@@ -648,7 +654,7 @@ def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date
             create_at = ''
             continue
             
-        
+
         original_create_at = check_create_date_ago(driver, create_at)
 
            # 날짜가 days_ago보다 더 크면 break 
@@ -912,16 +918,13 @@ def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date
                 star
             )
 
-        print(f'category products ->>> {table_Products}')
-
         table_CategoryOfProduct = (
-                # str(category_of_product_id), # autoincrement
                 category_id,
                 str(product_id)
         )
 
+
         table_FabricInfos = (
-                # str(fabric_id),  # autoincrement
                 str(product_id),
                 '기본핏',  # 핏정보(not null)
                 goods_fabric_thickness,  # 두께감
@@ -934,7 +937,6 @@ def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date
         )
 
         table_ProductOptions = (
-                # str(product_option_id),  # autoincrement
                 str(product_id),
                 size,  # size
                 color,  # color
@@ -943,17 +945,9 @@ def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date
         )
 
         table_ProductStyles = (
-                # str(product_style_id),  # autoincrement
                 str(product_id),
                 str(style_id)
         )
-
-        total_table_Products.append(table_Products)
-        total_table_CategoryOfProduct.append(table_CategoryOfProduct)
-        total_table_FabricInfos.append(table_FabricInfos)
-        total_table_ProductOptions.append(table_ProductOptions)
-        total_table_ProductStyles.append(table_ProductStyles)
-
         element = wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'close-button')))
             # driver.find_element(By.CLASS_NAME, 'close-button').click()
         driver.execute_script('arguments[0].click();', driver.find_element(By.CLASS_NAME, 'close-button'))
@@ -974,13 +968,13 @@ def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date
 
                 sql_fabricinfos = """INSERT INTO FabricInfos (product_id, 핏정보, 두께감, 신축성, 비침, 안감, 광택, 촉감, 밴딩)
                                                             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-                # cur.executemany(sql_fabricinfos, total_table_FabricInfos)
+
                 cur.execute(sql_fabricinfos, table_FabricInfos)
                 conn.commit()
 
                 sql_productoptions = """INSERT INTO ProductOptions (product_id, size, color, original_create_at, uplift_at)
                                                                     VALUES ( %s, %s, %s, %s, %s)"""
-                # cur.executemany(sql_productoptions, total_table_ProductOptions)
+                                                                    
                 print(f'table product options :::: {table_ProductOptions}')
                 cur.execute(sql_productoptions, table_ProductOptions)
                 conn.commit()
@@ -993,7 +987,6 @@ def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date
                 sql_productstyles = """INSERT INTO ProductStyles (product_id, style_id)
                                                                 VALUES (%s, %s)"""
 
-                # cur.executemany(sql_productstyles, total_table_ProductStyles)
                 cur.execute(sql_productstyles, table_ProductStyles)
                 conn.commit()
 
@@ -1010,7 +1003,6 @@ def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date
         except Exception as e:
                 print(e)
 
-        print(f'product count {scraped_item}')
 
         if scraped_item >= MAX_COUNT:
                 stop_looping = True
@@ -1027,11 +1019,6 @@ def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date
                 break
 #    reset all tables
     total_table_ProductImages = []
-    total_table_Products = []
-    total_table_CategoryOfProduct = []
-    total_table_FabricInfos = []
-    total_table_ProductOptions = []
     total_table_WashInfos = []
-    total_table_ProductStyles = []
 
     product_number = 0

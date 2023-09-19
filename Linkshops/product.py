@@ -34,7 +34,7 @@ load_dotenv()
 router = APIRouter(tags=['Linkshop'])
 
 
-@router.get('/product')
+@router.post('/product')
 async def product():
     """
     Purpose: 
@@ -43,7 +43,7 @@ async def product():
     return {"message": "successfully sent!"}
     # job()
     
-# end def
+
 
 def create_folder(directory):
     try:
@@ -67,16 +67,68 @@ def fitting_info(x):
         if 'visible' in x_check:
             y = i.find_element(By.TAG_NAME, 'span').text
             break
-
     return y
+
+
+
 
 def image_resize_url(url):
     url = url.split('/')
     url[5] = '480'
     url = '/'.join(url)
-    
-
     return url
+
+
+
+
+def calculate_nation(nation:str) -> str:
+    if '한국' in nation or 'Korea' in nation or 'korea' in nation or '대한민국' in nation:
+        return '대한민국'
+    elif '중국' in nation or 'Chine' in nation or 'chine' in nation: 
+        return '중국'
+    else: 
+        return '기타'
+
+
+
+def check_product_register_date(text_date:str, days_ago) -> bool:
+
+    if text_date is None:
+        return False
+
+    date_obj = datetime.datetime.strptime(text_date, "%Y-%m-%d")
+
+    # Calculate the current date
+    current_date = datetime.datetime.now()
+
+    # Calculate the difference between the two dates
+    date_difference = current_date - date_obj
+
+    # Calculate a timedelta for two months (approximately 60 days)
+    two_months = datetime.timedelta(days=days_ago)
+    # Compare the date difference with two months
+    if date_difference < two_months:
+        result = True
+    else:
+        result = False
+    return result
+
+
+def parse_datetime(datetime_str):
+    datetime_patern = r'\d{4}\-\d{2}\-\d{2}'
+    matches = re.findall(datetime_patern, datetime_str)
+    if matches:
+        datetime_str = matches[0]
+
+        parsed_datetime = datetime.strptime(datetime_str, '%Y-%m-%d')
+
+        return parsed_datetime.strftime('%Y-%m-%d %H:%M:%S')
+
+    else:
+        return ''
+
+
+
 
 def calculate_category_id(category1, category2, category3):
     # 여성 = 1
@@ -317,7 +369,10 @@ def category_classification(product_category):
 
 
 
-def job():
+
+def job(store_name):
+    # max_day_ago = 60
+    max_day_ago = 100
     # chrome option - 토르 테스트 중
     chrome_options = webdriver.ChromeOptions()
     # chrome_options.add_argument("--proxy-server=socks5://127.0.0.1:9150")
@@ -392,20 +447,14 @@ def job():
     driver.find_element(By.CLASS_NAME, 'input-wrapper').find_element(By.NAME, 'email').send_keys(ID)
     driver.find_element(By.CLASS_NAME, 'input-wrapper').find_element(By.NAME, 'password').send_keys(pwd)
     event_click(driver, driver.find_element(By.CLASS_NAME, 'login-modal-content-wrapper').find_element(By.ID, 'btn'))
-    # driver.implicitly_wait(10)
     time.sleep(2)
 
     total_table_ProductImages = []
-    total_table_Products = []
-    total_table_CategoryOfProduct = []
-    total_table_FabricInfos = []
-    total_table_ProductOptions = []
-    total_table_WashInfos = []
-    total_table_ProductStyles = []
-
 
     # 매장(티엔씨) 접속
-    store_name = 'designbyjs'
+    if store_name is None:
+        store_name = 'designbyjs'
+        
     shop_link = f'https://www.linkshops.com/{store_name}'
     driver.get(shop_link)
     # driver.implicitly_wait(10)
@@ -509,7 +558,7 @@ def job():
     # driver.implicitly_wait(10)
     # time.sleep(2)
 
-    product_all_cnt = 0
+    scrapped_product_count = 0
 
     start_time = time.time()
 
@@ -539,19 +588,22 @@ def job():
                                                find_element(By.CLASS_NAME, 'inner-wrap'))
                     FIRST_PRODUCT_SWITCH = False
 
+                
+                
                 # 상품 정보
+                original_create_at = None #상품 등록 날짜
                 try:
                     element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), '상품 번호')]")))
                     
                     if driver.find_element(By.XPATH, "//div[contains(text(), '상품 번호')]").text:
                         product_unique_id_and_create_at = driver.find_elements(By.CLASS_NAME, 'product-info-item')[3].text
                         product_unique_id = product_unique_id_and_create_at.split('      ')[0].replace('상품 번호\n', '')
-                        product_create_at = product_unique_id_and_create_at.split('      ')[1].replace('업데이트(', '').replace(')', '')
+                        original_create_at = product_unique_id_and_create_at.split('      ')[1].replace('업데이트(', '').replace(')', '')
                         # print(f'create at {product_create_at}')
                 except:
                     # product_unique_id = None
                     # product_create_at = None
-                    
+                    original_create_at = None
                     time.sleep(2)
                     
                     # 상품 다음 > 클릭
@@ -575,11 +627,29 @@ def job():
                     finally:
                         time.sleep(3)
                         continue
-                    
-                print('lavel 1')
 
+                try: 
+                    if original_create_at is None or check_product_register_date(original_create_at, max_day_ago) is False:
+                        time.sleep(2)
+                        if driver.find_element(By.CLASS_NAME, 'modal-product-next-button.next').find_element(By.CLASS_NAME, 'icon-product-next'):
+                            event_click(driver, driver.find_element(By.CLASS_NAME, 'modal-product-next-button.next').\
+                                            find_element(By.CLASS_NAME, 'icon-product-next'))
+
+                        print("다음 상품 >>>>>>>")
+                        continue
+                except Exception as e:
+                    print(e)
+                    if driver.find_element(By.CLASS_NAME, 'modal-product-next-button.next').find_element(By.CLASS_NAME, 'icon-product-next'):
+                            event_click(driver, driver.find_element(By.CLASS_NAME, 'modal-product-next-button.next').\
+                                            find_element(By.CLASS_NAME, 'icon-product-next'))
+
+                else: 
+                    original_create_at = parse_datetime(original_create_at)
+                    pass  
+
+                print(f'original create at {original_create_at}')
+                
                 try:
-
                     element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), '카테고리')]")))
                     
                     if driver.find_element(By.XPATH, "//div[contains(text(), '카테고리')]").text:
@@ -605,6 +675,8 @@ def job():
                         product_name = product_name.replace('상품명\n', '')
                 except:
                     product_name = None
+                    
+                    
                     
                 if check_duplicate_product(product_name, rows_products) is True:
                         time.sleep(1.2)
@@ -711,8 +783,6 @@ def job():
                                         find_element(By.CLASS_NAME, 'slick-track').\
                                         find_elements(By.CLASS_NAME, 'slick-slide')
 
-                    product_image_url = []
-
                     for idx, i in enumerate(slick_hidden):
                         img_ele = i.find_element(By.CLASS_NAME, 'img').get_attribute('style')
                         img_ele = img_ele.split('url("')[1].split('");')[0]
@@ -722,14 +792,6 @@ def job():
                         urlretrieve(f'https:{img_ele}', image_path)
                         # downloadImage(img_ele, image_path)
                         image_url = upload_image(s3,product_id,image_id)
-                        print(f'imageid:: {image_id}')
-                        # #TODO:
-                        # s3.upload_file(
-                        #     image_path,
-                        #     'sokodress',
-                        #     image_path,
-                        #     ExtraArgs={'ACL':'public-read'}
-                        # )
 
                         table_product_images = (
                             str(product_id),
@@ -741,34 +803,17 @@ def job():
                         os.remove(image_path)
                         image_id += 1
 
-                        # product_image_url.append(f'{s3_domain}/{folder_products_image}/{product_unique_id}_{idx}.png')
-
-                    product_image_url = ','.join(product_image_url)
-
-                    print(f'prodcut image url {product_image_url}')
                     
                 except Exception as e:
                     print(f'product image error {e}')
-                    product_image_url = None
-
-                print(f'total product images {total_table_ProductImages}')
-                
-                prod_name_en = papago_translate(product_name)
-                
-                try: 
-                    input_date = datetime.datetime.strptime(product_create_at, "%Y-%m-%d")
-                    original_create_at = input_date.strftime("%Y-%m-%d %H:%M:%S")
-                    print(f'origianl create at {original_create_at}')
-                    create_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    print(f'create at {create_at}')
+                    continue
                     
-                except ValueError as e:
+                try:
+                    prod_name_en = papago_translate(product_name)
+                except Exception as e: 
+                    prod_name_en = product_name
+                                   
 
-                    original_create_at = None
-
-                    create_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    print(f'create at error {e}')
-                
                 table_ProductOptions = (
                         # str(product_option_id),  # autoincrement
                         str(product_id),
@@ -776,13 +821,9 @@ def job():
                         product_color,  # color
                         original_create_at,
                     )
-                print(f'table_ProductOptions {table_ProductOptions}')
-                nation = '기타'
-                if str(product_made).strip() == '한국' or str(product_made).strip() == '한국 ':
-                    nation = '대한민국'
-                elif str(product_made).strip() == '중국':
-                    nation = '중국'
                 
+                nation = calculate_nation(nation.strip())
+                print(f'nation : {nation}')
                 table_Products = (
                         str(product_id),  # autoincrement
                         str(shop_id),  
@@ -803,7 +844,7 @@ def job():
                         str(5), # #star
                     )
                 
-                print(f'table_Products {table_Products}')
+
                 table_CategoryOfProduct = (
                         # str(category_of_product_id), # autoincrement
                         category_id,
@@ -903,12 +944,10 @@ def job():
                                                                 color,
                                                                 original_create_at )
                                                                 VALUES ( %s, %s, %s, %s)"""
-                                                                
-                    print(f'table product options :::: {table_ProductOptions}') 
+                                                                 
                     cursor.execute(sql_productoptions, table_ProductOptions)
                     conn.commit()
                     
-                    print(f'inserting finish...')
                     
                     sql_washinfos = """INSERT INTO WashInfos (
                                                         product_id, 
@@ -929,7 +968,7 @@ def job():
                     # conn.close()
                     
                 except pymysql.Error as e:
-                    # cursor.close()
+                    
                     print(f'something went wrong {e}')  
                         
                 # df_product_one = pd.DataFrame({
@@ -976,7 +1015,7 @@ def job():
                                                    find_element(By.CLASS_NAME, 'icon-product-next'))
                         print("다음 상품 >")
                         
-                        product_all_cnt += 1
+                        scrapped_product_count += 1
 
                 except NoSuchElementException:
                     element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'icon-product-modal-close')))
@@ -995,7 +1034,6 @@ def job():
                     
             # now_time = datetime.datetime.today().strftime('%Y%m%d_%H%M')
             # df_product.to_csv(f'./{folder_shops}/{shop_name}_{now_time}.csv', index=False)
-                    
 
 
         except Exception as e:
@@ -1016,265 +1054,29 @@ def job():
     conn.close()
     driver.close()
 
-    #TODO: previos code
-    
-    # s3.upload_file(
-    #     f'{folder_shops}/{shop_name}.csv',
-    #     'sokodress',
-    #     f'{folder_shops}/{shop_name}.csv',
-    #     ExtraArgs={'ACL':'public-read'}
-    # )
-
-# job()
-
-# schedule.every().day.at("15:27").do(job) # day 날마다
-
-
-# while True:
-#     schedule.run_pending()
-#     time.sleep(10) 
-
-
-
-
-# def calculate_category_id(prod_name, c_big, c_small):
-#         # level_3 = ''
-
-#         # 여성 의류
-#         if c_big == "Women's Clothing":  # '여성 의류'
-#             # level_1 = '1'
-#             # TOP 탑 '7'
-#             if '스포츠' in prod_name or '골프' in prod_name:
-#                 level_3 = '35'
-#                 return level_3
-            
-            
-#             if c_small == "T-shirts&Tops":  # '티&탑':
-#                 if '니트' in prod_name:
-#                     level_3 = '9'
-#                     return level_3
-#                 elif '후드' in prod_name:
-#                     level_3 = '18'
-#                     return level_3
-#                 else:
-#                     level_3 = '8'
-#                     return level_3
-
-#             elif c_small == "Knitwear":  # '니트':
-#                 if '가디건' in prod_name:
-#                     level_3 = '14'
-#                     return level_3
-#                 elif '조끼' in prod_name:
-#                     level_3 = '15'
-#                     return level_3
-#                 else:
-#                     level_3 = '9'
-#                     return level_3
-
-#             elif c_small == "Blouses":  # '블라우스':
-#                 level_3 = '10'
-#                 return level_3
-
-#             elif c_small == "Shirts":  # '셔츠/남방':
-#                 level_3 = '11'
-#                 return level_3
-
-#             # OUTER 아우터 '12'
-#             elif c_small == "Outer":  # '아우터':
-#                 if '자켓' in prod_name or '쟈켓' in prod_name or 'jk' in prod_name or '재킷' in prod_name:
-#                     level_3 = '13'
-#                     return level_3
-#                 elif '가디건' or 'CD' in prod_name:
-#                     level_3 = '14'
-#                     return level_3
-#                 elif '조끼' in prod_name:
-#                     level_3 = '15'
-#                     return level_3
-#                 elif '패딩' in prod_name or '점퍼' in prod_name or 'jp' in prod_name:
-#                     level_3 = '16'
-#                     return level_3
-#                 elif '코트' or 'CT' or "ct" in prod_name:
-#                     level_3 = '17'
-#                     return level_3
-#                 elif '후드' in prod_name or '집업' in prod_name or '판쵸' in prod_name:
-#                     level_3 = '18'
-#                     return level_3
-#                 # elif '' in prod_name: # 망토/숄/판쵸 거의 없는 듯
-#                 #     level_3 = ''
-#                     # return level_3
-#                 else:
-#                     level_3 = '12'
-#                     return level_3
-
-#             # DRESS 드레스 '20'
-#             elif c_small == "Dresses":  # '원피스':
-#                 if '세트' in prod_name or '셋트' in prod_name:
-#                     level_3 = '22'
-#                     return level_3
-#                 elif '니트' in prod_name:
-#                     level_3 = '23'
-#                     return level_3
-#                 else:
-#                     level_3 = '21'
-#                     return level_3
-
-#             elif c_small == "Set Products":  # '세트 아이템':
-#                 level_3 = '22'
-#                 return level_3
-
-#             # BOTTOM 하의
-#             elif c_small == "Skirts":  # '스커트':
-#                 level_3 = '25'
-#                 return level_3
-
-#             elif c_small == "Pants":  # '팬츠':
-#                 if '레깅스' in prod_name:
-#                     level_3 = '30'
-#                     return level_3
-#                 elif '슬랙스' in prod_name or '슬렉스' in prod_name:
-#                     level_3 = '26'
-#                     return level_3
-#                 elif '점프수트' in prod_name or '점프슈트' in prod_name:
-#                     level_3 = '29'
-#                     return level_3
-#                 else:
-#                     level_3 = '27'
-#                     return level_3
-
-#             elif c_small == "Jeans":  # '청바지':
-#                 if '점프수트' in prod_name or '점프슈트' in prod_name:
-#                     level_3 = '29'
-#                     return level_3
-#                 else:
-#                     level_3 = '28'
-#                     return level_3
-
-#             # +MORE
-#             elif c_small == "Plus Size":  # '빅사이즈':
-#                 level_3 = '32'
-#                 return level_3
-
-#             elif c_small == "Maternity Clothing":  # '임부복':
-#                 level_3 = '34'
-#                 return level_3
-
-#             if '파자마' in prod_name or '잠옷' in prod_name or '속옷' in prod_name:
-#                 level_3 = '33'
-#                 return level_3
-
-#             if '비키니' in prod_name or '수영복' in prod_name or '레쉬가드' in prod_name or '비치웨어' in prod_name \
-#                     or '래시가드' in prod_name or '래쉬가드' in prod_name:
-#                 level_3 = '36'
-#                 return level_3
-
-           
-#             else:
-#                 level_3 = '98'
-#                 return level_3
-
-#         # 남성 의류
-#         elif c_big == "Men's Clothing":  # '남성 의류'
-#             # level_1 = '2'
-
-#             # TOP '37'
-#             if c_small == "Shirts":  # '티&탑':
-#                 level_3 = '38'
-#                 return level_3
-#             elif c_small == "Knitwear":  # '니트':
-#                 level_3 = '39'
-#                 return level_3
-#             elif c_small == "Shirts":  # '셔츠/남방':
-#                 level_3 = '40'
-#                 return level_3
-
-#             # BOTTOM '41'
-#             elif c_small == "Pants":  # '팬츠':
-#                 if '니트' in prod_name:
-#                     level_3 = '44'
-#                     return level_3
-#                 else:
-#                     level_3 = '42'
-#                     return level_3
-
-#             elif c_small == "Jeans":  # '청바지':
-#                 level_3 = '43'
-#                 return level_3
-
-#             # OUTER '45'
-#             elif c_small == "Outer":  # '아우터':
-#                 if '자켓' in prod_name or '쟈켓' in prod_name or 'jk' in prod_name or '재킷' in prod_name:
-#                     level_3 = '46'
-#                     return level_3
-#                 elif '가디건' in prod_name:
-#                     level_3 = '47'
-#                     return level_3
-#                 elif '조끼' in prod_name:
-#                     level_3 = '48'
-#                     return level_3
-#                 elif '패딩' in prod_name or '점퍼' in prod_name or 'jp' in prod_name:
-#                     level_3 = '49'
-#                     return level_3
-#                 elif '코트' in prod_name:
-#                     level_3 = '50'
-#                     return level_3
-#                 elif '후드' in prod_name or '집업' in prod_name or '판쵸' in prod_name:
-#                     level_3 = '51'
-#                     return level_3
-#                 else:
-#                     level_3 = '45'
-#                     return level_3
-
-#             # SUIT '52'
-#             elif c_small == "Suit":  # '수트':
-#                 level_3 = '53'
-#                 return level_3
-
-#             else:
-#                 level_3 = '98'
-#                 return level_3
-
-#         # 유아 의류
-#         elif c_big == "Children's Clothing":  # '유아 의류'
-#             # level_1 = '3'
-#             if c_small == "Outer":  # '아우터':
-#                 level_3 = '55'
-#                 return level_3
-#             elif c_small == "Knitwear":  # '니트':
-#                 level_3 = '56'
-#                 return level_3
-#             elif c_small == "T-shirts/Tops":  # '티/탑':
-#                 level_3 = '57'
-#                 return level_3
-#             elif c_small == "Jeans":  # '청바지':
-#                 level_3 = '58'
-#                 return level_3
-#             elif c_small == "Dresses":  # '원피스':
-#                 level_3 = '59'
-#                 return level_3
-#             elif c_small == "Pants":  # '팬츠':
-#                 level_3 = '60'
-#                 return level_3
-#             elif c_small == "Blouses":  # '블라우스':
-#                 level_3 = '61'
-#                 return level_3
-#             elif c_small == "Skirts":  # '스커트':
-#                 level_3 = '62'
-#                 return level_3
-#             elif c_small == "Suit":  # '정장세트':
-#                 level_3 = '63'
-#                 return level_3
-#             elif c_small == "In Season":  # '시즌':
-#                 level_3 = '64'
-#                 return level_3
-#             # elif c_small == '': # Kids Goods
-#                 # level_3 = ''
-#                 # return level_3
-#             else:
-#                 level_3 = '98'
-#                 return level_3
-
-#         else:
-#             level_3 = '98'
-#             return level_3
-
-
+@router.post('/test')
+def mupliple_prods_excecute():
+    conn = pymysql.connect(
+        host=os.getenv('host'),
+        port=3306,
+        user=os.getenv('user'),
+        passwd=os.getenv('passwd'),
+        db=os.getenv('db'),
+        charset='utf8mb4',
+    )
+    cur = conn.cursor()
+    try:
+        cur.execute("SELECT * FROM ScrapingShops WHERE type = 'linkshop' ")
+        shops = cur.fetchall()
+        for shop in shops: 
+            shop_id = shop[3]
+            print(shop_id)
+            job(shop_id)
+            time.sleep(1000 * 10)
+        return shops
+    except pymysql.Error as e:
+        cur.close()
+        conn.close()
+        print(f'something went wrong {e}')
+        return f'something went wrong {e}'
+        

@@ -100,6 +100,9 @@ def product():
 
 
 def job(store_id='CB1NA24367'):
+    
+    max_day_ago = 60 
+    
     create_folder('./Products')
     s3 = boto3.client(
         's3',
@@ -230,7 +233,6 @@ def job(store_id='CB1NA24367'):
         if total_product_count == 0:
             continue
 
-        # product_number = 1
         category_id = 98
         # while True and product_number <= total_product_count:
         for product_number in range(1, int(total_product_count + 1),1):
@@ -255,15 +257,13 @@ def job(store_id='CB1NA24367'):
                 continue
 
 
-            if original_create_at is None or check_product_register_date(original_create_at, 60) is False:
-                # product_number += 1
+            if original_create_at is None or check_product_register_date(original_create_at, max_day_ago) is False:
+                print(f"product uploaded {max_day_ago} days ago")
                 continue
-                
             else: 
                 original_create_at = parse_datetime(original_create_at)
                 pass
             
-            # product_number += 1
             
 
             # Calculate new scroll height and compare with last scroll height
@@ -287,14 +287,13 @@ def job(store_id='CB1NA24367'):
                 
                 
             if check_duplicate_product(prod_name, rows_products) is True:
-                print('check duplicate')
                 close_btn = driver.find_element(By.XPATH, '//*[@id="app"]/div[4]/div/div/div[1]/header/div/button')
                 click_element(close_btn)
                 continue
             else:
                 print('not duplicate')
                 pass
-
+            
             if prod_name is not None:
                 category_id = calculate_category(shop_name, prod_name)
                 # connect this to papago
@@ -413,7 +412,7 @@ def job(store_id='CB1NA24367'):
                     f'{str(product_id)}_{str(i)}',
                     image_url
                 )
-                
+
                 total_table_ProductImages.append(
                     table_ProductImages)
 
@@ -576,6 +575,7 @@ def job(store_id='CB1NA24367'):
 
 
 
+
 @router.get('/product')
 def test():
     conn = pymysql.connect(
@@ -594,10 +594,11 @@ def test():
     return len(products)
 
 
+
 def calculate_category(shop_name:str, prod_name:str) -> int:
     category_id = 98
     
-    if shop_name == '유성':
+    if   '유성' in shop_name:
         if '가디건' or 'CD' in prod_name or 'Y' in prod_name or 'VY' in prod_name or '볼레로' in prod_name:
             category_id = 14
         elif '자켓' in prod_name or '쟈켓' in prod_name or 'jk' in prod_name or '재킷' in prod_name or 'JK' in prod_name or 'Jk' in prod_name:
@@ -631,7 +632,7 @@ def calculate_category(shop_name:str, prod_name:str) -> int:
         else:
             category_id = 26
 
-    if shop_name == '와글':
+    if   '와글' in shop_name:
         if 'BL' in prod_name or 'bl' in prod_name or 'blouse' in prod_name or '블라우스' in prod_name:
             category_id = 10
         elif '자켓' in prod_name or '쟈켓' in prod_name or 'jk' in prod_name or '재킷' in prod_name or 'JK' in prod_name or 'Jk' in prod_name:
@@ -661,10 +662,10 @@ def calculate_category(shop_name:str, prod_name:str) -> int:
         else:
             category_id = 32
 
-    if shop_name == '더블유디(WD)':
+    if   '더블유디(WD)' in shop_name:
         category_id = 27 #pants
     
-    if shop_name == '루키':
+    if   '루키' in shop_name:
         if '자켓' in prod_name or '쟈켓' in prod_name or 'jk' in prod_name or '재킷' in prod_name or 'JK' in prod_name or 'Jk' in prod_name:
             category_id = 13
         elif 'PT' in prod_name or 'pt' in prod_name:
@@ -688,7 +689,7 @@ def calculate_category(shop_name:str, prod_name:str) -> int:
         elif 'OPS' in prod_name or '원피스' in prod_name or '드래스' in prod_name or '드레스' in prod_name:
             category_id = 21
             
-    if shop_name == '게이트':
+    if   '게이트' in shop_name:
         if '치마' in prod_name or 'SK' in prod_name or 'SKT' in prod_name or '스커트' in prod_name:
             category_id = 25
         elif 'BL' in prod_name or 'bl' in prod_name or 'blouse' in prod_name or '블라우스' in prod_name:
@@ -702,10 +703,10 @@ def calculate_category(shop_name:str, prod_name:str) -> int:
         elif 'OPS' in prod_name or '원피스' in prod_name or '드래스' in prod_name or '드레스' in prod_name:
             category_id = 21
             
-    if shop_name == '스킨':
+    if  '스킨' in shop_name:
         category_id = 27
-        
-    if shop_name == '문(mun)':
+        return category_id
+    if  '문(mun)' in shop_name:
         if '자켓' in prod_name or '쟈켓' in prod_name or 'jk' in prod_name or '재킷' in prod_name or 'JK' in prod_name or 'Jk' in prod_name:
             category_id = 13
         elif 'PT' in prod_name or 'pt' in prod_name:
@@ -731,7 +732,7 @@ def calculate_category(shop_name:str, prod_name:str) -> int:
         elif '티' in prod_name or '탑' in prod_name or '티셔츠' in prod_name or 'T' in prod_name or 'V' in prod_name or 'Y' in prod_name or 'P' in prod_name or 'RT' in prod_name or 'R' in prod_name or 'VT' in prod_name or '나시' in prod_name or '니트' in prod_name or '민소매' in prod_name or '반팔' in prod_name or '단가라' in prod_name or '카라' in prod_name or '폴라' in prod_name:
             category_id = 8
             
-    if shop_name == '톤앤톤':
+    if  '톤앤톤' in shop_name:
         if '자켓' in prod_name or '쟈켓' in prod_name or 'jk' in prod_name or '재킷' in prod_name or 'JK' in prod_name or 'Jk' in prod_name:
             category_id = 13
         elif 'PT' in prod_name or 'pt' in prod_name:
@@ -757,7 +758,7 @@ def calculate_category(shop_name:str, prod_name:str) -> int:
         elif '티' in prod_name or '탑' in prod_name or '티셔츠' in prod_name or 'T' in prod_name or 'V' in prod_name or 'Y' in prod_name or 'P' in prod_name or 'RT' in prod_name or 'R' in prod_name or 'VT' in prod_name or '나시' in prod_name or '니트' in prod_name or '민소매' in prod_name or '반팔' in prod_name or '단가라' in prod_name or '카라' in prod_name or '폴라' in prod_name:
             category_id = 8
             
-    if shop_name == '미모': 
+    if  '미모' in shop_name:
         if '자켓' in prod_name or '쟈켓' in prod_name or 'jk' in prod_name or '재킷' in prod_name or 'JK' in prod_name or 'Jk' in prod_name:
             category_id = 13
         elif 'PT' in prod_name or 'pt' in prod_name:
@@ -783,7 +784,7 @@ def calculate_category(shop_name:str, prod_name:str) -> int:
         elif '티' in prod_name or '탑' in prod_name or '티셔츠' in prod_name or 'T' in prod_name or 'V' in prod_name or 'Y' in prod_name or 'P' in prod_name or 'RT' in prod_name or 'R' in prod_name or 'VT' in prod_name or '나시' in prod_name or '니트' in prod_name or '민소매' in prod_name or '반팔' in prod_name or '단가라' in prod_name or '카라' in prod_name or '폴라' in prod_name:
             category_id = 8
             
-    if shop_name == '주라엘':
+    if   '주라엘' in shop_name:
         if '가디건' or 'CD' in prod_name:
             category_id = 14
         elif '자켓' in prod_name or '쟈켓' in prod_name or 'jk' in prod_name or '재킷' in prod_name or 'JK' in prod_name or 'Jk' in prod_name:
@@ -812,7 +813,7 @@ def calculate_category(shop_name:str, prod_name:str) -> int:
             category_id = 8
         elif '볼레로' in prod_name: 
             category_id = 14
-    if shop_name == '롤리팝':
+    if   '롤리팝' in shop_name:
         if '가디건' or 'CD' in prod_name:
             category_id = 14
         elif '자켓' in prod_name or '쟈켓' in prod_name or 'jk' in prod_name or '재킷' in prod_name or 'JK' in prod_name or 'Jk' in prod_name:
@@ -841,16 +842,16 @@ def calculate_category(shop_name:str, prod_name:str) -> int:
             category_id = 8
         elif '볼레로' in prod_name: 
             category_id = 14
-    if shop_name == '하마':
+    if   '하마' in shop_name:
         if '아이스' in prod_name: 
             category_id = 28
         else :
             category_id = 27
             
-    if  shop_name == '피노키오':
+    if    '피노키오' in shop_name:
         category_id = 28
     
-    if shop_name == '커피샤워':
+    if   '커피샤워' in shop_name:
         if '가디건' or 'CD' in prod_name:
             category_id = 14
         elif '자켓' in prod_name or '쟈켓' in prod_name or 'jk' in prod_name or '재킷' in prod_name or 'JK' in prod_name or 'Jk' in prod_name:
@@ -882,7 +883,7 @@ def calculate_category(shop_name:str, prod_name:str) -> int:
         elif '체크' in prod_name:
             category_id = 11
             
-    if shop_name == '가나다': 
+    if  '가나다' in shop_name:
         if '가디건' or 'CD' in prod_name or 'Y' in prod_name or 'VY' in prod_name or '볼레로' in prod_name:
             category_id = 14
         elif '자켓' in prod_name or '쟈켓' in prod_name or 'jk' in prod_name or '재킷' in prod_name or 'JK' in prod_name or 'Jk' in prod_name:
@@ -914,7 +915,7 @@ def calculate_category(shop_name:str, prod_name:str) -> int:
         elif '체크' in prod_name:
             category_id = 11
 
-    if shop_name == '이프하우스':
+    if   '이프하우스' in shop_name:
         if '티' in prod_name or 'RNT' in prod_name or 'NT' in prod_name or 'Neck Tee' in prod_name or 'U년' in prod_name or '카라' in prod_name or '탑' in prod_name or 'P(PolarT)' in prod_name or 'P' in prod_name or '티셔츠' in prod_name or 'T' in prod_name or 'V' in prod_name or 'Y' in prod_name or 'P' in prod_name or 'RT' in prod_name or 'R' in prod_name or 'VT' in prod_name or '나시' in prod_name or '니트' in prod_name or '민소매' in prod_name or '반팔' in prod_name or '단가라' in prod_name or '카라' in prod_name or '폴라' in prod_name:
             category_id = 8
         elif 'SL' in prod_name or 'PA' in prod_name or 'PT' in prod_name or '슬렉스' in prod_name or '슬랙스' in prod_name: 
@@ -949,7 +950,7 @@ def calculate_category(shop_name:str, prod_name:str) -> int:
             category_id = 14
         elif '체크' in prod_name:
             category_id = 11
-    if shop_name == '시엘':
+    if   '시엘' in shop_name:
         if '홈웨어' in prod_name:
             category_id = 33
         elif '수유SET' in prod_name: 
@@ -984,7 +985,7 @@ def calculate_category(shop_name:str, prod_name:str) -> int:
             category_id = 14
         elif '체크' in prod_name:
             category_id = 11
-    if shop_name == '르방':
+    if   '르방' in shop_name:
         if 'MTM' in prod_name: 
             category_id = 63 
         elif '가디건' or 'CD' in prod_name or 'Y' in prod_name or 'VY' in prod_name or '볼레로' in prod_name:
@@ -1017,7 +1018,7 @@ def calculate_category(shop_name:str, prod_name:str) -> int:
             category_id = 14
         elif '체크' in prod_name:
             category_id = 11
-    if shop_name == '페니블루' or shop_name == '페니블루 (페니)':   
+    if  '페니블루' in shop_name or  '페니블루 (페니)' in shop_name:
         if '가디건' or 'CD' in prod_name or 'Y' in prod_name or 'VY' in prod_name or '볼레로' in prod_name:
             category_id = 14
         elif '자켓' in prod_name or '쟈켓' in prod_name or 'jk' in prod_name or '재킷' in prod_name or 'JK' in prod_name or 'Jk' in prod_name:

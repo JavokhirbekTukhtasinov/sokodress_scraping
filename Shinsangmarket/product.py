@@ -27,7 +27,8 @@ from typing import Union, List, Set, Any
 from fastapi import HTTPException, status, BackgroundTasks
 from lib import downloadImage, upload_image, create_folder, style_dict, category1_dict, category2_dict, fabric_dict, nation_dict, wash_dict, calculate_category_id, calculate_is_unit, check_duplicate_product, papago_translate, scrap_prodcut_only
 import random
-
+from dotenv import load_dotenv
+load_dotenv()
 
 class Accounts(BaseModel):
     id: Union[str, None] = 'bong2692'
@@ -64,13 +65,13 @@ def predict_code(background_tasks: BackgroundTasks, body: RequestBody):
     if datetime.datetime.today().weekday() < weekdays:
         # production database
         conn = pymysql.connect(
-            host='moyvle.cz561frejrez.us-west-1.rds.amazonaws.com',
-            port=3306,
-            user='user',
-            passwd='seodh1234',
-            db='sokodress',
-            charset='utf8'
-        )
+        host=os.getenv('host'),
+        port=int(str(os.getenv('port'))),
+        user=os.getenv('user'),
+        passwd=os.getenv('passwd'),
+        db=os.getenv('db'),
+        charset='utf8'
+    )
 
         cur = conn.cursor()
         sql_scraping = """INSERT INTO Scraping (shop_id) VALUES (%s) """
@@ -82,7 +83,6 @@ def predict_code(background_tasks: BackgroundTasks, body: RequestBody):
         store_id = body.store_id
         days_ago = body.days_ago
         accounts = body.accounts
-        print(f'max count {body.accounts}')
 
         def initiate_task(body):
             for account in accounts:
@@ -100,23 +100,23 @@ def predict_code(background_tasks: BackgroundTasks, body: RequestBody):
 
 def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, categories):
 
-    # driver  = webdriver.Chrome(options=options)
     s3 = boto3.client(
         's3',
-        aws_access_key_id='AKIAXHNKF4YFB6E7I7OI',
-        aws_secret_access_key='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',
+        aws_access_key_id=os.getenv('aws_access_key_id'),
+        aws_secret_access_key=os.getenv('aws_secret_access_key')
     )
 
-# production database
+    # DB connect
     conn = pymysql.connect(
-        host='moyvle.cz561frejrez.us-west-1.rds.amazonaws.com',
-        port=3306,
-        user='user',
-        passwd='seodh1234',
-        db='sokodress',
+        host=os.getenv('host'),
+        port=int(str(os.getenv('port'))),
+        user=os.getenv('user'),
+        passwd=os.getenv('passwd'),
+        db=os.getenv('db'),
         charset='utf8'
     )
 
+    
     cur = conn.cursor()
     sql_shops = "SELECT * FROM Shops"
     # cur.execute(sql_shops)
@@ -124,7 +124,7 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, cat
     sql_shops = """SELECT * FROM Shops WHERE shop_id ='%s' """
     cur.execute(sql_shops, store_id)
     row_shop = cur.fetchone()
-    print(row_shop)
+
     if row_shop is None:
         return HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -367,44 +367,44 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, cat
     return log_message
 
 
-@router.get('/')
-def test():
-    downloadImage(f'https://image-v4.sinsang.market/?f=https://image-cache.sinsang.market/images/25232/92046071/167922118000577415_547936075.png&w=375&h=500', './Products/test3.png')
-    # try:
+# @router.get('/')
+# def test():
+#     downloadImage(f'https://image-v4.sinsang.market/?f=https://image-cache.sinsang.market/images/25232/92046071/167922118000577415_547936075.png&w=375&h=500', './Products/test3.png')
+#     # try:
 
-    # url = 'https://image-v4.sinsang.market/?f=https://image-cache.sinsang.market/images/25232/92085305/167655035100655297_1462791657.jpg&w=1500&h=2000'
-    # # url = 'https://www.searchenginejournal.com/wp-content/uploads/2022/06/image-search-1600-x-840-px-62c6dc4ff1eee-sej-1280x720.png'
+#     # url = 'https://image-v4.sinsang.market/?f=https://image-cache.sinsang.market/images/25232/92085305/167655035100655297_1462791657.jpg&w=1500&h=2000'
+#     # # url = 'https://www.searchenginejournal.com/wp-content/uploads/2022/06/image-search-1600-x-840-px-62c6dc4ff1eee-sej-1280x720.png'
 
-    # headers = {
-    #         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'  # A common user agent
-    #         }
+#     # headers = {
+#     #         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'  # A common user agent
+#     #         }
 
-    # response = requests.get(url=url, headers=headers)
-    # if response.status_code == 200:
-    #     with open('./Products/test2.png', 'wb') as f:
-    #         f.write(response.content)
-    #     print("Image downloaded successfully.")
-    # else:
-    #     print("Failed to download image. Status code:", response.status_code)
+#     # response = requests.get(url=url, headers=headers)
+#     # if response.status_code == 200:
+#     #     with open('./Products/test2.png', 'wb') as f:
+#     #         f.write(response.content)
+#     #     print("Image downloaded successfully.")
+#     # else:
+#     #     print("Failed to download image. Status code:", response.status_code)
 
-    #     # urlretrieve(url, './Products/test.png')
-    #     # image_response = requests.get(url, stream=True)
-    #     # with open('./Products/test.jpg', 'wb') as out_file:
-    #     #     shutil.copyfileobj(image_response.raw, out_file)
-    #     # del image_response
-    #     # print(image_response.status_code)
-    #     # if image_response.status_code == 200:
-    #     #     with  open('./Products/test2.jpg', 'wb') as out_file:
-    #     #         out_file.write(image_response.content)
-    #     #     return HTTPException(
-    #     #      status_code=status.HTTP_200_OK
-    #     #     )
+#     #     # urlretrieve(url, './Products/test.png')
+#     #     # image_response = requests.get(url, stream=True)
+#     #     # with open('./Products/test.jpg', 'wb') as out_file:
+#     #     #     shutil.copyfileobj(image_response.raw, out_file)
+#     #     # del image_response
+#     #     # print(image_response.status_code)
+#     #     # if image_response.status_code == 200:
+#     #     #     with  open('./Products/test2.jpg', 'wb') as out_file:
+#     #     #         out_file.write(image_response.content)
+#     #     #     return HTTPException(
+#     #     #      status_code=status.HTTP_200_OK
+#     #     #     )
 
-    # except Exception as err:
-    #     print(f'Error {err}')
-    #     return HTTPException(
-    #     status_code=status.HTTP_400_BAD_REQUEST,
-    #     detail=f'{err}')
+#     # except Exception as err:
+#     #     print(f'Error {err}')
+#     #     return HTTPException(
+#     #     status_code=status.HTTP_400_BAD_REQUEST,
+#     #     detail=f'{err}')
 
 
 @router.get('/progress/{reference_id}')
