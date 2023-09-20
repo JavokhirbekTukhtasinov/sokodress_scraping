@@ -13,15 +13,8 @@ from dotenv import load_dotenv
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 
-import re
-
-
 
 app = FastAPI(title='Sokodress scraping')
-
-
-
-
 
 
 

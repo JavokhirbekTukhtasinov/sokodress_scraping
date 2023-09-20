@@ -39,7 +39,7 @@ class Accounts(BaseModel):
 
 class RequestBody(BaseModel):
     store_id: Union[int, None] = 25232
-    days_ago: Union[int, None] = 3
+    days_ago: Union[int, None] = 60
     # id: Union[str, None] = 'bong2692'
     # password: Union[str, None] = 'sinsang4811!'
     accounts: Union[List[Accounts], None] = None
@@ -58,7 +58,6 @@ options.add_argument('--start-maximized')
 @router.post('/product')
 def predict_code(background_tasks: BackgroundTasks, body: RequestBody):
     create_folder('./Products')
-
     # change weekdays to 5 in order to defer scraping on weekends
     weekdays = 7
 
@@ -92,6 +91,7 @@ def predict_code(background_tasks: BackgroundTasks, body: RequestBody):
                               account.max_count, inference_id, account.selected_categories)
                 # time.sleep(60 * 60)
                 time.sleep(4)
+                
         background_tasks.add_task(initiate_task, body)
         return {'inference_id': inference_id}
     else:

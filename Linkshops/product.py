@@ -39,7 +39,7 @@ async def product():
     """
     Purpose: 
     """
-    job()
+    job('designbyjs')
     return {"message": "successfully sent!"}
     # job()
     
@@ -443,7 +443,7 @@ def job(store_name):
     
     # 로그인
     ID = 'waldoyun2@gmail.com'
-    pwd = 'Linkshops9138'
+    pwd = 'Linkshops9138!'
     driver.find_element(By.CLASS_NAME, 'input-wrapper').find_element(By.NAME, 'email').send_keys(ID)
     driver.find_element(By.CLASS_NAME, 'input-wrapper').find_element(By.NAME, 'password').send_keys(pwd)
     event_click(driver, driver.find_element(By.CLASS_NAME, 'login-modal-content-wrapper').find_element(By.ID, 'btn'))
@@ -1077,6 +1077,5 @@ def mupliple_prods_excecute():
     except pymysql.Error as e:
         cur.close()
         conn.close()
-        print(f'something went wrong {e}')
         return f'something went wrong {e}'
         

@@ -9,15 +9,37 @@ import re
 import datetime
 from dateutil.relativedelta import relativedelta
 from dotenv import load_dotenv
+import asyncio
+from pixelbin import PixelbinClient, PixelbinConfig
+import requests
+from requests.auth import HTTPBasicAuth
+# import nest_asyncio
+# nest_asyncio()
 load_dotenv()
 ips = []
 
 
-def rand_proxy():
-    pass
+CONFIG:PixelbinConfig = {
+    "host": "api.pixelbin.io",
+    "domain": "https://api.pixelbin.io",
+    # "apiSecret": os.getenv('pixelbin_api_key'),
+    "apiSecret": "86283a99-0666-4f6c-9a8a-31be6bff53bd"
+}
+pixelconfig = PixelbinConfig(config=CONFIG)
+pixelclient = PixelbinClient(config=pixelconfig)
 
-
-
+def send_watermark_image(image_path: str,file_name:str)-> bool:
+    try:
+        file = open(image_path, "rb")
+        print(f'file {file}')
+        result = pixelclient.assets.fileUpload(file=file, path="Products", name=file_name)
+        # result = asyncio.get_event_loop().run_until_complete(pixelclient.assets.fileUploadAsync(file=file, path='Products', name='test-image3'),)
+            # result = pixelclient.assets.listFiles()
+        print(f'result {result}')
+        return True
+    except Exception as e: 
+        print(f'something went wrong {e}')
+        return False
 
 def check_product_register_date(text_date:str, days_ago) -> bool:
 
@@ -396,13 +418,26 @@ def calculate_category_id(prod_name, c_big, c_small):
 def upload_image(s3, product_id, i):
     bucket_name = os.getenv('bucket_name')
     s3.upload_file(
-        f'./Products/{product_id}_{i}.jpg',
+        f'./Products/{product_id}_{i}.jpeg',
         bucket_name,
-        f'Products/{product_id}_{i}.jpg',
+        f'Products/{product_id}_{i}.jpeg',
         # ExtraArgs={'ACL': 'public-read'}
     )
-    image_url = f'https://sokodress.s3.ap-northeast-2.amazonaws.com/Products/{product_id}_{i}.jpg'
+    image_url = f'https://sokodress.s3.ap-northeast-2.amazonaws.com/Products/{product_id}_{i}.jpeg'
     return image_url
+
+def upload_watermark_image(s3, product_id, i):
+    bucket_name = os.getenv('bucket_name')
+    
+    s3.upload_file(
+        f'./Products/{product_id}_{i}.jpeg',
+        bucket_name,
+        f'Watermark/{product_id}_{i}.jpeg',
+        # ExtraArgs={'ACL': 'public-read'}
+    )
+    image_url = f'https://sokodress.s3.ap-northeast-2.amazonaws.com/Products/{product_id}_{i}.jpeg'
+    return image_url
+
 
 
 def papago_translate(text: str):
@@ -424,7 +459,6 @@ def papago_translate(text: str):
 
 
 def parse_datetime(datetime_str):
-    print(f'datetime_str : {datetime_str}')
     datetime_patern = r'\d{4}\.\d{2}\.\d{2}'
     matches = re.findall(datetime_patern, datetime_str)
     if matches:
@@ -452,18 +486,18 @@ def parse_datetime(datetime_str):
 #         return ''
 
 def parse_relative_time(relative_phrase):
-    print(f'ralative phrase time : {relative_phrase}')
+    pure_time = [char for char in relative_phrase]
     now = datetime.datetime.now()
     if 'year' in relative_phrase:
-        delta = relativedelta(years=int(relative_phrase.split()[0]))
+        delta = relativedelta(years=int(pure_time[0]))
     elif 'month' in relative_phrase:
-        delta = relativedelta(months=int(relative_phrase.split()[0]))
+        delta = relativedelta(months=int(pure_time[0]))
     elif 'day' in relative_phrase:
-        delta = relativedelta(days=int(relative_phrase.split()[0]))
+        delta = relativedelta(days=int(pure_time[0]))
     elif 'hour' in relative_phrase:
-        delta = relativedelta(hours=int(relative_phrase.split()[0]))
+        delta = relativedelta(hours=int(pure_time[0]))
     elif 'second' in relative_phrase: 
-        delta = relativedelta(seconds=int(relative_phrase.split()[0]))
+        delta = relativedelta(seconds=int(pure_time[0]))
     else:
         raise ValueError("Unsupported relative time phrase")
 
@@ -538,56 +572,26 @@ wash_dict = {
 
 
 def check_create_date_ago(driver, create_at):
-    print(f'create_at {create_at}')
+
     date_text = create_at.split(' ')
     original_create_at = parse_datetime(date_text[0])
-    print(f"original_create_at {original_create_at}")
-    
-    if 'Boosted' in create_at:
 
+    if 'Boosted' in create_at:    
         lines = create_at.split('\n')
-        print(f'lines :::::: {lines}')
-        # Iterate through the lines to find the one containing "Boosted"
-
-        # Extract the time after "Boosted"
-        boosted_parts = lines.split("Boosted")
-        print(f'boosted_parts::::: {boosted_parts}')
-
-        if len(boosted_parts) > 1:
-            boosted_time = boosted_parts[1].strip()
-            print("Boosted time:", boosted_time)
-        else:
-            print("No 'Boosted' line found")
-        # pattern = r'Registered[\s\S]*?Boosted (\d+ [a-z]+ ago)'
-        # print(f'pattern {pattern}')
-        # # Use re.search to find the match
-        # match = re.search(pattern, create_at)
-
-        # Check if a match was found
-        # if match:
-        #     # Extract the matched time
-        #     boosted_time = match.group(1)
-        #     print(f'boosted_time {boosted_time}')
-        #     uplift_at = parse_relative_time(boosted_time)
-        #     print("Boosted time:", boosted_time)
-        #     print(f"uplift_at {uplift_at}")
-        # else:
-        #     print("No match found")
         
+        boosted_parts = lines[1].split("Boosted")
+        boosted_time = boosted_parts[1].strip()
+        uplift_at = parse_relative_time(boosted_time)
+        
+    return {'original_create_at': original_create_at, 'uplift_at': uplift_at}
 
+        
 
 
 def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date_ago, wait, s3, store_id, style, c, style_id, cur, conn, MAX_COUNT, inference_id, scraped_item, image_id, product_id, days_ago):
     total_table_ProductImages = []
-    # total_table_Products = []
-    # total_table_CategoryOfProduct = []
-    # total_table_FabricInfos = []
-    # total_table_ProductOptions = []
     total_table_WashInfos = []
-    # total_table_ProductStyles = []
-
-    print(f'total_product_count: {total_product_count}')
-
+    print(f'days ago:::::: {days_ago}')
     # for goo in range(0, int(total_product_count)):
     for product_number in range(int(total_product_count)):
 
@@ -616,7 +620,10 @@ def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date
         try:
             prod_name = driver.find_element(
                 By.CSS_SELECTOR, '#goods-detail > div > div.content__section > div.goods-detail-right > div:nth-child(1) > p').text
+            # prod_name = driver.find_element(By.XPATH, '//p[contains(@class, "title")]').text
+            print(f'product name++>> {prod_name}')
         except Exception as e:
+            print(f'papago error::: {e}')
             prod_name = ''
             continue
 
@@ -655,40 +662,29 @@ def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date
             continue
             
 
-        original_create_at = check_create_date_ago(driver, create_at)
-
-           # 날짜가 days_ago보다 더 크면 break 
-        # if 'Boosted' in create_at:
-        #     uplift_at = parse_relative_time(create_at)
+        dates = check_create_date_ago(driver, create_at)
+        original_create_at = dates['original_create_at']
+        
+        if dates['uplift_at']:
+            uplift_at = dates['uplift_at']
+            text_date = datetime.datetime(uplift_at.year, uplift_at.month, uplift_at.day)
+            text_date_str = text_date.strftime("%Y-%m-%d")
+            if check_product_register_date(text_date_str, days_ago) is False:
+                print(f"product uploaded {days_ago} days ago")
+                driver.execute_script('arguments[0].click();', driver.find_element(By.CLASS_NAME, 'close-button'))
+                continue
             
-        #     print(f"uplift_at {uplift_at}")
+        else:
+            datetimeObj = datetime.datetime.strptime(original_create_at, '%Y-%m-%d %H:%M:%S')
+            text_date = datetime.datetime(datetimeObj.year, datetimeObj.month, datetimeObj.day)
+            text_date_str = text_date.strftime("%Y-%m-%d")
+            if check_product_register_date(text_date_str, days_ago) is False:
+                print(f"product uploaded=====>>>>>>>> {days_ago} days ago")
+                driver.execute_script('arguments[0].click();', driver.find_element(By.CLASS_NAME, 'close-button'))
+                continue
+        
+        print(f'original create at ->>> {original_create_at}, uplift at ->>> {uplift_at}')
 
-        #         # if 'hours' in create_at or 'minutes' in create_at:
-        #         #     pass
-        #         # elif 'year' in create_at:
-        #         #     driver.execute_script('arguments[0].click();', driver.find_element(
-        #         #         By.CLASS_NAME, 'close-button'))
-        #         #     continue
-        #         # elif 'days' in create_at:
-        #         #     if int(re.sub(r'[^0-9]', '', create_at.split('\n')[1])) < days_ago:
-        #         #         pass
-        #         #     else:
-        #         #         driver.execute_script('arguments[0].click();', driver.find_element(
-        #         #             By.CLASS_NAME, 'close-button'))
-        #         #         continue
-        #         # else:
-        #         #     print(f"[LOG] 등록일: {create_at}")
-        #     # elif datetime.datetime.strptime(create_at.split(' ')[0], '%Y.%m.%d') < standard_date_ago:
-
-        #     #     # driver.find_element(By.CLASS_NAME, 'close-button').click()
-        #     #     driver.execute_script('arguments[0].click();', driver.find_element(
-        #     #         By.CLASS_NAME, 'close-button'))
-        #     #     continue
-
-        # else:
-        #     original_create_at = parse_datetime(create_at)
-        #     print(f"original_create_at {original_create_at}")
-        #     pass
 
             # 위의 날짜 계산이 끝나면 입력할 create_at로 변환
         if create_at != '':
@@ -755,11 +751,29 @@ def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date
                 goods_src = driver.find_element(
                 By.XPATH, f'//*[@id="goods-detail"]/div/div[2]/div[1]/div[1]/div/div[1]/div[1]/div[1]/div/div[{i}]/div/img').get_attribute('src')
                 print(f'image src =>>> {goods_src}')
-                image_path = f'./Products/{product_id}_{i}.jpg'
+                file_name = f'{product_id}_{i}.jpeg'
+                image_path = f'./Products/{file_name}'
 
-                downloadImage(goods_src, image_path)
+                # original file upload
+                try:
+                    downloadImage(goods_src, image_path)
+                    time.sleep(3)
+                    send_watermark_image(image_path=image_path, file_name=file_name)
+                    watermark_img = upload_watermark_image(s3, product_id=product_id, i=i)
+                except Exception as e: 
+                    print(f"[LOG] pixelbin Upload Error {e}")
+                    
+                # watermark removed file upload
+                try:
+                    time.sleep(10)
+                    watermark_img_url = f"https://cdn.pixelbin.io/v2/summer-cloud-812947/wm.remove()/Products/{file_name}"
+                    downloadImage(watermark_img_url, image_path)
+                    image_url = upload_image(s3, product_id, i)
+                except Exception as e: 
+                    print(f'watermark error {e}')
 
-                image_url = upload_image(s3, product_id, i)
+
+
 
                 table_ProductImages = (
                         # str(image_id),  # autoincrement

@@ -229,10 +229,10 @@ def job(store_id='CB1NA24367'):
             pass
 
         # temp
-        total_product_count = 2
+        # total_product_count = 2
         if total_product_count == 0:
             continue
-
+        
         category_id = 98
         # while True and product_number <= total_product_count:
         for product_number in range(1, int(total_product_count + 1),1):
@@ -321,7 +321,7 @@ def job(store_id='CB1NA24367'):
                 By.TAG_NAME, 'tbody').find_elements(By.TAG_NAME, 'tr')
             try:
                 price = driver.find_element(
-                    By.XPATH, '//*[@id="scroll-target"]/div[1]/div[1]/div[2]/div[2]/div[2]/div').text.split(' ')[0]
+                    By.XPATH, '//*[@id="scroll-target"]/div[1]/div[1]/div[2]/div[2]/div[2]/div').text.replace(',','')
             except:
                 price = ''
 
@@ -360,16 +360,9 @@ def job(store_id='CB1NA24367'):
                 안감 = ''
                 피팅감 = ''
                 
-            # print(f'product name ->> {prod_name}, sanga ->> {sanga}, price ->> {price}, nation ->> {nation}, style ->> {style}, contents ->> {contents}, 비침 ->> {비침}, 신축성 ->> {신축성}, 안감 ->> {안감}, 피팅감 ->> {피팅감}, address ->> {address}, shop_phone ->> {shop_phone}, category_id ->> {category_id}, prod_name_en ->> {prod_name_en}')
-            # try:
-            #     maxrate = driver.find_element(
-            #                 By.XPATH, "//div[contains(text(), 'Proposition')]/following-sibling::div").text
-            #             # print(f'maxrate ->>> {maxrate}')
-
-            # except Exception as e:
-            #     maxrate = ''
             
             image_group = []
+            
             try:
                 image_group = driver.find_element(By.XPATH, '//*[@id="scroll-target"]/div[1]/div[1]/div[1]/div/div[2]/div/div[2]/div').find_elements(
                     By.XPATH, '//div[contains(@class, "ma-1 v-card v-card--link v-sheet theme--light rounded-0 grey lighten-1")]')
