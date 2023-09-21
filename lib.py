@@ -28,18 +28,26 @@ CONFIG:PixelbinConfig = {
 pixelconfig = PixelbinConfig(config=CONFIG)
 pixelclient = PixelbinClient(config=pixelconfig)
 
-def send_watermark_image(image_path: str,file_name:str)-> bool:
+
+
+
+
+def send_watermark_image(image_path: str, file_name:str)-> bool:
     try:
+        print(f'image path::::: {image_path}, file name::::: {file_name}')
         file = open(image_path, "rb")
-        print(f'file {file}')
-        result = pixelclient.assets.fileUpload(file=file, path="Products", name=file_name)
-        # result = asyncio.get_event_loop().run_until_complete(pixelclient.assets.fileUploadAsync(file=file, path='Products', name='test-image3'),)
+        # result = pixelclient.assets.fileUpload(file=file, path="Products", name=file_name)
+        # result = pixelclient.assets.urlUpload(url=url, path='Products', name=file_name)
+        result = asyncio.get_event_loop().run_until_complete(pixelclient.assets.fileUploadAsync(file=file, path='Products', name=file_name),)
             # result = pixelclient.assets.listFiles()
         print(f'result {result}')
         return True
     except Exception as e: 
         print(f'something went wrong {e}')
         return False
+
+
+
 
 def check_product_register_date(text_date:str, days_ago) -> bool:
 
@@ -73,7 +81,9 @@ def downloadImage(url: str, path: str):
             # A common user agent
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
         }
-        response = requests.get(url=url, headers=headers)
+        print(f'download started')
+        response = requests.get(url=url, headers=headers, timeout=10000)
+        print(f"respons status code::::: {response.status_code}")
         if response.status_code == 200:
             with open(f'{path}', 'wb') as f:
                 f.write(response.content)
@@ -81,7 +91,7 @@ def downloadImage(url: str, path: str):
             
         else:
             print("Failed to download image. Status code:", response.status_code)
-
+        print(f'download completed')
         # urlretrieve(url, './Products/test.png')
 
         # image_response = requests.get(url, stream=True)
@@ -430,12 +440,12 @@ def upload_watermark_image(s3, product_id, i):
     bucket_name = os.getenv('bucket_name')
     
     s3.upload_file(
-        f'./Products/{product_id}_{i}.jpeg',
+        f'./Products/sinsang_image_{product_id}_{i}.jpeg',
         bucket_name,
-        f'Watermark/{product_id}_{i}.jpeg',
+        f'Watermark/sinsang_image_{product_id}_{i}.jpeg',
         # ExtraArgs={'ACL': 'public-read'}
     )
-    image_url = f'https://sokodress.s3.ap-northeast-2.amazonaws.com/Products/{product_id}_{i}.jpeg'
+    image_url = f'https://sokodress.s3.ap-northeast-2.amazonaws.com/Products/sinsang_image_{product_id}_{i}.jpeg'
     return image_url
 
 
@@ -751,29 +761,39 @@ def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date
                 goods_src = driver.find_element(
                 By.XPATH, f'//*[@id="goods-detail"]/div/div[2]/div[1]/div[1]/div/div[1]/div[1]/div[1]/div/div[{i}]/div/img').get_attribute('src')
                 print(f'image src =>>> {goods_src}')
-                file_name = f'{product_id}_{i}.jpeg'
-                image_path = f'./Products/{file_name}'
+                
+                file_name = f'sinsang_image_{product_id}_{i}'
+                image_path = f'./Products/{file_name}.jpeg'
 
                 # original file upload
-                try:
-                    downloadImage(goods_src, image_path)
-                    time.sleep(3)
-                    send_watermark_image(image_path=image_path, file_name=file_name)
-                    watermark_img = upload_watermark_image(s3, product_id=product_id, i=i)
-                except Exception as e: 
-                    print(f"[LOG] pixelbin Upload Error {e}")
+                # try:
+                downloadImage(goods_src, image_path)
+                time.sleep(4)
+                send_watermark_image(image_path='./Products/sinsang_image_45_1.jpeg', file_name='sinsang_image_455_1')
+                # send_watermark_image(url=goods_src, file_name=file_name, image_path=image_path)
+                
+                upload_watermark_image(s3, product_id=product_id, i=i)
+
+                # except Exception as e:
+                #     print(f"[LOG] pixelbin Upload Error {e}")
                     
                 # watermark removed file upload
                 try:
-                    time.sleep(10)
-                    watermark_img_url = f"https://cdn.pixelbin.io/v2/summer-cloud-812947/wm.remove()/Products/{file_name}"
+                    watermark_img_url = f"https://cdn.pixelbin.io/v2/summer-cloud-812947/wm.remove()/Products/{file_name}.jpeg"
                     downloadImage(watermark_img_url, image_path)
-                    image_url = upload_image(s3, product_id, i)
+                    time.sleep(10)
+                    bucket_name = os.getenv('bucket_name')
+                    s3.upload_file(
+                        image_path,
+                        bucket_name,
+                        f'Products/{product_id}_{i}.jpeg',
+                        # ExtraArgs={'ACL': 'public-read'}
+                        )
+
+                    image_url = f'https://sokodress.s3.ap-northeast-2.amazonaws.com/Products/{product_id}_{i}.jpeg'
+                    
                 except Exception as e: 
                     print(f'watermark error {e}')
-
-
-
 
                 table_ProductImages = (
                         # str(image_id),  # autoincrement
@@ -1036,3 +1056,4 @@ def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date
     total_table_WashInfos = []
 
     product_number = 0
+    

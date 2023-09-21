@@ -1068,11 +1068,16 @@ def mupliple_prods_excecute():
     try:
         cur.execute("SELECT * FROM ScrapingShops WHERE type = 'linkshop' ")
         shops = cur.fetchall()
+        cur.execute("SELECT * FROM ScrapingAccounts WHERE type = 'linkshop' ")
+        accounts = cur.fetchall()
+
         for shop in shops: 
             shop_id = shop[3]
             print(shop_id)
+            
             job(shop_id)
             time.sleep(1000 * 10)
+                
         return shops
     except pymysql.Error as e:
         cur.close()

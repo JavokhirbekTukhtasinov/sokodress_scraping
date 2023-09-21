@@ -8,10 +8,14 @@ from Linkshops.product import job as LinkshopJob , mupliple_prods_excecute as Li
 # from Linkshops.product_new import router as LinkshopRouter
 from fastapi.middleware.cors import CORSMiddleware
 # from ddmmarket.product import router as DDDMRouter
-from ddmmarket.product_new import router as DDDMRouter, job as ddmmarketJob
+from ddmmarket.product import router as DDDMRouter, job as ddmmarketJob
 from dotenv import load_dotenv
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
+import pymysql
+import os
+from fastapi import HTTPException, status
+load_dotenv()
 
 
 app = FastAPI(title='Sokodress scraping')
@@ -23,13 +27,41 @@ app = FastAPI(title='Sokodress scraping')
 def root():
     return {'msg' : 'Healthy'}
 
-
+# 임시로 만들어진 라우트
+@app.delete('/product/{product_id}')
+def delete_product(product_id):
+    conn = pymysql.connect(
+        host=os.getenv('host'),
+        port=int(str(os.getenv('port'))),
+        user=os.getenv('user'),
+        passwd=os.getenv('passwd'),
+        db=os.getenv('db'),
+        charset='utf8'
+    )
+    try:
+        cur = conn.cursor()
+        sql_img = """DELETE FROM ProductImages WHERE product_id = %s"""
+        sql_option = """DELETE FROM ProductOptions WHERE product_id = %s"""
+        sql_fabric = """DELETE FROM FabricInfos WHERE product_id = %s"""
+        sql_cat = """DELETE FROM CategoryOfProduct WHERE product_id = %s"""
+        sql_prod = """DELETE FROM Products WHERE product_id = %s"""
+        cur.execute(sql_img, (product_id))
+        cur.execute(sql_option, (product_id))
+        cur.execute(sql_fabric, (product_id))
+        cur.execute(sql_prod, (product_id))
+        cur.execute(sql_cat, (product_id))
+        conn.commit()
+        cur.close()
+        conn.close()
+        return True
+    except Exception as err:
+        return HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=err)
 
 app.include_router(prefix='/dddm' , router=DDDMRouter)
 app.include_router(prefix='/linkshop', router=LinkshopRouter)
 app.include_router(prefix='/shinsang' , router=ShinsangRouter)
 app.include_router(prefix='/shinsang/shopp', router=ShinsangShopRouter)
-load_dotenv()
+
 
 
 @app.on_event('startup')
