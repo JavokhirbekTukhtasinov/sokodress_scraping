@@ -634,7 +634,7 @@ def job(store_name):
                         if driver.find_element(By.CLASS_NAME, 'modal-product-next-button.next').find_element(By.CLASS_NAME, 'icon-product-next'):
                             event_click(driver, driver.find_element(By.CLASS_NAME, 'modal-product-next-button.next').\
                                             find_element(By.CLASS_NAME, 'icon-product-next'))
-
+                            
                         print("다음 상품 >>>>>>>")
                         continue
                 except Exception as e:
@@ -970,41 +970,6 @@ def job(store_name):
                 except pymysql.Error as e:
                     
                     print(f'something went wrong {e}')  
-                        
-                # df_product_one = pd.DataFrame({
-                #     'shop_name': [shop_name],
-                #     'sizang_name': ['동대문'],
-                #     'sangga_name': [sangga_name],
-                #     'shop_address': [shop_address],
-                #     'shop_phone': [shop_phone],
-                #     'product_unique_id': [product_unique_id],
-                #     'product_create_at': [product_create_at],
-                #     'product_category_1': [product_category_1],
-                #     'product_category_2': [product_category_2],
-                #     'product_category_3': [product_category_3],
-                #     'product_name': [product_name],
-                #     'product_maxrate': [product_maxrate],
-                #     'product_fabric': [product_fabric],
-                #     'product_made': [product_made],
-                #     'product_is_unit': [product_is_unit],
-                #     'product_price': [product_price],
-                #     'product_color': [product_color],
-                #     'product_size': [product_size],
-                #     'product_fitting': [product_fitting], # 핏정보
-                #     'product_thickness': [product_thickness], # 두께감
-                #     'product_elasticity': [product_elasticity], # 신축성
-                #     'product_seethrough': [product_seethrough], # 비침
-                #     'product_lining': [product_lining], # 안감
-                #     'product_gloss': [product_gloss], # 광택
-                #     'product_touch': [product_touch], # 촉감
-                #     'product_banding': [product_banding],
-                #     'product_image_url': [product_image_url],
-                #     'product_link': [shop_link]
-                # })
-                
-                # print(f'product one {df_product_one}')
-                # df_product = pd.concat([df_product, df_product_one], ignore_index=True)
-
                 # 상품 다음 > 클릭
                 try:
                     element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'icon-product-next')))
@@ -1054,6 +1019,7 @@ def job(store_name):
     conn.close()
     driver.close()
 
+
 @router.post('/test')
 def mupliple_prods_excecute():
     conn = pymysql.connect(
@@ -1064,7 +1030,9 @@ def mupliple_prods_excecute():
         db=os.getenv('db'),
         charset='utf8mb4',
     )
+
     cur = conn.cursor()
+
     try:
         cur.execute("SELECT * FROM ScrapingShops WHERE type = 'linkshop' ")
         shops = cur.fetchall()
@@ -1074,10 +1042,10 @@ def mupliple_prods_excecute():
         for shop in shops: 
             shop_id = shop[3]
             print(shop_id)
-            
             job(shop_id)
-            time.sleep(1000 * 10)
-                
+            
+            time.sleep(1000 * 5)
+            
         return shops
     except pymysql.Error as e:
         cur.close()

@@ -19,20 +19,21 @@ load_dotenv()
 ips = []
 
 
-CONFIG:PixelbinConfig = {
-    "host": "api.pixelbin.io",
-    "domain": "https://api.pixelbin.io",
-    # "apiSecret": os.getenv('pixelbin_api_key'),
-    "apiSecret": "86283a99-0666-4f6c-9a8a-31be6bff53bd"
-}
-pixelconfig = PixelbinConfig(config=CONFIG)
-pixelclient = PixelbinClient(config=pixelconfig)
-
 
 
 
 
 def send_watermark_image(image_path: str, file_name:str)-> bool:
+    
+    CONFIG:PixelbinConfig = {
+        "host": "api.pixelbin.io",
+        "domain": "https://api.pixelbin.io",
+        "apiSecret": os.getenv('pixelbin_api_key'),
+        # "apiSecret": "86283a99-0666-4f6c-9a8a-31be6bff53bd"
+    }
+    pixelconfig = PixelbinConfig(config=CONFIG)
+    pixelclient = PixelbinClient(config=pixelconfig)
+
     try:
         print(f'image path::::: {image_path}, file name::::: {file_name}')
         file = open(image_path, "rb")
@@ -734,19 +735,31 @@ def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date
             # is_sold_out
         try:
                 add_to_cart_button = driver.find_element(By.CLASS_NAME, 'flex-grow').find_element(By.CLASS_NAME, 'ssm-button').\
-                    find_element(
-                        By.TAG_NAME, 'button').get_attribute('class')
+                    find_element(By.TAG_NAME, 'button').get_attribute('class')
                 # print(f'add to cart button ->>> {add_to_cart_button}')
                 if 'disabled' in add_to_cart_button:
                     is_sold_out = '1'
                 else:
                     is_sold_out = '0'
+                    
         except Exception as e:
                 is_sonld_out = '0'
-
+                
             # ProductImages
         images_list = driver.find_elements(By.XPATH, '//img[@alt="thumbnail-image"]')
         print(f'images list ->>> {images_list}')
+        goods_src = driver.find_element(
+                By.XPATH, f'//*[@id="goods-detail"]/div/div[2]/div[1]/div[1]/div/div[1]/div[1]/div[1]/div/div[{1}]/div/img').get_attribute('src')
+        file_name = f'sinsang_image_{product_id}_{1}'
+        image_path = f'./Products/{file_name}.jpeg'
+
+                # original file upload
+                # try:
+        downloadImage(goods_src, image_path)
+        time.sleep(4)
+        send_watermark_image(image_path='./Products/sinsang_image_45_1.jpeg', file_name='sinsang_image_455_1')
+        break
+
         try:
             for i in range(1, len(images_list), 1):
                 time.sleep(2)
@@ -798,7 +811,7 @@ def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date
                 table_ProductImages = (
                         # str(image_id),  # autoincrement
                         str(product_id),
-                        # image_name(not null),
+                        # image_name(not null),x
                         f'{str(product_id)}_{str(i)}',
                         image_url
                 )
