@@ -1071,10 +1071,11 @@ def mupliple_prods_excecute():
             days_ago = shop[-1]
             print(days_ago)
             print(shop_id)
-            job(shop_id)
+            job(shop_id, days_ago)
             
             time.sleep(1000 * 5)
             
+
     except pymysql.Error as e:
         cur.close()
         conn.close()
