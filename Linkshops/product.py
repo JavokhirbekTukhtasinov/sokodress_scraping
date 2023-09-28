@@ -20,9 +20,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException, UnexpectedAlertPresentException
-from flask_cors import CORS, cross_origin
-from flask import Flask, request, jsonify, Response
-from flask_restful import reqparse, abort, Api, Resource
 import json
 import numpy as np
 import pymysql
