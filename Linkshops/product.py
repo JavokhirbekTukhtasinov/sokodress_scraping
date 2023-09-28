@@ -36,7 +36,7 @@ async def product():
     """
     Purpose: 
     """
-    job('designbyjs')
+    job('designbyjs', max_day_ago = 30 * 6)
     return {"message": "successfully sent!"}
     # job()
     
@@ -371,9 +371,9 @@ def category_classification(product_category):
 
 
 
-def job(store_name):
-    # max_day_ago = 60
-    max_day_ago = 30 * 50
+def job(store_name, max_day_ago = 30 * 2):
+
+
     # chrome option - 토르 테스트 중
     chrome_options = webdriver.ChromeOptions()
     # chrome_options.add_argument("--proxy-server=socks5://127.0.0.1:9150")
@@ -1064,14 +1064,17 @@ def mupliple_prods_excecute():
         cur.execute("SELECT * FROM ScrapingAccounts WHERE type = 'linkshop' ")
         accounts = cur.fetchall()
 
+        # return shops[-1][-1]
         for shop in shops: 
+            
             shop_id = shop[3]
+            days_ago = shop[-1]
+            print(days_ago)
             print(shop_id)
             job(shop_id)
             
             time.sleep(1000 * 5)
             
-        return shops
     except pymysql.Error as e:
         cur.close()
         conn.close()
