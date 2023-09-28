@@ -287,8 +287,7 @@ def job():
     driver.execute_script('arguments[0].click();', driver.find_element(By.CLASS_NAME, 'login_btn'))
     driver.implicitly_wait(10)
     time.sleep(2) # 2
-
-    # crawling shop list
+    
     basic_domain = 'http://www.ddmmarket.co.kr/Prod?m=S&c='
 
     # shops_link_list = [
