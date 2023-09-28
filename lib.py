@@ -461,10 +461,11 @@ def papago_translate(text: str):
         body = {'source': 'ko', 'target': 'en', 'text': text}
         response = requests.post(api_url, body, headers=headers)
         response_json = response.json()
-
+        
         return response_json.get('message').get('result').get('translatedText')
     except Exception as e:
         print(f'error: {e}')
+        return False
         # const { data } = await axios.post(api_url, body, { headers })
         #    const api_url = 'https://openapi.naver.com/v1/papago/n2mt';
 

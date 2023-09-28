@@ -228,7 +228,7 @@ def shops_hold_category(x): # 여성
     else:
         x = False
         y = False
-    
+
     return x, y
 
 # 데이터 db 네이밍 형식에 맞게 수정

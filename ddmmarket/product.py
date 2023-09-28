@@ -101,7 +101,7 @@ def product():
 
 def job(store_id='CB1NA24367'):
     
-    max_day_ago = 60 
+    max_day_ago = 30 * 6 
     
     create_folder('./Products')
     s3 = boto3.client(
@@ -160,7 +160,7 @@ def job(store_id='CB1NA24367'):
 
     driver.execute_script('arguments[0].click();', driver.find_element(
         By.XPATH, '//*[@id="app"]/div[2]/div[6]/div/div/header/div[1]/div/button[3]/span'))
-    time.sleep(1)
+    time.sleep(2)
     driver.find_element(By.ID, 'input-22').send_keys(id)
     time.sleep(1)
     driver.find_element(By.ID, 'input-25').send_keys(password)
@@ -168,15 +168,11 @@ def job(store_id='CB1NA24367'):
     driver.execute_script('arguments[0].click();', driver.find_element(
         By.XPATH, '//*[@id="app"]/div[4]/div/div/div[2]/form/button'))
     time.sleep(2)
-    # prev
-    # driver.execute_script('arguments[0].click();', driver.find_element(By.CLASS_NAME, 'login_btn'))
-    # driver.implicitly_wait(10)
-    time.sleep(2)
 
     # 크롤링 사이트 목록
     basic_domain = f'https://www.ddmmarket.co.kr/shop/RegularProducts'
     driver.get(basic_domain)
-    driver.implicitly_wait(1)
+    driver.implicitly_wait(2)
 
     shops = driver.find_element(By.XPATH, '//*[@id="app"]/div[1]/main/div/div/div/div[3]/div/div[2]/div[1]/div[2]/div').find_elements(
         By.XPATH, '//span[contains(@class,"px-2 v-chip v-chip--clickable v-chip--label v-chip--no-color v-chip--outlined theme--light v-size--default")]')
@@ -247,45 +243,48 @@ def job(store_id='CB1NA24367'):
             print(f'product number {product_number}')
             original_create_at = None
             try:
-                element = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, f'//*[@id="app"]/div[1]/main/div/div/div/div[6]/div[1]/div[{product_number}]/div/div[2]/div/div[5]')))
+                element = WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.XPATH, f'//*[@id="app"]/div[1]/main/div/div/div/div[6]/div[1]/div[{product_number}]/div/div[2]/div/div[5]')))
                 original_create_at = driver.find_element(By.XPATH, f'//*[@id="app"]/div[1]/main/div/div/div/div[6]/div[1]/div[{product_number}]/div/div[2]/div/div[5]').text.strip()
-
-                print(f'original create at {original_create_at}')
+                
             except Exception as e:
+                print(f'original create at error {e}')
                 original_create_at = None
+                continue
+            
+            print(f'original create at ========>>>> {original_create_at}')
+            
+            try:
+                if original_create_at is None or check_product_register_date(original_create_at, max_day_ago) is False:
+                    print(f"product uploaded {max_day_ago} days ago")
+                
+                else: 
+                    original_create_at = parse_datetime(original_create_at)
+                    pass
+            except Exception as e:
                 print(f'original create at error {e}')
                 continue
-
-
-            if original_create_at is None or check_product_register_date(original_create_at, max_day_ago) is False:
-                print(f"product uploaded {max_day_ago} days ago")
-                continue
-            else: 
-                original_create_at = parse_datetime(original_create_at)
-                pass
             
-            
-
             # Calculate new scroll height and compare with last scroll height
             new_height = driver.execute_script(
                 "return document.body.scrollHeight")
-            # if new_height == last_height:
-            #     break
-            last_height = new_height
             
               # product which is clicked
             active_prod = driver.find_element(By.XPATH, f'//*[@id="app"]/div[1]/main/div/div/div/div[6]/div[1]/div[{product_number}]/div')
             print(f'product loop ->> {product_number}')
             click_element(active_prod)
             time.sleep(1)
-
+            
             try:
                 prod_name = driver.find_element(
                     By.XPATH, '//*[@id="scroll-target"]/div[1]/div[1]/div[2]/div[1]/div/div[1]').text.split(' ')[1].strip()
             except:
                 prod_name = ''
-                
-                
+                continue
+            if prod_name is None:
+                close_btn = driver.find_element(By.XPATH, '//*[@id="app"]/div[4]/div/div/div[1]/header/div/button')
+                click_element(close_btn)
+                continue
+
             if check_duplicate_product(prod_name, rows_products) is True:
                 close_btn = driver.find_element(By.XPATH, '//*[@id="app"]/div[4]/div/div/div[1]/header/div/button')
                 click_element(close_btn)
@@ -296,20 +295,25 @@ def job(store_id='CB1NA24367'):
             
             if prod_name is not None:
                 category_id = calculate_category(shop_name, prod_name)
+                print(f'category id {category_id}')
                 # connect this to papago
-                prod_name_en = papago_translate(prod_name)
+                try:
+                    prod_name_en = papago_translate(prod_name)
+                except Exception as e:
+                    print(f'papago error {e}')
+                    prod_name_en = prod_name
+                    
+            # try:
+            #     sanga = driver.find_element(
+            #         By.XPATH, '//*[@id="scroll-target"]/div[1]/div[1]/div[2]/div[1]/div/div[2]').text
+            # except:
+            #     sanga = ''
 
-            try:
-                sanga = driver.find_element(
-                    By.XPATH, '//*[@id="scroll-target"]/div[1]/div[1]/div[2]/div[1]/div/div[2]').text
-            except:
-                sanga = ''
-
-            try:
-                address = driver.find_element(
-                    By.XPATH, '//*[@id="scroll-target"]/div[1]/div[1]/div[2]/div[1]/div/div[3]').text.split(':')[1]
-            except:
-                address = ''
+            # try:
+            #     address = driver.find_element(
+            #         By.XPATH, '//*[@id="scroll-target"]/div[1]/div[1]/div[2]/div[1]/div/div[3]').text.split(':')[1]
+            # except:
+            #     address = ''
 
             try:
                 shop_phone = driver.find_element(
@@ -359,42 +363,42 @@ def job(store_id='CB1NA24367'):
                 신축성 = ''
                 안감 = ''
                 피팅감 = ''
+                goods_fabric_lining = ''
+                goods_fabric_elasticity = ''
+                goods_fabric_seethrough = ''
                 
-            
             image_group = []
             
             try:
                 image_group = driver.find_element(By.XPATH, '//*[@id="scroll-target"]/div[1]/div[1]/div[1]/div/div[2]/div/div[2]/div').find_elements(
                     By.XPATH, '//div[contains(@class, "ma-1 v-card v-card--link v-sheet theme--light rounded-0 grey lighten-1")]')
-                time.sleep(0.6)
+                time.sleep(1)
+            
             except:
                 image_group = []
                 pass
-
-            prod_images = []
-            # print(f'image_group : {len(image_group)}')
-            for i in range(len(image_group)):
-                print(f'i : {i}')
-                
+            if len(image_group) == 0:
+                close_btn = driver.find_element(By.XPATH, '//*[@id="app"]/div[4]/div/div/div[1]/header/div/button')
+                click_element(close_btn)
+                continue
+            
+            for i in range(1, len(image_group),1):
                 if i == 0:
                     continue
+                
                 time.sleep(0.5)
-
                 bg_url = driver.find_element(
                     By.XPATH, f'//*[@id="scroll-target"]/div[1]/div[1]/div[1]/div/div[2]/div/div[2]/div/div[{i}]/div/div[2]').value_of_css_property('background-image')
-
-                goods_src = bg_url.lstrip('url("').rstrip('")')
-            
-                # print(f'image src =>>> {goods_src}')
-                image_path = f'./Products/{product_id}_{i}.jpg'
                 
-
+                goods_src = bg_url.lstrip('url("').rstrip('")')
+                image_path = f'./Products/{product_id}_{i}.jpeg'                
                 try:
                     urllib.request.urlretrieve(goods_src, image_path)
                     # print(f'image downloaded ->>> {image_path}')
                 except Exception as e:
                     print(f'image download error {e}')
 
+                time.sleep(1)
                 image_url = upload_image(s3, product_id, i)
                 
                 table_ProductImages = (
@@ -474,8 +478,6 @@ def job(store_id='CB1NA24367'):
                 '5'
             )
             
-            
-            
             table_FabricInfos = (
                 # str(fabric_id),  # autoincrement
                 str(product_id),
@@ -488,7 +490,8 @@ def job(store_id='CB1NA24367'):
                 '보통',  # 촉감('보통'으로)
                 '없음'  # 밴딩('없음'으로)
         )
-            
+
+            print(f'table_FabricInfos : {table_FabricInfos}')
             table_ProductOptions = (
                 # str(product_option_id),  # autoincrement
                 str(product_id),
