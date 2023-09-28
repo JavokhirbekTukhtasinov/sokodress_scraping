@@ -15,10 +15,17 @@ from apscheduler.triggers.cron import CronTrigger
 import pymysql
 import os
 from fastapi import HTTPException, status
+
 load_dotenv()
 
 
 app = FastAPI(title='Sokodress scraping')
+
+
+
+
+
+
 
 
 

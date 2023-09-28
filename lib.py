@@ -759,7 +759,6 @@ def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date
         downloadImage(goods_src, image_path)
         time.sleep(4)
         send_watermark_image(image_path='./Products/sinsang_image_45_1.jpeg', file_name='sinsang_image_455_1')
-        break
 
         try:
             for i in range(1, len(images_list), 1):

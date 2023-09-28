@@ -92,38 +92,41 @@ def check_product_register_date(text_date:str, days_ago) -> bool:
 
     if text_date is None:
         return False
-
-    date_obj = datetime.datetime.strptime(text_date, "%Y-%m-%d")
+    
+    try:
+        
+        date_obj = datetime.datetime.strptime(text_date.strip(), "%Y-%m-%d")
 
     # Calculate the current date
-    current_date = datetime.datetime.now()
+        current_date = datetime.datetime.now()
 
     # Calculate the difference between the two dates
-    date_difference = current_date - date_obj
+        date_difference = current_date - date_obj
 
     # Calculate a timedelta for two months (approximately 60 days)
-    two_months = datetime.timedelta(days=days_ago)
+        two_months = datetime.timedelta(days=days_ago)
     # Compare the date difference with two months
-    if date_difference < two_months:
-        result = True
-    else:
-        result = False
-    return result
-
-
+        if date_difference < two_months:
+            result = True
+        else:
+            result = False
+        return result
+    except Exception as e:
+        print(f'parsing date error {e}')
+        return False
+    
 def parse_datetime(datetime_str):
     datetime_patern = r'\d{4}\-\d{2}\-\d{2}'
     matches = re.findall(datetime_patern, datetime_str)
+    print(f'matches {matches}')
     if matches:
         datetime_str = matches[0]
 
-        parsed_datetime = datetime.strptime(datetime_str, '%Y-%m-%d')
+        parsed_datetime = datetime.datetime.strptime(datetime_str, '%Y-%m-%d')
 
         return parsed_datetime.strftime('%Y-%m-%d %H:%M:%S')
-
     else:
         return ''
-
 
 
 
@@ -132,150 +135,152 @@ def calculate_category_id(category1, category2, category3):
     category_id = 98
     if category1 == '여성':
         #  '탐' = 7
-        if category2 == '탐' or category2 == '티' or category2 == '상의':
-            if category3  == '셔츠' or category3 == '티셔츠' or category3 == '남방':
+        if  '탐' in category2 or  '티' in category2 or '상의' in category2:
+            if  '셔츠' in category2 or '티셔츠' in category2 or  '남방' in category2:
                category_id = 11
                return category_id
-            if category3 == '블라우스' or category3 == 'BLOUSE':
+            if  '블라우스' in category2 or 'BLOUSE' in category2:
                category_id = 10
                return category_id
-            if category3 == '니트' or category3 == 'Knit' or category3 == 'knit':
+            if  '니트' in category2 or 'Knit' in category2 or  'knit' in category2:
                category_id = 9
                return category_id
         # outer = 20
-        if category2 == '아우터' or category2 == "OUTER":
-            if category3 == '원피스/세트' or category3 == '원피스':
+        if   '아우터' in category2 or  "OUTER" in category2:
+            if   '원피스/세트' in category3 or  '원피스' in category3:
                category_id = 21
                return category_id
-            if category3 == '조끼' or '조기':
+            if  '조끼' in category3 or '조기' in category3:
                category_id = 15
                return category_id
-            if category3 == '가디건' or category3 == 'Cardigan':
+            if   '가디건' in category3 or 'Cardigan' in category3:
                category_id = 14
                return category_id
-            if category3 == '재킷' or category3 == '자켓' or category3 == 'jacket':
+            if   '재킷' in category3 or '자켓' in category3 or   'jacket' in category3:
                category_id = 13
                return category_id
-            if category3 == '패딩/점퍼' or category3 == '패딩' or category3 == '점퍼':
+            if   '패딩/점퍼' in category3 or  '패딩' in category3 or   '점퍼' in category3:
                category_id = 16
                return category_id
-            if category3 == '코트' or category3 == 'coat' or category3 == 'Coat':
+            if   '코트' in category3 or   'coat' in category3 or   'Coat' in category3:
                category_id = 17
                return category_id
-        if category2 == '하의' or category2 == 'BOTTOM' or category2 == 'bottom':
-            if category3 == '스커트':
+           
+        if   '하의' in category2 or   'BOTTOM' in category2 or   'bottom' in category2:
+            if   '스커트' in category3:
                 category_id = 25
                 return category_id
-            if category3 == '바지':
+            if   '바지' in category3:
                 category_id = 27
-            if category3 == '청비지' or category3 == 'Jean':
+            if   '청비지' in category3 or  'Jean' in category3:
                 category_id = 28
-            if category3 == '점프수트':
+            if   '점프수트' in category3:
                 category_id = 29
                 return category_id
-            if category3 == '레깅스': 
+            if   '레깅스' in category3: 
                 category_id = 30
                 return category_id
-        elif category2 == '빅사이즈':
+        elif  '빅사이즈' in category3:
             category_id = 32
             return category_id
-        elif category2 == '비치웨어':
+        elif  '비치웨어' in category1:
             category_id = 33
             return category_id
            
-    elif category1 == '남성':
-        if category2 == '상의' or category2 == 'Top':
-            if category3 == '셔츠' or category3 == '티셔츠' or category3 == '남방':
+    elif '남성' in category1:
+        if  '상의' in category2 or  'Top' in category2:
+            if  '셔츠' in category3 or  '티셔츠' in category3 or  '남방' in category3:
                 category_id = 40
                 return category_id
-            if category3 == '블라우스' or category3 == 'BLOUSE':
+            if  '블라우스' in category3 or  'BLOUSE' in category3:
                 category_id = 19
                 return category_id
-            if category3 == '니트' or category3 == 'Knit' or category3 == 'knit':
+            if  '니트' in category3 or  'Knit' in category3 or  'knit' in category3:
                 category_id = 39
                 return category_id
-        elif category2 == '하의':
-            if category3 == '바지':
+        elif  '하의' in category2:
+            if  '바지' in category3:
                 category_id = 42
                 return category_id
-            if category3 == '청바지':
+            if  '청바지' in category3:
                 category_id = 43
                 return category_id
-            if category3 == '니트류':
+            if  '니트류' in category3:
                 category_id = 44
                 return category_id
-        elif category2 == '아우터':
-            if  category3 == '재킷':
+        elif  '아우터' in category2:
+            if   '재킷' in category3:
                 category_id = 46
                 return category_id
-            if category3 == '가디건':
+            if  '가디건' in category3:
                 category_id = 47
                 return category_id
-            if category3 == '코트':
+            if  '코트' in category3:
                 category_id = 50
                 return category_id
-            if category3 == '조끼':
+            if  '조끼' in category3:
                 category_id = 48
                 return category_id
-            if category3 == '패딩/점퍼' or category3 == '패딩':
+            if  '패딩/점퍼' in category3 or  '패딩' in category3:
                 category_id = 49
                 return category_id
 
             # 정장
-        if category2 == '정장':
+        if  '정장' in category2:
             category_id = 52
             return category_id
-    if category1 == '유아동':
-        if category2 == '상의':
-            if category3 == '셔츠' or category3 == '티셔츠' or category3 == '남방':
+    if   '유아동' in category1:
+        if  '상의' in category2:
+            if '셔츠' in category3 or '티셔츠' in category3 or '남방' in category3:
                 category_id = 54
                 return category_id
-            if category3 == '블라우스' or category3 == 'BLOUSE' or category3 == '블라우스/셔츠':
+            if '블라우스' in category3 or 'BLOUSE' in category3 or '블라우스/ in category3셔츠':
                 category_id = 61
                 return category_id
-            if category3 == '니트' or category3 == 'Knit' or category3 == 'knit':
+            if '니트' in category3 or 'Knit' in category3 or 'knit' in category3:
                 category_id = 56
                 return category_id
-        if category2 == '하의':
-            if category3 == '스커트':
+        if  '하의' in category2:
+            if '스커트' in category3:
                 category_id = 62
                 return category_id
-            if category3 == '바지':
+            if '바지' in category3:
                 category_id = 60
                 return category_id
             
-            if category3 == '니트류':
+            if '니트류' in category3:
                 category_id = 56
                 return category_id
-        if category2 == '원피스/세트':
-            if category3 == '원피스':
+            
+        if  '원피스/세트' in category2:
+            if '원피스' in category3:
                 category_id = 59
                 return category_id
-        if category2 == '잡화':
-            if category3 == '아동소품':
+        if  '잡화' in category2:
+            if '아동소품' in category3:
                 category_id = 65
                 return category_id
-    if category1 == '잡화':
-        if category2 == '가방':
-            if category3 == '숄더백':
+    if   '잡화' in category1:
+        if  '가방' in category2:
+            if '숄더백' in category3:
                 category_id = 68
                 return  category_id
-            if category3 == '토트백':
+            if '토트백' in category3:
                 category_id = 67
                 return category_id
-            if category3 == '크로스백':
+            if '크로스백' in category3:
                 category_id = 69
                 return category_id
-            if category3 == '클러치/지갑':
+            if '클러치/지갑' in category3:
                 category_id = 70
                 return category_id
-            if category3 == '백팩/힙색':
+            if '백팩/힙색' in category3:
                 category_id = 71
                 return category_id
-            if category3 == '기타':
+            if '기타' in category3:
                 category_id = 72
                 return category_id
-    
+            
     # TODO : shoes and accessories 
     return category_id
 
@@ -366,10 +371,9 @@ def category_classification(product_category):
 
 
 
-
 def job(store_name):
     # max_day_ago = 60
-    max_day_ago = 100
+    max_day_ago = 30 * 50
     # chrome option - 토르 테스트 중
     chrome_options = webdriver.ChromeOptions()
     # chrome_options.add_argument("--proxy-server=socks5://127.0.0.1:9150")
@@ -594,12 +598,18 @@ def job(store_name):
                     
                     if driver.find_element(By.XPATH, "//div[contains(text(), '상품 번호')]").text:
                         product_unique_id_and_create_at = driver.find_elements(By.CLASS_NAME, 'product-info-item')[3].text
-                        product_unique_id = product_unique_id_and_create_at.split('      ')[0].replace('상품 번호\n', '')
-                        original_create_at = product_unique_id_and_create_at.split('      ')[1].replace('업데이트(', '').replace(')', '')
-                        # print(f'create at {product_create_at}')
+                        
+                        # original_create_at = product_unique_id_and_create_at.split('      ')[1].replace('업데이트(', '').replace(')', '')
+
+
+                    date_pattern = r'\(\d{4}-\d{2}-\d{2}\)'
+                    match = re.search(date_pattern, product_unique_id_and_create_at)
+
+                    if match:
+                        original_create_at = match.group(0)[1:-1]  # Remove the parentheses
+                    else:
+                        print("Date not found in the text.")
                 except:
-                    # product_unique_id = None
-                    # product_create_at = None
                     original_create_at = None
                     time.sleep(2)
                     
@@ -622,12 +632,14 @@ def job(store_name):
                         ONE_PAGE_FLAG = False
                         
                     finally:
-                        time.sleep(3)
-                        continue
-
+                        time.sleep(1)
+                        # continue
+                    
+                print(f'original create at {original_create_at}')
+                
                 try: 
                     if original_create_at is None or check_product_register_date(original_create_at, max_day_ago) is False:
-                        time.sleep(2)
+                        time.sleep(1)
                         if driver.find_element(By.CLASS_NAME, 'modal-product-next-button.next').find_element(By.CLASS_NAME, 'icon-product-next'):
                             event_click(driver, driver.find_element(By.CLASS_NAME, 'modal-product-next-button.next').\
                                             find_element(By.CLASS_NAME, 'icon-product-next'))
@@ -640,10 +652,17 @@ def job(store_name):
                             event_click(driver, driver.find_element(By.CLASS_NAME, 'modal-product-next-button.next').\
                                             find_element(By.CLASS_NAME, 'icon-product-next'))
 
-                else: 
+                # else: 
+                
+                try:
                     original_create_at = parse_datetime(original_create_at)
                     pass  
-
+                except Exception as e:
+                    original_create_at = None
+                    if driver.find_element(By.CLASS_NAME, 'modal-product-next-button.next').find_element(By.CLASS_NAME, 'icon-product-next'):
+                            event_click(driver, driver.find_element(By.CLASS_NAME, 'modal-product-next-button.next').\
+                                            find_element(By.CLASS_NAME, 'icon-product-next'))
+                
                 print(f'original create at {original_create_at}')
                 
                 try:
@@ -673,7 +692,15 @@ def job(store_name):
                 except:
                     product_name = None
                     
+                try:
+                    nation = driver.find_element(
+                    By.XPATH, "//*[@id='product-modal-container']/div[2]/div[1]/div[2]/div[1]/div/div[8]/div[2]").text
+                    print(f'nation ->>> {nation}')
                     
+                except Exception as e:
+                    print(f'nation error {e}')
+                    nation = ''
+
                     
                 if check_duplicate_product(product_name, rows_products) is True:
                         time.sleep(1.2)
@@ -688,7 +715,7 @@ def job(store_name):
                     pass
 
                 try:
-                    element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), '소재/혼용률')]")))
+                    element = WebDriverWait(driver, 1).until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), '소재/혼용률')]")))
                     
                     if driver.find_element(By.XPATH, "//div[contains(text(), '소재/혼용률')]").text:
                         product_maxrate = driver.find_elements(By.CLASS_NAME, 'product-info-item')[6].text
@@ -698,23 +725,23 @@ def job(store_name):
 
                 # 세탁방법이 있는게 있고 없는게 있어서 달라짐
                 try:
-                    element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), '세탁방법')]")))
+                    element = WebDriverWait(driver, 1).until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), '세탁방법')]")))
                     
                     if driver.find_element(By.XPATH, "//div[contains(text(), '세탁방법')]").text:
                         product_fabric = driver.find_elements(By.CLASS_NAME, 'product-info-item')[7].text
                         product_fabric = product_fabric.replace('세탁방법\n', '').replace(' / ', ',')
                         
-                    element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), '원산지')]")))
+                    element = WebDriverWait(driver, 1).until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), '원산지')]")))
 
                     if driver.find_element(By.XPATH, "//div[contains(text(), '원산지')]").text:
                         product_made = driver.find_elements(By.CLASS_NAME, 'product-info-item')[8].text
 
-                    element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), '낱장여부')]")))
+                    element = WebDriverWait(driver, 1).until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), '낱장여부')]")))
                     
                     if driver.find_element(By.XPATH, "//div[contains(text(), '낱장여부')]").text:
                         product_is_unit = driver.find_elements(By.CLASS_NAME, 'product-info-item')[9].text 
                     
-                    element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), '도매판매가')]")))
+                    element = WebDriverWait(driver, 1).until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), '도매판매가')]")))
 
                     if driver.find_element(By.XPATH, "//div[contains(text(), '도매판매가')]").text:
                         product_price = driver.find_elements(By.CLASS_NAME, 'product-info-item')[10].text
@@ -784,7 +811,7 @@ def job(store_name):
                         img_ele = i.find_element(By.CLASS_NAME, 'img').get_attribute('style')
                         img_ele = img_ele.split('url("')[1].split('");')[0]
                         img_ele = image_resize_url(img_ele)
-                        image_path = f'./Products/{product_id}_{image_id}.jpg'
+                        image_path = f'./Products/{product_id}_{image_id}.jpeg'
                         
                         urlretrieve(f'https:{img_ele}', image_path)
                         # downloadImage(img_ele, image_path)
@@ -819,8 +846,12 @@ def job(store_name):
                         original_create_at,
                     )
                 
-                nation = calculate_nation(nation.strip())
-                print(f'nation : {nation}')
+                print(f'nation before ======>>>> {nation}')
+
+                nation = calculate_nation(nation)
+
+                print(f'nation after ======>>>> {nation}')
+                
                 table_Products = (
                         str(product_id),  # autoincrement
                         str(shop_id),  
@@ -991,16 +1022,13 @@ def job(store_name):
                     
                     # <div class="img" style="background-image: url(&quot;//thumbs.cdn.linkshops.com/thumbs/20211102/480/6fef7cb0-3bb8-11ec-a643-1552bbc0ef37.jpg&quot;); background-size: contain; background-repeat: no-repeat; background-color: black; background-position: center center;"></div>
 
-            one_result_time = str(datetime.timedelta(seconds=time.time()-one_start_time)).split('.')[0]
-            print(f"한 페이지 도는 시간: {one_result_time}")
+            # one_result_time = str(datetime.timedelta(seconds=time.time()-one_start_time)).split('.')[0]
+            # print(f"한 페이지 도는 시간: {one_result_time}")
                     
-            # now_time = datetime.datetime.today().strftime('%Y%m%d_%H%M')
-            # df_product.to_csv(f'./{folder_shops}/{shop_name}_{now_time}.csv', index=False)
-
 
         except Exception as e:
             print(f"하다 끊겨서 저장 {e}")
-            now_time = datetime.datetime.today().strftime('%Y%m%d_%H%M')
+            # now_time = datetime.datetime.today().strftime('%Y%m%d_%H%M')
             # df_product.to_csv(f'./{folder_shops}/{shop_name}.csv', index=False)
             # df_product.to_csv(f'./{folder_shops}/{shop_name}_fail.csv', index=False)
             
