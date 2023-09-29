@@ -7,7 +7,6 @@ from Linkshops.product import router as LinkshopRouter
 from Linkshops.product import job as LinkshopJob , mupliple_prods_excecute as LinkshopJobMultiple
 
 from fastapi.middleware.cors import CORSMiddleware
-# from ddmmarket.product import router as DDDMRouter
 from ddmmarket.product import router as DDDMRouter, job as ddmmarketJob
 from dotenv import load_dotenv
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -20,12 +19,6 @@ load_dotenv()
 
 
 app = FastAPI(title='Sokodress scraping')
-
-
-
-
-
-
 
 
 

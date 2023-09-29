@@ -25,7 +25,7 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 from typing import Union, List, Set, Any
 from fastapi import HTTPException, status, BackgroundTasks
-from lib import downloadImage, upload_image, create_folder, style_dict, category1_dict, category2_dict, fabric_dict, nation_dict, wash_dict, calculate_category_id, calculate_is_unit, check_duplicate_product, papago_translate, scrap_prodcut_only
+from lib import downloadImage, upload_image, create_folder, style_dict, category1_dict, category2_dict, fabric_dict, nation_dict, wash_dict, calculate_category_id, calculate_is_unit, check_duplicate_product, papago_translate, scrap_prodcut_only, check_duplicate_shop
 import random
 from dotenv import load_dotenv
 load_dotenv()
@@ -50,6 +50,7 @@ class RequestBody(BaseModel):
 router = APIRouter(tags=['Sinsang'], responses={
                    404: {"description": "Not found"}})
 
+
 options = webdriver.ChromeOptions()
 options.add_experimental_option('excludeSwitches', ['enable-logging'])
 options.add_argument('--start-maximized')
@@ -72,34 +73,37 @@ def predict_code(background_tasks: BackgroundTasks, body: RequestBody):
         charset='utf8'
     )
 
+
         cur = conn.cursor()
-        sql_scraping = """INSERT INTO Scraping (shop_id) VALUES (%s) """
-        cur.execute(sql_scraping, (body.store_id))
+        # sql_scraping = """INSERT INTO Scraping (shop_id) VALUES (%s) """
+        # cur.execute(sql_scraping, (body.store_id))
         # Retrieve the last inserted row's ID
-        cur.execute("SELECT LAST_INSERT_ID()")
-        inference_id = cur.fetchone()[0]
+        # cur.execute("SELECT LAST_INSERT_ID()")
+        # inference_id = cur.fetchone()[0]
         conn.commit()
         store_id = body.store_id
         days_ago = body.days_ago
         accounts = body.accounts
-
+        
         def initiate_task(body):
             for account in accounts:
                 if account.max_count == 0:
                     continue
+                # model_predict(store_id, days_ago, account.id, account.password,
+                #               account.max_count, inference_id,account.selected_categories)
                 model_predict(store_id, days_ago, account.id, account.password,
-                              account.max_count, inference_id, account.selected_categories)
+                              account.max_count,account.selected_categories)
                 # time.sleep(60 * 60)
                 time.sleep(4)
                 
         background_tasks.add_task(initiate_task, body)
-        return {'inference_id': inference_id}
+        return {'inference_id'}
     else:
         return HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='You can do scraping only on weekdays')
 
 
-def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, categories):
-
+def model_predict(store_id, days_ago, id, password, MAX_COUNT,categories):
+        
     s3 = boto3.client(
         's3',
         aws_access_key_id=os.getenv('aws_access_key_id'),
@@ -116,7 +120,7 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, cat
         charset='utf8'
     )
 
-    
+
     cur = conn.cursor()
     sql_shops = "SELECT * FROM Shops"
     # cur.execute(sql_shops)
@@ -195,6 +199,10 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, cat
     time.sleep(1)
     driver.save_screenshot('screenie.png')
 
+    sql_shops = "SELECT * FROM Shops"
+    cur.execute(sql_shops)
+    rows_shops = cur.fetchall()
+    
     # 로그인
     # 새로운 계정
     # ID = 'bong2692'
@@ -225,6 +233,61 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, cat
     # driver.get(f'https://sinsangmarket.kr/store/{store_id}')
     driver.get(f'https://sinsangmarket.kr/store/{store_id}')
 
+    
+    # check shop exist in database else create new one 
+    
+    time.sleep(2)
+    shop_name = driver.find_element(By.XPATH , f'//*[@id="{store_id}"]/div/div[1]/div/div/div[2]/div[1]/div[1]/span').text.strip()
+    try:
+        shop_address = driver.find_element(By.XPATH , f'//*[@id="{store_id}"]/div/div[1]/div/div/div[2]/div[1]/div[2]/div[2]/div[2]').text.strip()
+    except Exception as e:
+        print(f'address error {e}')
+        shop_address = ''
+        pass
+        
+    try:
+        shop_phone  = driver.find_element(By.XPATH , f'//*[@id="{store_id}"]/div/div[1]/div/div/div[2]/div[1]/div[2]/div[1]/div[2]').text.strip()
+    except Exception as e:
+        print(f'phone error {e}')
+        shop_phone = ''
+        pass
+        
+    shop_link = f'https://sinsangmarket.kr/store/{store_id}'
+        
+    if check_duplicate_shop(shop_name, rows_shops) is None:
+        try:
+            shop_create_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            slq_interto_shop = """INSERT INTO Shops (shop_name, address, sinsang_store_phone, shop_image,transactions,  shop_link, main_items, create_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
+                # cursor = conn.cursor()
+            shop_image = '${s3_image_url}/ShopProfiles/shop_25232.png'
+            shop_insert_data = (shop_name, shop_address, shop_phone, shop_image,
+                                    0,  shop_link, '주력 아이템', shop_create_at)
+            print(shop_insert_data)
+            cur.execute(slq_interto_shop, shop_insert_data)
+
+            shop_id = cur.lastrowid
+
+            print(f'inserted shop id {shop_id}')
+
+        except Exception as e:
+                print(f'shop inserting error {e}')
+    else:
+            print('store already exists')
+            shop_id = check_duplicate_shop(shop_name, rows_shops)
+            pass
+
+            print(f'shop id {shop_id}')
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     # delay time till 3 seconds
     # time.sleep(3)
     time.sleep(1.5)
@@ -236,6 +299,7 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, cat
 
     scraped_item = 0
     stop_looping = False
+    
     print(f'stop looping outside {stop_looping}')
     for c in categories:
         if c == 0:
@@ -299,8 +363,9 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, cat
             except Exception as e:
                 print(f'error {e}')
                 continue
+            
             print(f'style list {len(style_list)}')
-
+            
             for sty in range(1, len(style_list)):
                 print(f'style id =>>> {sty}')
                 if stop_looping:
@@ -348,7 +413,7 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, cat
 
                 if total_product_count == 0 or total_product_count is None:
                     continue
-
+                
                 # if len(goods_list) == 0:
                 #     continue
 
@@ -358,7 +423,7 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT, inference_id, cat
 
                 try:
                     scrap_prodcut_only(driver, total_product_count, rows_products, standard_date_ago, wait, s3, store_id,
-                                       style, c, style_id, cur, conn, MAX_COUNT, inference_id, scraped_item, image_id, product_id, days_ago)
+                                       style, c, style_id, cur, conn, MAX_COUNT,  scraped_item, image_id, product_id, days_ago, shop_id)
                 except Exception as e:
                     print(f'error product scraping {e}')
                     continue
@@ -431,7 +496,6 @@ def progress(reference_id: int):
     finally:
         cur.close()
         conn.close()
-
 
 @router.get('/products/all')
 def get_products():

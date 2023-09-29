@@ -600,7 +600,7 @@ def check_create_date_ago(driver, create_at):
         
 
 
-def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date_ago, wait, s3, store_id, style, c, style_id, cur, conn, MAX_COUNT, inference_id, scraped_item, image_id, product_id, days_ago):
+def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date_ago, wait, s3, store_id, style, c, style_id, cur, conn, MAX_COUNT, scraped_item, image_id, product_id, days_ago, shop_id):
     total_table_ProductImages = []
     total_table_WashInfos = []
     print(f'days ago:::::: {days_ago}')
@@ -946,7 +946,7 @@ def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date
             # print(f'category 2 ->>> {category2}')
         table_Products = (
                 str(product_id),  # autoincrement
-                str(store_id),  # 일단 임의로
+                str(shop_id),  # 일단 임의로
                 prod_name,
                 prod_name_en,
                 real_price,
@@ -1040,6 +1040,10 @@ def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date
                 sql_productimages = """INSERT INTO ProductImages (product_id, image_name, image_url)
                                                                 VALUES ( %s, %s, %s)"""
                 cur.executemany(sql_productimages, total_table_ProductImages)
+
+                total_table_ProductImages = []
+                total_table_WashInfos = []
+                
                 conn.commit()
                 product_id += 1
                 category_of_product_id += 1
@@ -1053,9 +1057,9 @@ def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date
 
         if scraped_item >= MAX_COUNT:
                 stop_looping = True
-                time.sleep(1)
-                sql_scraping_update = 'UPDATE Scraping SET scraped_product_count = %s WHERE scraping_id = %s'
-                cur.execute(sql_scraping_update, (scraped_item, inference_id))
+                # time.sleep(1)
+                # sql_scraping_update = 'UPDATE Scraping SET scraped_product_count = %s WHERE scraping_id = %s'
+                # cur.execute(sql_scraping_update, (scraped_item, ))
                 conn.commit()
 
                 try:

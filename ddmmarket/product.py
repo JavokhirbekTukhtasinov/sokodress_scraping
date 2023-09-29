@@ -129,7 +129,7 @@ def job(store_id='CB1NA24367'):
     product_id = rows_products[-1][0] + \
         1 if len(list(rows_products)) > 0 else 1
 
-    print(f'product id --->>>> {product_id}')
+
     sql_shops = "SELECT * FROM Shops"
     cur.execute(sql_shops)
     rows_shops = cur.fetchall()
@@ -179,6 +179,8 @@ def job(store_id='CB1NA24367'):
         By.XPATH, '//span[contains(@class,"px-2 v-chip v-chip--clickable v-chip--label v-chip--no-color v-chip--outlined theme--light v-size--default")]')
     total_product_count = 0
     total_table_ProductImages = []
+    
+    
     
     scraped_item = 0
     for shop in shops:
