@@ -27,7 +27,9 @@ from dotenv import load_dotenv
 from lib import downloadImage, upload_image, check_duplicate_product, check_duplicate_shop, papago_translate
 import schedule
 from fastapi import HTTPException, status, BackgroundTasks, APIRouter
+from lib import s3_image_url
 load_dotenv()
+
 router = APIRouter(tags=['Linkshop'])
 
 
@@ -371,6 +373,7 @@ def category_classification(product_category):
 
 
 
+
 def job(store_name, max_day_ago = 30 * 2):
 
 
@@ -426,7 +429,6 @@ def job(store_name, max_day_ago = 30 * 2):
         aws_access_key_id = os.getenv('aws_access_key_id'),
         aws_secret_access_key = os.getenv('aws_secret_access_key'),
     )
-    s3_domain = 'https://sokodress.s3.ap-northeast-2.amazonaws.com'
 
     folder_shops = 'linkshops_shops'
     folder_products_image = 'Products'
@@ -507,7 +509,7 @@ def job(store_name, max_day_ago = 30 * 2):
             shop_create_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             slq_interto_shop = """INSERT INTO Shops (shop_name, address, sinsang_store_phone, shop_image,transactions, sanga_name, shop_link, main_items, create_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
             cursor = conn.cursor()
-            shop_image = 'https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/shop_25232.png'
+            shop_image = '${s3_image_url}/ShopProfiles/shop_25232.png'
             shop_insert_data = (store_name, shop_address, shop_phone, shop_image, 0, sangga_name, shop_link, '주력 아이템', shop_create_at)
             print(shop_insert_data)
             cursor.execute(slq_interto_shop, shop_insert_data)

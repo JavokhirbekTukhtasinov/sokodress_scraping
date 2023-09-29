@@ -31,6 +31,7 @@ from fastapi import HTTPException, status
 from lib import create_folder, downloadImage, upload_image, check_duplicate_shop, check_duplicate_product, papago_translate, check_product_register_date, parse_relative_time
 import urllib.request
 from dotenv import load_dotenv
+from lib import s3_image_url
 load_dotenv()
 
 
@@ -192,7 +193,7 @@ def job(store_id='CB1NA24367'):
                 shop_create_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 slq_interto_shop = """INSERT INTO Shops (shop_name, address, sinsang_store_phone, shop_image,transactions, sanga_name, shop_link, main_items, create_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
                 # cursor = conn.cursor()
-                shop_image = 'https://sokodress.s3.ap-northeast-2.amazonaws.com/ShopProfiles/shop_25232.png'
+                shop_image = '${s3_image_url}/ShopProfiles/shop_25232.png'
                 shop_insert_data = (shop_name, shop_address, shop_phone, shop_image,
                                     0, sanga_name, shop_link, '주력 아이템', shop_create_at)
                 print(shop_insert_data)

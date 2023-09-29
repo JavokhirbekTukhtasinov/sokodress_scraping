@@ -5,7 +5,7 @@ from Shinsangmarket.product import router as ShinsangRouter
 from Shinsangmarket.shop import router as ShinsangShopRouter 
 from Linkshops.product import router as LinkshopRouter
 from Linkshops.product import job as LinkshopJob , mupliple_prods_excecute as LinkshopJobMultiple
-# from Linkshops.product_new import router as LinkshopRouter
+
 from fastapi.middleware.cors import CORSMiddleware
 # from ddmmarket.product import router as DDDMRouter
 from ddmmarket.product import router as DDDMRouter, job as ddmmarketJob

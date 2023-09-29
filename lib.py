@@ -19,7 +19,7 @@ load_dotenv()
 ips = []
 
 
-
+s3_image_url = 'https://moyvle.s3.us-west-1.amazonaws.com'
 
 
 
@@ -434,7 +434,7 @@ def upload_image(s3, product_id, i):
         f'Products/{product_id}_{i}.jpeg',
         # ExtraArgs={'ACL': 'public-read'}
     )
-    image_url = f'https://sokodress.s3.ap-northeast-2.amazonaws.com/Products/{product_id}_{i}.jpeg'
+    image_url = f'${s3_image_url}/Products/{product_id}_{i}.jpeg'
     return image_url
 
 def upload_watermark_image(s3, product_id, i):
@@ -446,7 +446,7 @@ def upload_watermark_image(s3, product_id, i):
         f'Watermark/sinsang_image_{product_id}_{i}.jpeg',
         # ExtraArgs={'ACL': 'public-read'}
     )
-    image_url = f'https://sokodress.s3.ap-northeast-2.amazonaws.com/Products/sinsang_image_{product_id}_{i}.jpeg'
+    image_url = f'${s3_image_url}/sinsang_image_{product_id}_{i}.jpeg'
     return image_url
 
 
@@ -803,7 +803,7 @@ def scrap_prodcut_only(driver, total_product_count, rows_products, standard_date
                         # ExtraArgs={'ACL': 'public-read'}
                         )
 
-                    image_url = f'https://sokodress.s3.ap-northeast-2.amazonaws.com/Products/{product_id}_{i}.jpeg'
+                    image_url = f'${s3_image_url}/Products/{product_id}_{i}.jpeg'
                     
                 except Exception as e: 
                     print(f'watermark error {e}')
