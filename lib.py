@@ -434,7 +434,7 @@ def upload_image(s3, product_id, i):
         f'Products/{product_id}_{i}.jpeg',
         # ExtraArgs={'ACL': 'public-read'}
     )
-    image_url = f'${s3_image_url}/Products/{product_id}_{i}.jpeg'
+    image_url = f'{s3_image_url}/Products/{product_id}_{i}.jpeg'
     return image_url
 
 def upload_watermark_image(s3, product_id, i):

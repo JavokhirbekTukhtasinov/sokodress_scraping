@@ -38,11 +38,10 @@ async def product():
     """
     Purpose: 
     """
-    job('designbyjs', max_day_ago = 30 * 6)
+    job('designbyjs', max_day_ago = 30 * 2)
     return {"message": "successfully sent!"}
     # job()
     
-
 
 def create_folder(directory):
     try:
@@ -376,7 +375,6 @@ def category_classification(product_category):
 
 def job(store_name, max_day_ago = 30 * 2):
 
-
     # chrome option - 토르 테스트 중
     chrome_options = webdriver.ChromeOptions()
     # chrome_options.add_argument("--proxy-server=socks5://127.0.0.1:9150")
@@ -501,7 +499,6 @@ def job(store_name, max_day_ago = 30 * 2):
     except NoSuchElementException:
         shop_phone = ''
 
-          
 
           
     if  check_duplicate_shop(store_name, rows_shops) is None:
@@ -702,7 +699,6 @@ def job(store_name, max_day_ago = 30 * 2):
                 except Exception as e:
                     print(f'nation error {e}')
                     nation = ''
-
                     
                 if check_duplicate_product(product_name, rows_products) is True:
                         time.sleep(1.2)
@@ -711,7 +707,7 @@ def job(store_name, max_day_ago = 30 * 2):
                                             find_element(By.CLASS_NAME, 'icon-product-next'))
                         print("다음 상품 >")
                         continue
-                    
+
                 else:
                     print('not duplicate')
                     pass
@@ -751,13 +747,13 @@ def job(store_name, max_day_ago = 30 * 2):
                 except:
                     product_fabric = None
                     
-                    element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), '원산지')]")))
+                    element = WebDriverWait(driver, 1).until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), '원산지')]")))
                     product_made = driver.find_elements(By.CLASS_NAME, 'product-info-item')[7].text
                     
-                    element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), '낱장여부')]")))
+                    element = WebDriverWait(driver, 1).until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), '낱장여부')]")))
                     product_is_unit = driver.find_elements(By.CLASS_NAME, 'product-info-item')[8].text 
                     
-                    element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), '도매판매가')]")))
+                    element = WebDriverWait(driver, 1).until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), '도매판매가')]")))
                     product_price = driver.find_elements(By.CLASS_NAME, 'product-info-item')[9].text
 
                 finally:
@@ -766,7 +762,7 @@ def job(store_name, max_day_ago = 30 * 2):
                     product_price = int(re.sub(r'[^0-9]', '', product_price))
                 
                 try:
-                    element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'product-option-select')))
+                    element = WebDriverWait(driver, 1).until(EC.presence_of_element_located((By.CLASS_NAME, 'product-option-select')))
                     color_and_size = driver.find_element(By.CLASS_NAME, 'product-option-select').text
 
                     product_color = color_and_size.split('\n사이즈\n')[0]
@@ -803,7 +799,7 @@ def job(store_name, max_day_ago = 30 * 2):
                     product_banding = None
                 
                 try:
-                    element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'slick-slide')))
+                    element = WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.CLASS_NAME, 'slick-slide')))
 
                     slick_hidden = driver.find_element(By.CLASS_NAME, 'slick-initialized.slick-slider.productProductModalThumbnailSlider').\
                                         find_element(By.CLASS_NAME, 'slick-track').\
@@ -1065,8 +1061,8 @@ def mupliple_prods_excecute():
         shops = cur.fetchall()
         cur.execute("SELECT * FROM ScrapingAccounts WHERE type = 'linkshop' ")
         accounts = cur.fetchall()
-
-        # return shops[-1][-1]
+        print(f'shops {shops}')
+        # return shops[-1][-1]  
         for shop in shops: 
             
             shop_id = shop[3]
@@ -1075,7 +1071,7 @@ def mupliple_prods_excecute():
             print(shop_id)
             job(shop_id, days_ago)
             
-            time.sleep(1000 * 5)
+            time.sleep(10)
             
 
     except pymysql.Error as e:

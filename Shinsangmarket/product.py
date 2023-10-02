@@ -203,6 +203,7 @@ def model_predict(store_id, days_ago, id, password, MAX_COUNT,categories):
     cur.execute(sql_shops)
     rows_shops = cur.fetchall()
     
+    
     # 로그인
     # 새로운 계정
     # ID = 'bong2692'

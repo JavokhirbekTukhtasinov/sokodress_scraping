@@ -102,7 +102,7 @@ def product():
 
 def job(store_id='CB1NA24367'):
     
-    max_day_ago = 30 * 6 
+    max_day_ago = 30
     
     create_folder('./Products')
     s3 = boto3.client(
@@ -151,21 +151,23 @@ def job(store_id='CB1NA24367'):
     driver = webdriver.Chrome(service=Service(), options=chrome_options)
 
     # 로그인
-
+    
     driver.get('https://www.ddmmarket.co.kr')
     driver.implicitly_wait(10)
     # time.sleep(2)
 
     id = 'sokodress'
     password = 'ddmmarket9138'
-
+    
     driver.execute_script('arguments[0].click();', driver.find_element(
         By.XPATH, '//*[@id="app"]/div[2]/div[6]/div/div/header/div[1]/div/button[3]/span'))
     time.sleep(2)
     driver.find_element(By.ID, 'input-22').send_keys(id)
     time.sleep(1)
+
     driver.find_element(By.ID, 'input-25').send_keys(password)
-    time.sleep(0.5)
+    time.sleep(1)
+
     driver.execute_script('arguments[0].click();', driver.find_element(
         By.XPATH, '//*[@id="app"]/div[4]/div/div/div[2]/form/button'))
     time.sleep(2)
@@ -180,8 +182,8 @@ def job(store_id='CB1NA24367'):
     total_product_count = 0
     total_table_ProductImages = []
     
-    
-    
+
+        
     scraped_item = 0
     for shop in shops:
         shop_name = shop.text.strip()
@@ -206,18 +208,19 @@ def job(store_id='CB1NA24367'):
                 print(f'inserted shop id {shop_id}')
             # cursor.close()
             # conn.close()
-
+            
             except Exception as e:
                 print(f'shop inserting error {e}')
         else:
+
             print('store already exists')
             shop_id = check_duplicate_shop(shop_name, rows_shops)
             pass
-
+        
             print(f'shop id {shop_id}')
 
         click_element(shop)
-        time.sleep(1)
+        time.sleep(4)
        
         try:
             total_product_count = driver.find_element(
@@ -234,10 +237,11 @@ def job(store_id='CB1NA24367'):
         
         category_id = 98
         # while True and product_number <= total_product_count:
-        for product_number in range(1, int(total_product_count + 1),1):
-
+        for product_number in range(1, int(total_product_count),1):
+            
             if product_number == 0:
                 continue
+            
             driver.execute_script(
                 "window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(2)
@@ -248,9 +252,9 @@ def job(store_id='CB1NA24367'):
             try:
                 element = WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.XPATH, f'//*[@id="app"]/div[1]/main/div/div/div/div[6]/div[1]/div[{product_number}]/div/div[2]/div/div[5]')))
                 original_create_at = driver.find_element(By.XPATH, f'//*[@id="app"]/div[1]/main/div/div/div/div[6]/div[1]/div[{product_number}]/div/div[2]/div/div[5]').text.strip()
-                
+
             except Exception as e:
-                print(f'original create at error {e}')
+                print(f'original create at error 1:::: {e}')
                 original_create_at = None
                 continue
             
@@ -259,17 +263,55 @@ def job(store_id='CB1NA24367'):
             try:
                 if original_create_at is None or check_product_register_date(original_create_at, max_day_ago) is False:
                     print(f"product uploaded {max_day_ago} days ago")
-                
+                    continue
                 else: 
                     original_create_at = parse_datetime(original_create_at)
                     pass
+                
             except Exception as e:
-                print(f'original create at error {e}')
+                print(f'original create at error 2:::: {e}')
                 continue
             
             # Calculate new scroll height and compare with last scroll height
             new_height = driver.execute_script(
                 "return document.body.scrollHeight")
+                        
+            try:
+                # prod_name = driver.find_element(
+                #     By.XPATH, '//*[@id="scroll-target"]/div[1]/div[1]/div[2]/div[1]/div/div[1]').text.split(' ')[1].strip()
+                prod_name = driver.find_element(By.XPATH, f'//*[@id="app"]/div[1]/main/div/div/div/div[6]/div[1]/div[{product_number}]/div/div[2]/div/div[1]').text.strip().split(' ')[1]
+                print(f'prod_name ======>>>>> {prod_name}')
+
+            except:
+                prod_name = ''
+                continue
+                
+            if prod_name is None:
+                close_btn = driver.find_element(By.XPATH, '//*[@id="app"]/div[4]/div/div/div[1]/header/div/button')
+                click_element(close_btn)
+                continue
+
+            if check_duplicate_product(prod_name, rows_products) is True:
+                # close_btn = driver.find_element(By.XPATH, '//*[@id="app"]/div[4]/div/div/div[1]/header/div/button')
+                # click_element(close_btn)
+                continue
+            else:
+                print('not duplicate')
+                pass
+            
+            if prod_name is not None:
+                category_id = calculate_category(shop_name, prod_name)
+                print(f'category id {category_id}')
+                # connect this to papago
+                try:
+                    prod_name_en = papago_translate(prod_name)
+                except Exception as e:
+                    print(f'papago error {e}')
+                    prod_name_en = prod_name
+
+            
+            
+            
             
               # product which is clicked
             active_prod = driver.find_element(By.XPATH, f'//*[@id="app"]/div[1]/main/div/div/div/div[6]/div[1]/div[{product_number}]/div')
@@ -400,7 +442,7 @@ def job(store_id='CB1NA24367'):
                     # print(f'image downloaded ->>> {image_path}')
                 except Exception as e:
                     print(f'image download error {e}')
-
+                    
                 time.sleep(1)
                 image_url = upload_image(s3, product_id, i)
                 
@@ -555,7 +597,7 @@ def job(store_id='CB1NA24367'):
                 cur.executemany(sql_productimages, total_table_ProductImages)
                 
                 conn.commit()
-
+                
                 product_id += 1
                 scraped_item += 1
                 total_table_ProductImages = []
@@ -569,7 +611,7 @@ def job(store_id='CB1NA24367'):
                 print(f'something went wrong:::: {e}')
                 close_btn = driver.find_element(By.XPATH, '//*[@id="app"]/div[4]/div/div/div[1]/header/div/button')
                 click_element(close_btn)
-    pass
+    driver.quit()
 
 
 
