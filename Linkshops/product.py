@@ -373,7 +373,7 @@ def category_classification(product_category):
 
 
 
-def job(store_name, max_day_ago = 30 * 2):
+def job(store_name, max_day_ago = 30):
 
     # chrome option - 토르 테스트 중
     chrome_options = webdriver.ChromeOptions()
@@ -645,6 +645,7 @@ def job(store_name, max_day_ago = 30 * 2):
                             
                         print("다음 상품 >>>>>>>")
                         continue
+
                 except Exception as e:
                     print(e)
                     if driver.find_element(By.CLASS_NAME, 'modal-product-next-button.next').find_element(By.CLASS_NAME, 'icon-product-next'):

@@ -229,30 +229,32 @@ def job(store_id='CB1NA24367'):
             total_product_count = int(match.group())
         except:
             pass
-
+        
         # temp
         # total_product_count = 2
         if total_product_count == 0:
             continue
         
         category_id = 98
+        
         # while True and product_number <= total_product_count:
         for product_number in range(1, int(total_product_count),1):
             
             if product_number == 0:
                 continue
             
-            driver.execute_script(
-                "window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(2)
-
-          
+            if product_number % 8 == 0:
+                driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                time.sleep(2)
+                
             print(f'product number {product_number}')
+            
             original_create_at = None
+            
             try:
                 element = WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.XPATH, f'//*[@id="app"]/div[1]/main/div/div/div/div[6]/div[1]/div[{product_number}]/div/div[2]/div/div[5]')))
                 original_create_at = driver.find_element(By.XPATH, f'//*[@id="app"]/div[1]/main/div/div/div/div[6]/div[1]/div[{product_number}]/div/div[2]/div/div[5]').text.strip()
-
+                
             except Exception as e:
                 print(f'original create at error 1:::: {e}')
                 original_create_at = None
@@ -271,17 +273,13 @@ def job(store_id='CB1NA24367'):
             except Exception as e:
                 print(f'original create at error 2:::: {e}')
                 continue
-            
-            # Calculate new scroll height and compare with last scroll height
-            new_height = driver.execute_script(
-                "return document.body.scrollHeight")
-                        
+
             try:
                 # prod_name = driver.find_element(
                 #     By.XPATH, '//*[@id="scroll-target"]/div[1]/div[1]/div[2]/div[1]/div/div[1]').text.split(' ')[1].strip()
                 prod_name = driver.find_element(By.XPATH, f'//*[@id="app"]/div[1]/main/div/div/div/div[6]/div[1]/div[{product_number}]/div/div[2]/div/div[1]').text.strip().split(' ')[1]
                 print(f'prod_name ======>>>>> {prod_name}')
-
+                
             except:
                 prod_name = ''
                 continue
